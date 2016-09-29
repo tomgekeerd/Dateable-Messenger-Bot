@@ -42,10 +42,10 @@ app.post('/webhook/', function (req, res) {
         }
         if (event.postback) {
             let postback = event.postback.payload
-            sendTextMessage(sender, "Postback received: "+postback.substring(0, 200), token)
             switch (postback) {
                 case "getStarted":
                     sendTextMessage(sender, "Starting, now!");
+                    sendGreetingMessage(sender);
                 break;
 
                 default:
@@ -65,6 +65,46 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
     
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:token},
+        method: 'POST',
+        json: {
+            recipient: {id:sender},
+            message: messageData,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
+}
+
+function sendGreetingMessage(sender) {
+    let messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [{
+                    "title": "Welcome to this bot, {{user_first_name}}!",
+                    "subtitle": "Let me explain what you can do with it.",
+                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
+                    "buttons": [{
+                        "type": "web_url",
+                        "url": "https://www.messenger.com",
+                        "title": "web url"
+                    }, {
+                        "type": "postback",
+                        "title": "Postback",
+                        "payload": "Payload for first element in a generic bubble",
+                    }],
+                }
+            }
+        }
+    }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token:token},
