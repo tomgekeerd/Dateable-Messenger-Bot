@@ -9,6 +9,10 @@ const app = express()
 
 var firstname = "";
 var lastname = "";
+var locale = "";
+var gender = "";
+var profile_pic = "";
+var timezone = "";
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -43,7 +47,6 @@ app.post('/webhook/', function (req, res) {
                 sendGenericMessage(sender)
                 continue
             }
-            console.log(getUserInsights(sender))
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
@@ -52,6 +55,7 @@ app.post('/webhook/', function (req, res) {
                 case "getStarted":
                     sendTextMessage(sender, "Alright, let's get started!");
                     sendGreetingMessage(sender);
+                    getUserInsights(sender);
                 break;
 
                 default:
@@ -192,7 +196,10 @@ function getUserInsights(sender) {
         } else {
             firstname = body.first_name
             lastname = body.last_name
-            console.log(firstname + lastname);
+            locale = body.locale
+            timezone = body.timezone
+            profile_pic = body.profile_pic
+            gender = body.gender
         }
     })
 }
