@@ -90,7 +90,7 @@ function sendGreetingMessage(sender) {
             "payload": {
                 "template_type": "generic",
                 "elements": [{
-                    "title": "Welcome to this bot, {{user_first_name}}!",
+                    "title": "Welcome to this bot, {{user_first_name}}!" + sender,
                     "subtitle": "Let me explain what you can do with it.",
                     "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
                     "buttons": [{
