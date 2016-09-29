@@ -173,6 +173,7 @@ function sendGenericMessage(sender) {
 }
 
 function getUserInsights(sender) {
+    console.log('called')
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
         qs: {access_token:token},
