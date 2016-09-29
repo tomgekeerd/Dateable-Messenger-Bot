@@ -186,7 +186,7 @@ function getUserInsights() {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
         } else if (!error) {
-            return response
+            return response;
         }
     })
 }
