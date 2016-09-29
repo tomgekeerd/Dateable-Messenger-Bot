@@ -38,13 +38,14 @@ app.post('/webhook/', function (req, res) {
                 sendGenericMessage(sender)
                 continue
             }
+            getUserInsights();
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
             let postback = event.postback.payload
             switch (postback) {
                 case "getStarted":
-                    sendTextMessage(sender, "Starting, now!");
+                    sendTextMessage(sender, "Alright, let's get started!");
                     sendGreetingMessage(sender);
                 break;
 
@@ -167,6 +168,25 @@ function sendGenericMessage(sender) {
             console.log('Error sending messages: ', error)
         } else if (response.body.error) {
             console.log('Error: ', response.body.error)
+        }
+    })
+}
+
+function getUserInsights() {
+    request({
+        url: 'https://graph.facebook.com/v2.6/' + sender,
+        qs: {access_token:token},
+        method: 'GET',
+        json: {
+            fields: {"first_name", "last_name", "profile_pic", "locale", "timezone", "gender"}
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        } else if (!error) {
+            return response
         }
     })
 }
