@@ -5,6 +5,11 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 
+// Variables
+
+var firstname = "";
+var lastname = "";
+
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
@@ -185,10 +190,10 @@ function getUserInsights(sender) {
         if (error) {
             console.log('Error sending messages: ', error)
         } else {
-            returnable = body
+            firstname = body.first_name
+            lastname = body.last_name
         }
     })
-    return returnable
 }
 
 // spin spin sugar
