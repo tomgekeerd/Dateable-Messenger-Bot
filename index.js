@@ -38,7 +38,7 @@ app.post('/webhook/', function (req, res) {
                 sendGenericMessage(sender)
                 continue
             }
-            getUserInsights(sender)
+            console.log(getUserInsights(sender))
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
@@ -181,12 +181,10 @@ function getUserInsights(sender) {
 
         }
     }, function(error, response, body) {
-        console.log(response)
-
         if (error) {
             console.log('Error sending messages: ', error)
         } else {
-            sendTextMessage(sender, response);
+            return body;
         }
     })
 }
