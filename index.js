@@ -11,7 +11,7 @@ const botly = new Botly({
 });
 
 botly.on("message", (senderId, message, data) => {
-    let text = `echo: ${data.text}`;
+    let text = "echo: ${data.text}";
 
     botly.sendText({
       id: senderId,
