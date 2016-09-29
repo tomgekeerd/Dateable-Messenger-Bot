@@ -38,7 +38,7 @@ app.post('/webhook/', function (req, res) {
                 sendGenericMessage(sender)
                 continue
             }
-            getUserInsights()
+            getUserInsights(sender)
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
@@ -172,7 +172,7 @@ function sendGenericMessage(sender) {
     })
 }
 
-function getUserInsights() {
+function getUserInsights(sender) {
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
         qs: {access_token:token},
