@@ -178,7 +178,7 @@ function getUserInsights() {
         qs: {access_token:token},
         method: 'GET',
         json: {
-            fields: [
+            "fields": [
                 "first_name",
                 "last_name",
                 "profile_pic",
