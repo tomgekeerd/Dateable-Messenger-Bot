@@ -11,9 +11,9 @@
   },
   "author": "elaniin",
   "dependencies": {
-    "express": "latest",
     "body-parser": "^1.15.0",
+    "botly": "^1.2.0",
+    "express": "latest",
     "request": "^2.71.0"
   }
 }
-
