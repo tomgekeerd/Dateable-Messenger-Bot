@@ -178,7 +178,14 @@ function getUserInsights() {
         qs: {access_token:token},
         method: 'GET',
         json: {
-            fields: {"first_name", "last_name", "profile_pic", "locale", "timezone", "gender"}
+            fields: [
+                "first_name",
+                "last_name",
+                "profile_pic",
+                "locale",
+                "timezone", 
+                "gender"
+            ]
         }
     }, function(error, response, body) {
         if (error) {
