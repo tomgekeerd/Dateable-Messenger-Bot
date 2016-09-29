@@ -44,10 +44,11 @@ app.post('/webhook/', function (req, res) {
             let text = JSON.stringify(event.postback)
             switch (text) {
                 case "getStarted":
-                    sendTextMessage(sender, "Starting, now!", token);
-                break
+                    sendTextMessage(sender, "Starting, now!");
+                break;
 
                 default:
+                    break;
             }
             // sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
             continue
