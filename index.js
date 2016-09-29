@@ -101,7 +101,7 @@ function sendGreetingMessage(sender) {
                         "title": "Postback",
                         "payload": "Payload for first element in a generic bubble",
                     }]
-                }
+                }]
             }
         }
     }
