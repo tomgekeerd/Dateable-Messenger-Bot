@@ -174,19 +174,9 @@ function sendGenericMessage(sender) {
 
 function getUserInsights() {
     request({
-        url: 'https://graph.facebook.com/v2.6/' + sender,
+        url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
         qs: {access_token:token},
-        method: 'GET',
-        json: {
-            "fields": [
-                "first_name",
-                "last_name",
-                "profile_pic",
-                "locale",
-                "timezone", 
-                "gender"
-            ]
-        }
+        method: 'GET'
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending messages: ', error)
