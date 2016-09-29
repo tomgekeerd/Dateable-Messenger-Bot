@@ -190,10 +190,8 @@ function getUserInsights() {
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        } else if (!error) {
-            return response;
+        } else {
+            sendTextMessage(sender, response);
         }
     })
 }
