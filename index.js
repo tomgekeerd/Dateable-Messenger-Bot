@@ -1,32 +1,30 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var request = require('request');
-var app = express();
+'use strict'
 
-var port = process.env.PORT || 8080;
-app.use(bodyParser.json());
+const express = require('express')
+const bodyParser = require('body-parser')
+const request = require('request')
+const app = express()
 
-//Your FanPageToken Generated in your FB App
-var token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD";
-var verify_token = "toeken133";
+app.set('port', (process.env.PORT || 5000))
 
-//Root EndPoint
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended: false}))
+
+// parse application/json
+app.use(bodyParser.json())
+
+// index
 app.get('/', function (req, res) {
+    res.send('hello world i am a secret bot')
+})
 
-    res.send('Facebook Messenger Bot root endpoint!');
-
-});
-
-//Setup Webhook
+// for facebook verification
 app.get('/webhook/', function (req, res) {
-
-    if (req.query['hub.verify_token'] === verify_token) {
-        res.send(req.query['hub.challenge']);
+    if (req.query['hub.verify_token'] === 'toeken133') {
+        res.send(req.query['hub.challenge'])
     }
-
-    res.send('Error, wrong validation token');
-
-});
+    res.send('Error, wrong token')
+})
 
 // to post data
 app.post('/webhook/', function (req, res) {
@@ -51,8 +49,10 @@ app.post('/webhook/', function (req, res) {
     res.sendStatus(200)
 })
 
-//send Message with Facebook Graph Facebook v2.6
 
+// recommended to inject access tokens as environmental variables, e.g.
+// const token = process.env.PAGE_ACCESS_TOKEN
+const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
@@ -123,9 +123,7 @@ function sendGenericMessage(sender) {
     })
 }
 
-//App listen
-app.listen(port, function () {
-
-    console.log('Facebook Messenger Bot on port: ' + port);
-
-});
+// spin spin sugar
+app.listen(app.get('port'), function() {
+    console.log('running on port', app.get('port'))
+})
