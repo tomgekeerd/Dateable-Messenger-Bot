@@ -173,6 +173,7 @@ function sendGenericMessage(sender) {
 }
 
 function getUserInsights(sender) {
+    var returnable = "";
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
         qs: {access_token:token},
@@ -184,9 +185,10 @@ function getUserInsights(sender) {
         if (error) {
             console.log('Error sending messages: ', error)
         } else {
-            return body;
+            returnable = body
         }
     })
+    return returnable
 }
 
 // spin spin sugar
