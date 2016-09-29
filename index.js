@@ -4,9 +4,9 @@ var request = require('request');
 var app = express();
 const Botly = require("botly");
 const botly = new Botly({
-    accessToken: pageAccessToken, //page access token provided by facebook
-    verifyToken: verificationToken, //needed when using express - the verification token you provided when defining the webhook in facebook
-    webHookPath: yourWebHookPath, //defaults to "/",
+    accessToken: "EAAK1Sb4ieBIBAGZAmCKbjnbt49QklEmYXQsdwNc0O6Wg6ZCQTjpuv4wY8X1EhaVTXOHXT0dnVuvlGLzlkrzZCnJipzYZBAZCKZCgrixARLyhdyo6Dq50jVuvQO2jg0JkvtiGRoA0rYldfJPGet5kBBYfAbHB0fM44sYhk7Umj01gZDZD", //page access token provided by facebook
+    verifyToken: "toeken133", //needed when using express - the verification token you provided when defining the webhook in facebook
+    webHookPath: "/webhook", //defaults to "/",
     notificationType: Botly.CONST.REGULAR //already the default (optional),
 });
 
