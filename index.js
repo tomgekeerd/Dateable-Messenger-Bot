@@ -192,6 +192,7 @@ function getUserInsights(sender) {
         } else {
             firstname = body.first_name
             lastname = body.last_name
+            console.log(firstname + lastname);
         }
     })
 }
