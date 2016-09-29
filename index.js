@@ -42,8 +42,14 @@ app.post('/webhook/', function (req, res) {
         }
         if (event.postback) {
             let text = JSON.stringify(event.postback)
-            sendTextMessage(sender, "Starting, now!");
+            switch (text) {
+                case "getStarted":
+                    sendTextMessage(sender, "Starting, now!");
+                break;
 
+                default:
+                    sendTextMessage(sender, "A postback without understandance");
+            }
             // sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
             continue
         }
