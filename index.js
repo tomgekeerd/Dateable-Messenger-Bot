@@ -40,8 +40,8 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             var text = event.message.text;
 
-            sendGenericMessage(sender)
-            // sendTextMessage(sender, "U w0t m8, echo: "+ text.substring(0, 200));
+            // sendGenericMessage(sender)
+            sendTextMessage(sender, "U w0t m8, echo: "+ text.substring(0, 200));
         }
     }
 
