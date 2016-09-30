@@ -34,6 +34,7 @@ var self = module.exports = {
         }
         
         if (q_replies != "") {
+            console.log(q_replies)
             messageData.quick_replies = JSON.parse(q_replies)
         }
 
