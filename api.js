@@ -45,7 +45,7 @@ var self = module.exports = {
                 console.log('Error: ', response.body.error)
             }
         })
-    }
+    },
 
     sendGreetingMessage: function(sender, name) {
         let messageData = {
@@ -85,7 +85,7 @@ var self = module.exports = {
                 console.log('Error: ', response.body.error)
             }
         })
-    }
+    },
 
     sendGenericMessage: function(sender) {
         let messageData = {
@@ -134,7 +134,7 @@ var self = module.exports = {
                 console.log('Error: ', response.body.error)
             }
         })
-    }
+    },
 
     getUserInsights: function(sender, callback) {
         var returnable = "";
@@ -152,7 +152,7 @@ var self = module.exports = {
                 callback(body)
             }
         })
-    }
+    },
 
     receivedUserInsights: function(data) {
 
