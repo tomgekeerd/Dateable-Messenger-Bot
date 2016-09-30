@@ -167,7 +167,7 @@ var self = module.exports = {
 
         // Send a greeting message
 
-        self.sendGreetingMessage(sender, firstname + " " + lastname)
+        self.sendGreetingMessage(index.sender, firstname + " " + lastname)
     }
 
 }
