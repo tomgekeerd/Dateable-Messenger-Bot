@@ -14,9 +14,9 @@
 			"To get started and to give you the best service, could you please tell me who you're looking for?"
 		],
 		"q_reply": {
-			0:[],
-			1:[],
-			2:[
+			"0":[],
+			"1":[],
+			"2":[
 				{
         			"content_type":"text",
         			"title":"Red",
@@ -27,7 +27,7 @@
        	 			"title":"Green",
         			"payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
       			}
-			],
+			]
 		},
 		"method": "send"
 	},
