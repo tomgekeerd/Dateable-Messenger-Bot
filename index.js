@@ -1,7 +1,6 @@
 'use strict'
 
-require('./api.js')
-
+var api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -36,22 +35,22 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             let text = event.message.text
             if (text === 'Generic') {
-                sendGenericMessage(sender)
+                api.sendGenericMessage(sender)
                 continue
             }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            api.sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
             let postback = event.postback.payload
             switch (postback) {
                 case "getStarted":
-                    sendTextMessage(sender, "Alright, let's get started!");
-                    sendGreetingMessage(sender);
-                    getUserInsights(sender);
+                    api.sendTextMessage(sender, "Alright, let's get started!");
+                    api.sendGreetingMessage(sender);
+                    api.getUserInsights(sender);
                 break;
 
                 default:
-                    sendTextMessage(sender, "A postback without understandance");
+                    api.sendTextMessage(sender, "A postback without understandance");
             }
             continue
         }
