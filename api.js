@@ -5,11 +5,23 @@ const request = require('request')
 // Variables
 
 var firstname = "";
+exports.firstname = firstname
+
 var lastname = "";
+exports.lastname = lastname
+
 var locale = "";
+exports.locale = locale
+
 var gender = "";
+exports.gender = gender
+
 var profile_pic = "";
+exports.profile_pic = profile_pic
+
 var timezone = "";
+exports.timezone = timezone
+
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
