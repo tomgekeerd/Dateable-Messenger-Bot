@@ -1,6 +1,6 @@
 'use strict'
 
-var api = require("./api.js");
+const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -30,8 +30,12 @@ app.get('/webhook/', function (req, res) {
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
+
         let event = req.body.entry[0].messaging[i]
+
         let sender = event.sender.id
+        exports.sender = sender
+
         if (event.message && event.message.text) {
             let text = event.message.text
             if (text === 'Generic') {
@@ -45,7 +49,6 @@ app.post('/webhook/', function (req, res) {
             switch (postback) {
                 case "getStarted":
                     api.sendTextMessage(sender, "Alright, let's get started!");
-                    api.sendGreetingMessage(sender);
                     api.getUserInsights(sender, api.receivedUserInsights);
                 break;
 

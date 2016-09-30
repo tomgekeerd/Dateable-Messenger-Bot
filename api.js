@@ -1,6 +1,7 @@
 'use strict'
 
 const request = require('request')
+const index = require('./index.js')
 
 // Variables
 
@@ -21,7 +22,6 @@ exports.profile_pic = profile_pic
 
 var timezone = "";
 exports.timezone = timezone
-
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
@@ -45,7 +45,7 @@ exports.sendTextMessage = function(sender, text) {
     })
 }
 
-exports.sendGreetingMessage = function(sender) {
+exports.sendGreetingMessage = function(sender, name) {
     let messageData = {
         "attachment": {
             "type": "template",
@@ -153,10 +153,17 @@ exports.getUserInsights = function(sender, callback) {
 }
 
 exports.receivedUserInsights = function(data) {
+
+    // Saving user data
+
     firstname = data.first_name
     lastname = data.last_name
     locale = data.locale
     timezone = data.timezone
     profile_pic = data.profile_pic
     gender = data.gender
+
+    // Send a greeting message
+
+    sendGreetingMessage(sender, firstname + " " + lastname)
 }
