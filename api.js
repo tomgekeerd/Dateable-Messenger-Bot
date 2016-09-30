@@ -134,7 +134,7 @@ exports.sendGenericMessage = function(sender) {
     })
 }
 
-exports.getUserInsights = function(sender) {
+exports.getUserInsights = function(sender, callback) {
     var returnable = "";
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
@@ -147,14 +147,16 @@ exports.getUserInsights = function(sender) {
         if (error) {
             console.log('Error sending messages: ', error)
         } else {
-            firstname = body.first_name
-            lastname = body.last_name
-            locale = body.locale
-            timezone = body.timezone
-            profile_pic = body.profile_pic
-            gender = body.gender
-
-            console.log(firstname, lastname, locale);
+            callback(body)
         }
     })
+}
+
+exports.receivedUserInsights = function(data) {
+    firstname = data.first_name
+    lastname = data.last_name
+    locale = data.locale
+    timezone = data.timezone
+    profile_pic = data.profile_pic
+    gender = data.gender
 }

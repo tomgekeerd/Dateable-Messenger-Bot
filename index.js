@@ -46,7 +46,7 @@ app.post('/webhook/', function (req, res) {
                 case "getStarted":
                     api.sendTextMessage(sender, "Alright, let's get started!");
                     api.sendGreetingMessage(sender);
-                    api.getUserInsights(sender);
+                    api.getUserInsights(sender, api.receivedUserInsights);
                 break;
 
                 default:
