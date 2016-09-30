@@ -47,7 +47,7 @@ app.post('/webhook/', function (req, res) {
                     api.sendTextMessage(sender, "Alright, let's get started!");
                     api.sendGreetingMessage(sender);
                     api.getUserInsights(sender);
-                    console.log(firstname, lastname, locale);
+                    console.log(api.firstname, api.lastname, api.locale);
                 break;
 
                 default:
