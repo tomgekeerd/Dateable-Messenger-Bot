@@ -3,6 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
+const api = require('api.js')
 const app = express()
 
 // Variables
@@ -44,165 +45,28 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             let text = event.message.text
             if (text === 'Generic') {
-                sendGenericMessage(sender)
+                api.sendGenericMessage(sender)
                 continue
             }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+            api.sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
         if (event.postback) {
             let postback = event.postback.payload
             switch (postback) {
                 case "getStarted":
-                    sendTextMessage(sender, "Alright, let's get started!");
-                    sendGreetingMessage(sender);
-                    getUserInsights(sender);
+                    api.sendTextMessage(sender, "Alright, let's get started!");
+                    api.sendGreetingMessage(sender);
+                    api.getUserInsights(sender);
                 break;
 
                 default:
-                    sendTextMessage(sender, "A postback without understandance");
+                    api.sendTextMessage(sender, "A postback without understandance");
             }
             continue
         }
     }
     res.sendStatus(200)
 })
-
-
-// recommended to inject access tokens as environmental variables, e.g.
-// const token = process.env.PAGE_ACCESS_TOKEN
-const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
-
-function sendTextMessage(sender, text) {
-    let messageData = { text:text }
-    
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
-
-function sendGreetingMessage(sender) {
-    let messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "Welcome to this bot, {{user_first_name}}!" + sender,
-                    "subtitle": "Let me explain what you can do with it.",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "web url"
-                    }, {
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for first element in a generic bubble",
-                    }]
-                }]
-            }
-        }
-    }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
-
-function sendGenericMessage(sender) {
-    let messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": [{
-                    "title": "First card",
-                    "subtitle": "Element #1 of an hscroll",
-                    "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                    "buttons": [{
-                        "type": "web_url",
-                        "url": "https://www.messenger.com",
-                        "title": "web url"
-                    }, {
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for first element in a generic bubble",
-                    }],
-                }, {
-                    "title": "Second card",
-                    "subtitle": "Element #2 of an hscroll",
-                    "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                    "buttons": [{
-                        "type": "postback",
-                        "title": "Postback",
-                        "payload": "Payload for second element in a generic bubble",
-                    }],
-                }]
-            }
-        }
-    }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
-        }
-    })
-}
-
-function getUserInsights(sender) {
-    var returnable = "";
-    request({
-        url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
-        qs: {access_token:token},
-        method: 'GET',
-        json: {
-
-        }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else {
-            firstname = body.first_name
-            lastname = body.last_name
-            locale = body.locale
-            timezone = body.timezone
-            profile_pic = body.profile_pic
-            gender = body.gender
-        }
-    })
-}
 
 // spin spin sugar
 app.listen(app.get('port'), function() {
