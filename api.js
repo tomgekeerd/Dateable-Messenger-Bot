@@ -1,7 +1,14 @@
 const request = require('request')
 
-// recommended to inject access tokens as environmental variables, e.g.
-// const token = process.env.PAGE_ACCESS_TOKEN
+// Variables
+
+var firstname = "";
+var lastname = "";
+var locale = "";
+var gender = "";
+var profile_pic = "";
+var timezone = "";
+
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
 function sendTextMessage(sender, text) {

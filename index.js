@@ -6,15 +6,6 @@ const request = require('request')
 const api = require('api.js')
 const app = express()
 
-// Variables
-
-var firstname = "";
-var lastname = "";
-var locale = "";
-var gender = "";
-var profile_pic = "";
-var timezone = "";
-
 app.set('port', (process.env.PORT || 5000))
 
 // parse application/x-www-form-urlencoded
