@@ -83,7 +83,9 @@ var self = module.exports = {
                 for (var i = 0; i < data.getStarted.messages.length; i++) {
                     switch (data.getStarted.method) {
                         case "send":
-                            self.sendTextMessage(sender, data.getStarted.messages[i])
+                            if (data.getStarted.q_reply[i] != "") {
+                                self.sendTextMessage(sender, data.getStarted.messages[i], data.getStarted.q_reply[i])
+                            }
                         break
 
                         case "random":
