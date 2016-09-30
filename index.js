@@ -52,6 +52,14 @@ app.post('/webhook/', function (req, res) {
                     api.getUserInsights(sender, api.receivedUserInsights);
                 break;
 
+                case "startChat":
+
+                break;
+                
+                case "help":
+
+                break;
+
                 default:
                     api.sendTextMessage(sender, "A postback without understandance");
             }

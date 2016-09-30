@@ -1,0 +1,30 @@
+{
+	"help": {
+		"messages": [
+			"How are you doing?",
+			"Choose an option in the menu"
+		],
+		"method": "random"
+	},
+
+	"getStarted": {
+		"messages": [
+			"Woah! You want to start, with me? UMG."
+		],
+		"method": "send"
+	},
+
+	"startChat": {
+		"messages": [
+			"You want to start a chat? Let me know who to hit you up!"
+		],
+		"method": "send"
+	},
+
+	"changeGender": {
+		"messages": [
+			"You want to start a chat? Let me know who to hit you up!"
+		],
+		"method": "send"
+	}
+}

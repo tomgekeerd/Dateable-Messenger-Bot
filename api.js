@@ -2,6 +2,7 @@
 
 const request = require('request')
 const index = require('./index.js')
+const data = require('./data.json');
 
 // Variables
 
@@ -47,24 +48,24 @@ var self = module.exports = {
         })
     },
 
-    sendGreetingMessage: function(sender, name) {
+    sendGreetingMessages: function(sender, name) {
         let messageData = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
                     "elements": [{
-                        "title": "Welcome to this bot, {{user_first_name}}!" + sender,
-                        "subtitle": "Let me explain what you can do with it.",
+                        "title": "Welcome to this bot, " + name + "!",
+                        "subtitle": "Let me explain what you can do with me.",
                         "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
                         "buttons": [{
-                            "type": "web_url",
-                            "url": "https://www.messenger.com",
-                            "title": "web url"
+                            "type": "postback",
+                            "title": "Start a new chat",
+                            "payload": "startChat"
                         }, {
                             "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for first element in a generic bubble",
+                            "title": "Help",
+                            "payload": "help",
                         }]
                     }]
                 }
@@ -81,8 +82,10 @@ var self = module.exports = {
         }, function(error, response, body) {
             if (error) {
                 console.log('Error sending messages: ', error)
-            } else if (response.body.error) {
-                console.log('Error: ', response.body.error)
+            } else {
+                for (var i = 0; i < data.getStarted.messages.length; i++) {
+                    console.log(data.getStarted.messages[i])
+                }
             }
         })
     },
@@ -167,7 +170,7 @@ var self = module.exports = {
 
         // Send a greeting message
 
-        self.sendGreetingMessage(index.sender, firstname + " " + lastname)
+        self.sendGreetingMessages(index.sender, firstname)
     }
 
 }
