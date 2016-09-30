@@ -2,7 +2,7 @@
 
 const express = require('express')
 const bodyParser = require('body-parser')
-const api = require('api.js')
+const api = require('./api.js')
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
