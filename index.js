@@ -1,6 +1,6 @@
 'use strict'
 
-require('./js')
+require('./api.js')
 
 const express = require('express')
 const bodyParser = require('body-parser')
