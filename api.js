@@ -30,12 +30,12 @@ var self = module.exports = {
 
     sendTextMessage: function(sender, text, q_replies) {
         let messageData = {
-            "text": text
+            text: text
         }
         
         if (q_replies != "") {
             console.log(q_replies)
-            messageData.quick_replies = JSON.parse(q_replies)
+            messageData.quick_replies = q_replies
         }
 
         request({
