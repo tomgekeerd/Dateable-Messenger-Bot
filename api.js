@@ -13,7 +13,7 @@ var timezone = "";
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
-function sendTextMessage(sender, text) {
+exports.sendTextMessage = function(sender, text) {
     let messageData = { text:text }
     
     request({
@@ -33,7 +33,7 @@ function sendTextMessage(sender, text) {
     })
 }
 
-function sendGreetingMessage(sender) {
+exports.sendGreetingMessage = function(sender) {
     let messageData = {
         "attachment": {
             "type": "template",
@@ -73,7 +73,7 @@ function sendGreetingMessage(sender) {
     })
 }
 
-function sendGenericMessage(sender) {
+exports.sendGenericMessage = function(sender) {
     let messageData = {
         "attachment": {
             "type": "template",
@@ -122,7 +122,7 @@ function sendGenericMessage(sender) {
     })
 }
 
-function getUserInsights(sender) {
+exports.getUserInsights = function(sender) {
     var returnable = "";
     request({
         url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
