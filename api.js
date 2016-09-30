@@ -153,6 +153,8 @@ exports.getUserInsights = function(sender) {
             timezone = body.timezone
             profile_pic = body.profile_pic
             gender = body.gender
+
+            console.log(firstname, lastname, locale);
         }
     })
 }
