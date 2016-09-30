@@ -4,12 +4,14 @@
 			"How are you doing?",
 			"Choose an option in the menu"
 		],
-		"method": "random"
+		"method": "pick-one"
 	},
 
 	"getStarted": {
 		"messages": [
-			"Woah! You want to start, with me? UMG."
+			"Alright, let's get started!",
+			"So, I can arrange you a new date by looking for other male/female in your nabourhood!",
+			"To get started and to give the best service, could you please tell me who you're looking for?"
 		],
 		"method": "send"
 	},

@@ -57,16 +57,7 @@ var self = module.exports = {
                     "elements": [{
                         "title": "Welcome to this bot, " + name + "!",
                         "subtitle": "Let me explain what you can do with me.",
-                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                        "buttons": [{
-                            "type": "postback",
-                            "title": "Start a new chat",
-                            "payload": "startChat"
-                        }, {
-                            "type": "postback",
-                            "title": "Help",
-                            "payload": "help",
-                        }]
+                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png"
                     }]
                 }
             }
@@ -84,7 +75,22 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else {
                 for (var i = 0; i < data.getStarted.messages.length; i++) {
-                    console.log(data.getStarted.messages[i])
+                    switch (data.getStarted.method) {
+                        case "send":
+                            self.sendTextMessage(sender, data.getStarted.messages[i])
+                        break
+
+                        case "random":
+
+                        break
+
+                        case "pick-one":
+
+                        break
+
+                        default:
+                            console.log(data.getStarted.messages[i])
+                    }
                 }
             }
         })

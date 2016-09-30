@@ -48,14 +48,13 @@ app.post('/webhook/', function (req, res) {
             let postback = event.postback.payload
             switch (postback) {
                 case "getStarted":
-                    api.sendTextMessage(sender, "Alright, let's get started!");
                     api.getUserInsights(sender, api.receivedUserInsights);
                 break;
 
                 case "startChat":
 
                 break;
-                
+
                 case "help":
 
                 break;
