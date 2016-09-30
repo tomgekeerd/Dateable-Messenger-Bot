@@ -165,5 +165,5 @@ exports.receivedUserInsights = function(data) {
 
     // Send a greeting message
 
-    sendGreetingMessage(sender, firstname + " " + lastname)
+    this.sendGreetingMessage(sender, firstname + " " + lastname)
 }
