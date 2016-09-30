@@ -28,9 +28,15 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 
 var self = module.exports = {
 
-    sendTextMessage: function(sender, text) {
-        let messageData = { text:text }
+    sendTextMessage: function(sender, text, q_replies) {
+        let messageData = {
+            "text": text
+        }
         
+        if (q_replies != "") {
+            messageData.quick_replies = JSON.parse(q_replies)
+        }
+
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token:token},

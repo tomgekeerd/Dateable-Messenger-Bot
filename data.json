@@ -11,8 +11,26 @@
 		"messages": [
 			"Alright, let's get started!",
 			"So, I can arrange you a new date by looking for other male/female in your nabourhood!",
-			"To get started and to give the best service, could you please tell me who you're looking for?"
+			"To get started and to give you the best service, could you please tell me who you're looking for?"
 		],
+		"q_reply": [
+			"",
+			"",
+			"[
+				{
+        			\"content_type\":\"text\",
+			        \"title\":\"Red\",
+			        \"payload\":\"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED\",
+			        \"image_url\":\"http://petersfantastichats.com/img/red.png\"
+			      },
+			      {
+			        \"content_type\":\"text\",
+			        \"title\":\"Green\",
+			        \"payload\":\"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN\",
+			        \"image_url\":\"http://petersfantastichats.com/img/green.png\"
+			    }
+			]"
+		]
 		"method": "send"
 	},
 
