@@ -190,6 +190,7 @@ var self = module.exports = {
 
     receivedUserInsights: function(data) {
 
+        console.log("Like wtf")
         // Saving user data
 
         firstname = data.first_name
