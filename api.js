@@ -28,7 +28,7 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 
 var self = module.exports = {
 
-    sendTextMessage: function(sender, text, q_replies) {
+    sendTextMessage: function(sender, text, q_replies, _callback) {
         let messageData = {
             text: text
         }
@@ -81,26 +81,34 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                for (var i = 0; i < data.getStarted.messages.length; i++) {
-                    switch (data.getStarted.method) {
-                        case "send":
-                            if (data.getStarted.q_reply[i] != "") {
-                                self.sendTextMessage(sender, data.getStarted.messages[i], data.getStarted.q_reply[i])
-                            } else {
-                                self.sendTextMessage(sender, data.getStarted.messages[i], "")
-                            }
-                        break
+                var i = 0
+                var getStartedMessages = function(arr) {
+                    if (i < data.getStarted.messages.length) {
+                        switch (data.getStarted.method) {
+                            case "send":
+                                if (data.getStarted.q_reply[i] != "") {
+                                    self.sendTextMessage(sender, data.getStarted.messages[i], data.getStarted.q_reply[i], function() {
+                                        getStartedMessages()
+                                    })
+                                } else {
+                                    self.sendTextMessage(sender, data.getStarted.messages[i], "", function() {
+                                        getStartedMessages()
+                                    })
+                                }
+                            break
 
-                        case "random":
+                            case "random":
 
-                        break
+                            break
 
-                        case "pick-one":
+                            case "pick-one":
 
-                        break
+                            break
 
-                        default:
-                            console.log(data.getStarted.messages[i])
+                            default:
+                                console.log(data.getStarted.messages[i])
+                        }
+                        i++
                     }
                 }
             }
