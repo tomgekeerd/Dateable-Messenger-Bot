@@ -200,7 +200,7 @@ var self = module.exports = {
         profile_pic = data.profile_pic
         gender = data.gender
 
-        var id = data.fb_id
+        var fb_sender_id = data.fb_id
 
         // Send a greeting message
 
@@ -208,9 +208,9 @@ var self = module.exports = {
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, function(err, client) {
-            if (err) throw err;
+            if (err) console.log(error);
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + id + ';')
+                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + fb_sender_id + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });
