@@ -29,6 +29,10 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 var self = module.exports = {
 
     sendTextMessage: function(sender, text, q_replies, callback) {
+
+        if (text == "gender") {
+            text = gender + firstname
+        }
         let messageData = {
             text: text
         }
