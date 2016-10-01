@@ -52,11 +52,23 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
-
+                    api.sendTextMessage(sender, "Let's start a chat");
                 break;
 
                 case "help":
+                    api.sendTextMessage(sender, "You want help huh?");
+                break;
 
+                case "pickedGenderBoth":
+                    api.sendTextMessage(sender, "Selected gender: Both");
+                break;
+
+                case "pickedGenderMale":
+                    api.sendTextMessage(sender, "Selected gender: Male");
+                break;
+
+                case "pickedGenderFemale":
+                    api.sendTextMessage(sender, "Selected gender: Female");
                 break;
 
                 default:

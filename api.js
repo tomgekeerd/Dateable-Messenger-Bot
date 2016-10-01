@@ -30,7 +30,6 @@ var self = module.exports = {
 
     sendTextMessage: function(sender, text, q_replies, callback) {
 
-        console.log(gender + firstname)
         let messageData = {
             text: text
         }

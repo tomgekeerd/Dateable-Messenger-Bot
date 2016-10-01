@@ -20,12 +20,17 @@
 				{
         			"content_type":"text",
         			"title":"Female",
-        			"payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
+        			"payload":"pickedGenderFemale"
       			},
       			{
      				"content_type":"text",
        	 			"title":"Male",
-        			"payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
+        			"payload":"pickedGenderMale"
+      			},
+      			{
+     				"content_type":"text",
+       	 			"title":"Both",
+        			"payload":"pickedGenderBoth"
       			}
 			]
 		},
