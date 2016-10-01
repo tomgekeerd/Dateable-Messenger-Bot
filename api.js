@@ -200,7 +200,7 @@ var self = module.exports = {
         profile_pic = data.profile_pic
         gender = data.gender
 
-        var id = body.fb_id
+        var id = data.fb_id
 
         // Send a greeting message
 
