@@ -183,6 +183,7 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
+                body.fb_id = sender
                 callback(body)
             }
         })
@@ -199,6 +200,8 @@ var self = module.exports = {
         profile_pic = data.profile_pic
         gender = data.gender
 
+        var id = body.fb_id
+
         // Send a greeting message
 
         self.sendGreetingMessages(index.sender, firstname)
@@ -207,7 +210,7 @@ var self = module.exports = {
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             if (err) throw err;
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + sender + ';')
+                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + id + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });
