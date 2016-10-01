@@ -183,7 +183,6 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                console.log(body)
                 callback(body)
             }
         })
@@ -208,7 +207,7 @@ var self = module.exports = {
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             if (err) throw err;
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' sender ';');
+                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + sender + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });
