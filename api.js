@@ -84,7 +84,6 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else {
                 var i = 0
-                getStartedMessages();
                 var getStartedMessages = function() {
                     if (i < data.getStarted.messages.length) {
                         switch (data.getStarted.method) {
@@ -114,6 +113,7 @@ var self = module.exports = {
                         i++
                     }
                 }
+                getStartedMessages();
             }
         })
     },
