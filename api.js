@@ -56,7 +56,9 @@ var self = module.exports = {
             } else if (response.body.error) {
                 console.log('Error: ', response.body.error)
             } else if (!error) {
-                callback()
+                if (typeof callback !== 'undefined' && callback !== null){
+                    callback()
+                }
             }
         })
     },
