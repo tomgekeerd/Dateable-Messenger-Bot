@@ -66,7 +66,7 @@ var self = module.exports = {
                     "elements": [{
                         "title": "Welcome to this bot, " + name + "!",
                         "subtitle": "Let me explain what you can do with me.",
-                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png"
+                        "image_url": "./tinder.png"
                     }]
                 }
             }
