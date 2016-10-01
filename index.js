@@ -4,7 +4,6 @@ const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-var pg = require('pg');
 
 app.set('port', (process.env.PORT || 5000))
 
