@@ -69,7 +69,7 @@ var self = module.exports = {
                     "elements": [{
                         "title": "Welcome to this bot, " + name + "!",
                         "subtitle": "Let me explain what you can do with me.",
-                        "image_url": "./tinder.png"
+                        "image_url": "https://pbs.twimg.com/profile_images/664257671768354816/w2ZlpSd6.png"
                     }]
                 }
             }
