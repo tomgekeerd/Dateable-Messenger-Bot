@@ -176,7 +176,7 @@ var self = module.exports = {
     getUserInsights: function(sender, callback) {
         var returnable = "";
         request({
-            url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,user_id,last_name,profile_pic,locale,timezone,gender',
+            url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=id,first_name,last_name,profile_pic,locale,timezone,gender',
             qs: {access_token:token},
             method: 'GET',
             json: {
