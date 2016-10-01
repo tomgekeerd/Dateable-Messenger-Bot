@@ -186,6 +186,7 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
+                console.log(body)
                 callback(body)
             }
         })
