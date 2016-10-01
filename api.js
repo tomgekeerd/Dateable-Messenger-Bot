@@ -29,11 +29,11 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 var self = module.exports = {
 
     sendTextMessage: function(sender, text, q_replies, callback) {
-        console.log(firstname + locale + timezone)
+
         let messageData = {
             text: text
         }
-        sender = "029309103992"
+        
         if (q_replies != "") {
             messageData.quick_replies = q_replies
         }

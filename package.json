@@ -14,6 +14,7 @@
     "body-parser": "^1.15.0",
     "botly": "^1.2.0",
     "express": "latest",
+    "pg": "6.1.0",
     "request": "^2.71.0"
   }
 }
