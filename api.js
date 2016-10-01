@@ -25,6 +25,9 @@ exports.profile_pic = profile_pic
 var timezone = "";
 exports.timezone = timezone
 
+var id = "";
+exports.id = id
+
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
 var self = module.exports = {
@@ -173,7 +176,7 @@ var self = module.exports = {
     getUserInsights: function(sender, callback) {
         var returnable = "";
         request({
-            url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
+            url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,id,last_name,profile_pic,locale,timezone,gender',
             qs: {access_token:token},
             method: 'GET',
             json: {
@@ -198,6 +201,7 @@ var self = module.exports = {
         timezone = data.timezone
         profile_pic = data.profile_pic
         gender = data.gender
+        id = data.id
 
         // Send a greeting message
 
@@ -207,7 +211,11 @@ var self = module.exports = {
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             if (err) throw err;
             client
-                .query('SELECT * FROM users;')
+                .query(
+                    'SELECT COUNT(1) \
+                     FROM users \
+                     WHERE fb_id = ; \
+                    ')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });
