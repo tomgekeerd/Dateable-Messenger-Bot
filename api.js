@@ -1,9 +1,9 @@
 'use strict'
 
-const request = require('request')
-const index = require('./index.js')
+const request = require('request');
 const data = require('./data.json');
 var pg = require('pg');
+var webhook = require('./index.js');
 
 // Variables
 
@@ -171,9 +171,8 @@ var self = module.exports = {
     },
 
     getUserInsights: function(callback) {
-        var returnable = "";
         request({
-            url: 'https://graph.facebook.com/v2.6/' + index.sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
+            url: 'https://graph.facebook.com/v2.6/' + webhook.recipient_id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
             qs: {access_token:token},
             method: 'GET',
             json: {
@@ -201,13 +200,13 @@ var self = module.exports = {
 
         // Send a greeting message
 
-        self.sendGreetingMessages(index.sender, firstname)
+        self.sendGreetingMessages(index.recipient_id, firstname)
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             if (err) throw err;
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + index.sender + ';')
+                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + index.recipient_id + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });

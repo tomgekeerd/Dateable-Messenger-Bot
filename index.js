@@ -33,16 +33,16 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
-        let sender = event.sender.id
-        exports.sender = sender
+        let recipient_id = event.sender.id
+        exports.recipient_id = recipient_id
 
         if (event.message && event.message.text) {
             let text = event.message.text
             if (text === 'Generic') {
-                api.sendGenericMessage(sender)
+                api.sendGenericMessage(recipient_id)
                 continue
             }
-            api.sendTextMessage(sender, text.substring(0, 200))
+            api.sendTextMessage(recipient_id, text.substring(0, 200))
         }
         if (event.postback) {
             let postback = event.postback.payload
@@ -52,27 +52,27 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
-                    api.sendTextMessage(sender, "Let's start a chat");
+                    api.sendTextMessage(recipient_id, "Let's start a chat");
                 break;
 
                 case "help":
-                    api.sendTextMessage(sender, "You want help huh?");
+                    api.sendTextMessage(recipient_id, "You want help huh?");
                 break;
 
                 case "pickedGenderBoth":
-                    api.sendTextMessage(sender, "Selected gender: Both");
+                    api.sendTextMessage(recipient_id, "Selected gender: Both");
                 break;
 
                 case "pickedGenderMale":
-                    api.sendTextMessage(sender, "Selected gender: Male");
+                    api.sendTextMessage(recipient_id, "Selected gender: Male");
                 break;
 
                 case "pickedGenderFemale":
-                    api.sendTextMessage(sender, "Selected gender: Female");
+                    api.sendTextMessage(recipient_id, "Selected gender: Female");
                 break;
 
                 default:
-                    api.sendTextMessage(sender, "A postback without understandance");
+                    api.sendTextMessage(recipient_id, "A postback without understandance");
             }
             continue
         }
