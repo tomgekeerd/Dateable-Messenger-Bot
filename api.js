@@ -200,13 +200,13 @@ var self = module.exports = {
 
         // Send a greeting message
 
-        self.sendGreetingMessages(index.recipient_id, firstname)
+        self.sendGreetingMessages(webhook.recipient_id, firstname)
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             if (err) throw err;
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + index.recipient_id + ';')
+                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + webhook.recipient_id + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });
