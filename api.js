@@ -209,7 +209,7 @@ var self = module.exports = {
             if (err) throw err;
             client
                 .query(
-                    'SELECT COUNT(1) \
+                    'SELECT COUNT(*) \
                      FROM users \
                      WHERE fb_id =' sender '; \
                     ')
