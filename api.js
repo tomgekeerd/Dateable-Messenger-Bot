@@ -33,9 +33,8 @@ var self = module.exports = {
         let messageData = {
             text: text
         }
-        
+        sender = "029309103992"
         if (q_replies != "") {
-            console.log(q_replies)
             messageData.quick_replies = q_replies
         }
 
