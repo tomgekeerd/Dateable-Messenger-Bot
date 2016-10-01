@@ -19,12 +19,12 @@
 			"2":[
 				{
         			"content_type":"text",
-        			"title":"Red",
+        			"title":"Female",
         			"payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_RED"
       			},
       			{
      				"content_type":"text",
-       	 			"title":"Green",
+       	 			"title":"Male",
         			"payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_GREEN"
       			}
 			]

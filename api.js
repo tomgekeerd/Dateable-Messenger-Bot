@@ -86,6 +86,8 @@ var self = module.exports = {
                         case "send":
                             if (data.getStarted.q_reply[i] != "") {
                                 self.sendTextMessage(sender, data.getStarted.messages[i], data.getStarted.q_reply[i])
+                            } else {
+                                self.sendTextMessage(sender, data.getStarted.messages[i], "")
                             }
                         break
 
