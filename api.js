@@ -206,7 +206,7 @@ var self = module.exports = {
         pg.connect(process.env.DATABASE_URL, function(err, client) {
             if (err) throw err;
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + webhook.recipient_id + ';')
+                .query('SELECT COUNT(*) FROM users WHERE fb_id=' + webhook.recipient_id + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });
