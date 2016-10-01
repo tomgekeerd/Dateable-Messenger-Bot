@@ -170,10 +170,10 @@ var self = module.exports = {
         })
     },
 
-    getUserInsights: function(sender, callback) {
+    getUserInsights: function(callback) {
         var returnable = "";
         request({
-            url: 'https://graph.facebook.com/v2.6/' + sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
+            url: 'https://graph.facebook.com/v2.6/' + index.sender + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
             qs: {access_token:token},
             method: 'GET',
             json: {
@@ -183,7 +183,6 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                body.fb_id = sender
                 callback(body)
             }
         })
@@ -200,17 +199,15 @@ var self = module.exports = {
         profile_pic = data.profile_pic
         gender = data.gender
 
-        var fb_sender_id = data.fb_id
-
         // Send a greeting message
 
         self.sendGreetingMessages(index.sender, firstname)
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, function(err, client) {
-            if (err) console.log(error);
+            if (err) throw err;
             client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + fb_sender_id + ';')
+                .query('SELECT COUNT(*) FROM users WHERE fb_id =' + index.sender + ';')
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
                 });

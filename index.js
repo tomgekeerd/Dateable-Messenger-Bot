@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
             let postback = event.postback.payload
             switch (postback) {
                 case "getStarted":
-                    api.getUserInsights(sender, api.receivedUserInsights);
+                    api.getUserInsights(api.receivedUserInsights);
                 break;
 
                 case "startChat":
