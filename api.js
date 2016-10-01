@@ -28,7 +28,7 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 
 var self = module.exports = {
 
-    sendTextMessage: function(sender, text, q_replies, _callback) {
+    sendTextMessage: function(sender, text, q_replies, callback) {
         let messageData = {
             text: text
         }
@@ -51,6 +51,8 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else if (response.body.error) {
                 console.log('Error: ', response.body.error)
+            } else if (!error) {
+                callback()
             }
         })
     },
@@ -82,7 +84,8 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else {
                 var i = 0
-                var getStartedMessages = function(arr) {
+                getStartedMessages();
+                var getStartedMessages = function() {
                     if (i < data.getStarted.messages.length) {
                         switch (data.getStarted.method) {
                             case "send":
