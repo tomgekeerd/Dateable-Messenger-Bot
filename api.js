@@ -208,7 +208,7 @@ var self = module.exports = {
             client
                 .query('SELECT COUNT(*) FROM users WHERE fb_id=' + webhook.recipient_id + ';')
                 .on('row', function(row) {
-                    var response = JSON.stringify(row);
+                    var response = JSON.parse(JSON.stringify(row));
                     console.log(response.count)
                     console.log(response["count"])
 
