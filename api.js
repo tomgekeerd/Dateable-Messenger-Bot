@@ -209,7 +209,7 @@ var self = module.exports = {
                 .query('SELECT COUNT(*) FROM users WHERE fb_id=' + webhook.recipient_id + ';')
                 .on('row', function(row) {
                     var response = JSON.stringify(row);
-                    if (response.count == 0) {
+                    if (parseInt(response.count) == 0) {
                         console.log(response)
                         client
                             .query('INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, age, fb_id) VALUES (' + lastname + ', ' + firstname + ', 0, 1, "https://jemoeder.nl", 15, 872);' + webhook.recipient_id + ';')
