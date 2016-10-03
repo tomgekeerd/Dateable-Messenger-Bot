@@ -214,7 +214,7 @@ var self = module.exports = {
                             .query('INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, age, fb_id) VALUES (' + lastname + ', ' + firstname + ', 0, 1, "https://jemoeder.nl", 15, 872);' + webhook.recipient_id + ';')
                             .on('row', function(row) {
                                 var response = JSON.stringify(row);
-                            }
+                            })
                     } else {
 
                     }
