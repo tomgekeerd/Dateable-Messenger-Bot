@@ -209,7 +209,9 @@ var self = module.exports = {
                 gender = 1
             break
 
-            case ""
+            default:
+                gender = 2
+
         }
 
         // Send a greeting message
