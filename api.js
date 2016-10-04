@@ -99,7 +99,7 @@ var self = module.exports = {
         }
         sendMessages();
 
-    }
+    },
 
     startChat: function() {
 
