@@ -76,12 +76,10 @@
 	},
 
 	"buttonTemplate": {
-		"attachment":{
-      		"type":"template",
-      		"payload":{
-        		"template_type":"button",
-        		"text":""
-      		}
-    	}
+  		"type":"template",
+  		"payload":{
+    		"template_type":"button",
+    		"text":""
+  		}
 	}
 }

@@ -41,9 +41,12 @@ var self = module.exports = {
         if (q_replies != "") {
             messageData.quick_replies = q_replies
         } else if (buttons != "") {
+            messageData = {}
+
             let button = data.buttonTemplate
             button.text = text
             button.buttons = buttons
+            
             messageData.attachment = button
         }
 
