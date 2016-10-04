@@ -67,7 +67,7 @@ app.post('/webhook/', function (req, res) {
 
                 case "pickedGender":
 
-                    looking_for = payload.data;
+                    api.looking_for = payload.data;
                     let call = data.confirmGender
                     
                     api.sendClusterTextMessage(call, recipient_id, function() {
