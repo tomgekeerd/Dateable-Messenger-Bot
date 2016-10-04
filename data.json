@@ -20,26 +20,18 @@
 				{
         			"content_type":"text",
         			"title":"Female",
-        			"payload": "{
-        				\"method\": \"pickedGender\",
-        				\"data\": \"1\"
-        			}"
+        			"payload": "{ \"method\": \"pickedGender\", \"data\": \"1\" }"
+
       			},
       			{
      				"content_type":"text",
        	 			"title":"Male",
-        			"payload": "{
-        				\"method\": \"pickedGender\",
-        				\"data\": \"0\"
-        			}"
+        			"payload": "{ \"method\": \"pickedGender\", \"data\": \"0\" }"
       			},
       			{
      				"content_type":"text",
        	 			"title":"Both",
-        			"payload": "{
-        				\"method\": \"pickedGender\",
-        				\"data\": \"2\"
-        			}"
+        			"payload": "{ \"method\": \"pickedGender\", \"data\": \"2\" }"
       			}
 			]
 		},
