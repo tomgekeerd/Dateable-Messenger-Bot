@@ -69,13 +69,13 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGender":
 
                     looking_for = payloadData;
-                    let messageMethod = data.confirmGender.method 
-                    let messages = data.confirmGender 
+                    let call = data.confirmGender
+                    let messageMethod = call.method 
                     
-                    api.sendClusterTextMessage(messageMethod, messages, recipient_id, function() {
+                    api.sendClusterTextMessage(messageMethod, call, recipient_id, function() {
                         console.log('done');
                     })
-                    
+
                 break;
 
                 default:

@@ -63,19 +63,19 @@ var self = module.exports = {
         })
     },
 
-    sendClusterTextMessage: function(method, messages, recipient, callback) {
+    sendClusterTextMessage: function(method, call, recipient, callback) {
 
         var i = 0
         var sendMessages = function() {
-            if (i < method.messages.length) {
+            if (i < messages.length) {
                 switch (method) {
                     case "send":
-                        if (method.q_reply && method.q_reply[i] != "") {
-                            self.sendTextMessage(recipient, method.messages[i], method.q_reply[i], function() {
+                        if (call.q_reply && call.q_reply[i] != "") {
+                            self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], function() {
                                 sendMessages()
                             })
                         } else {
-                            self.sendTextMessage(recipient, method.messages[i], "", function() {
+                            self.sendTextMessage(recipient, call.messages[i], "", function() {
                                 sendMessages()
                             })
                         }
@@ -133,9 +133,10 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else {
 
-                let messageMethod = data.getStarted.method 
-                let messages = data.getStarted  
-                self.sendClusterTextMessage(messageMethod, messages, webhook.recipient_id, function() {
+                let call = data.getStarted
+                let messageMethod = call.method 
+
+                self.sendClusterTextMessage(messageMethod, call, webhook.recipient_id, function() {
                     console.log('done');
                 })
             }
