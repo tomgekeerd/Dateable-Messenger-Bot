@@ -63,6 +63,11 @@ var self = module.exports = {
         })
     },
 
+    startChat: function() {
+
+
+    },
+
     sendGreetingMessages: function(sender, name) {
         let messageData = {
             "attachment": {
@@ -200,18 +205,18 @@ var self = module.exports = {
         locale = data.locale
         timezone = data.timezone
         profile_pic = data.profile_pic
+
         switch(data.gender.lower) {
-            case "Male":
+            case 'male':
                 gender = 0
             break
 
-            case "Female":
+            case 'female':
                 gender = 1
             break
 
             default:
                 gender = 2
-
         }
 
         // Send a greeting message

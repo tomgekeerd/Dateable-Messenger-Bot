@@ -44,9 +44,11 @@ app.post('/webhook/', function (req, res) {
             }
             api.sendTextMessage(recipient_id, text.substring(0, 200))
         }
+
         if (event.postback) {
             let postback = event.postback.payload
             switch (postback) {
+
                 case "getStarted":
                     api.getUserInsights(api.receivedUserInsights);
                 break;
@@ -59,6 +61,15 @@ app.post('/webhook/', function (req, res) {
                     api.sendTextMessage(recipient_id, "You want help huh?");
                 break;
 
+                default:
+                    api.sendTextMessage(recipient_id, "A postback without understandance");
+            }
+            continue
+        }
+
+        if (event.payload) {
+            let payload = event.payload 
+            switch (payload) {
                 case "pickedGenderBoth":
                     api.sendTextMessage(recipient_id, "Selected gender: Both");
                 break;
@@ -70,11 +81,10 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGenderFemale":
                     api.sendTextMessage(recipient_id, "Selected gender: Female");
                 break;
-
+                
                 default:
-                    api.sendTextMessage(recipient_id, "A postback without understandance");
+                    console.log('default')
             }
-            continue
         }
     }
     res.sendStatus(200)
