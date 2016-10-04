@@ -32,7 +32,7 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 
 var self = module.exports = {
 
-    sendTextMessage: function(recipient, text, q_replies, callback) {
+    sendTextMessage: function(recipient, text, q_replies, buttons, callback) {
 
         let messageData = {
             text: text
@@ -40,6 +40,11 @@ var self = module.exports = {
 
         if (q_replies != "") {
             messageData.quick_replies = q_replies
+        } else if (buttons != "") {
+            let button = data.buttonTemplate
+            button.text = text
+            button.buttons = buttons
+            messageData.attachment = button
         }
 
         request({
@@ -74,7 +79,7 @@ var self = module.exports = {
                             self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], function() {
                                 sendMessages()
                             })
-                        } else {
+                        } else if (call.buttons && call.buttons[i] != "") {
                             self.sendTextMessage(recipient, call.messages[i], "", function() {
                                 sendMessages()
                             })
