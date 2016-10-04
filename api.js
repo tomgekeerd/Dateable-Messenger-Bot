@@ -132,37 +132,12 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                // var i = 0
-                // var getStartedMessages = function() {
-                //     if (i < data.getStarted.messages.length) {
-                //         switch (data.getStarted.method) {
-                //             case "send":
-                //                 if (data.getStarted.q_reply[i] != "") {
-                //                     self.sendTextMessage(recipient, data.getStarted.messages[i], data.getStarted.q_reply[i], function() {
-                //                         getStartedMessages()
-                //                     })
-                //                 } else {
-                //                     self.sendTextMessage(recipient, data.getStarted.messages[i], "", function() {
-                //                         getStartedMessages()
-                //                     })
-                //                 }
-                //             break
 
-                //             case "random":
-
-                //             break
-
-                //             case "pick-one":
-
-                //             break
-
-                //             default:
-                //                 console.log(data.getStarted.messages[i])
-                //         }
-                //         i++
-                //     }
-                // }
-                // getStartedMessages();
+                let messageMethod = data.getStarted.method 
+                let messages = data.getStarted  
+                self.sendClusterTextMessage(messageMethod, messages, webhook.recipient_id, function() {
+                    console.log('done');
+                })
             }
         })
     },
