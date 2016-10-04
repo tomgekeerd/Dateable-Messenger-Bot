@@ -76,10 +76,14 @@ var self = module.exports = {
                 switch (call.method) {
                     case "send":
                         if (call.q_reply && call.q_reply[i] != "") {
-                            self.sendTextMessage(recipient, call.messages[i], call.buttons[i], call.q_reply[i], function() {
+                            self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], "", function() {
                                 sendMessages()
                             })
                         } else if (call.buttons && call.buttons[i] != "") {
+                            self.sendTextMessage(recipient, call.messages[i], "", call.buttons[i], function() {
+                                sendMessages()
+                            })
+                        } else {
                             self.sendTextMessage(recipient, call.messages[i], "", "", function() {
                                 sendMessages()
                             })
