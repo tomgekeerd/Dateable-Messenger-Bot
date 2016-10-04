@@ -22,7 +22,7 @@
         			"title":"Female",
         			"payload": {
         				"method": "pickedGender",
-        				"data": 0
+        				"data": "1"
         			}
       			},
       			{
@@ -30,7 +30,7 @@
        	 			"title":"Male",
         			"payload": {
         				"method": "pickedGender",
-        				"data": 0
+        				"data": "0"
         			}
       			},
       			{
@@ -38,7 +38,7 @@
        	 			"title":"Both",
         			"payload": {
         				"method": "pickedGender",
-        				"data": 2
+        				"data": "2"
         			}
       			}
 			]
