@@ -191,7 +191,7 @@ var self = module.exports = {
 
     getUserInsights: function(callback) {
         request({
-            url: 'https://graph.facebook.com/v2.6/' + webhook.recipient_id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender,age_range',
+            url: 'https://graph.facebook.com/v2.6/' + webhook.recipient_id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
             qs: {access_token:token},
             method: 'GET',
             json: {
@@ -241,7 +241,7 @@ var self = module.exports = {
             console.log('Connected to postgres! Getting schemas...');
 
             client
-                .query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, age, fb_id) VALUES (${lastname}, ${firstname}, ${gender}, -1, ${profile_pic}, ${age});`)
+                .query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES (${lastname}, ${firstname}, ${gender}, -1, ${profile_pic}, ${webhook.recipient_id});`)
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
             });
