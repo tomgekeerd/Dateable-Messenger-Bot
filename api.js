@@ -16,7 +16,7 @@ exports.lastname = lastname
 var locale = "";
 exports.locale = locale
 
-var gender = "";
+var gender = -1;
 exports.gender = gender
 
 var profile_pic = "";
@@ -24,6 +24,9 @@ exports.profile_pic = profile_pic
 
 var timezone = "";
 exports.timezone = timezone
+
+var looking_for = -1;
+exports.looking_for = -1;
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
@@ -182,6 +185,7 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
+                console.log(body)
                 callback(body)
             }
         })
@@ -196,31 +200,22 @@ var self = module.exports = {
         locale = data.locale
         timezone = data.timezone
         profile_pic = data.profile_pic
-        gender = data.gender
+        switch(data.gender.lower) {
+            case "Male":
+                gender = 0
+            break
+
+            case "Female":
+                gender = 1
+            break
+
+            case ""
+        }
 
         // Send a greeting message
 
         self.sendGreetingMessages(webhook.recipient_id, firstname)
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, function(err, client) {
-            if (err) throw err;
-            client
-                .query('SELECT COUNT(*) FROM users WHERE fb_id=' + webhook.recipient_id + ';')
-                .on('row', function(row) {
-                    var response = JSON.parse(JSON.stringify(row));
-                    if (response.count == 0) {
-                        console.log(response)
-                        client
-                            .query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, age, fb_id) VALUES ('${lastname}', '${firstname}', 0, 1, 'https://jemoeder.nl', 15, ${webhook.recipient_id});`)
-                            .on('row', function(row) {
-                                var response = JSON.stringify(row);
-                            })
-                    } else {
-
-                    }
-                });
-        });
     }
 
 }
