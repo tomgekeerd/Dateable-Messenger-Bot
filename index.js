@@ -3,6 +3,7 @@
 const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
+const data = require('./data.json')
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
