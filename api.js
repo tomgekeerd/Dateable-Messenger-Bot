@@ -26,10 +26,10 @@ var timezone = "";
 exports.timezone = timezone
 
 var looking_for = -1;
-exports.looking_for = -1;
+exports.looking_for = looking_for;
 
-var age = -1;
-exports.age = -1;
+var age_range = "";
+exports.age_range = age_range;
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
@@ -191,7 +191,7 @@ var self = module.exports = {
 
     getUserInsights: function(callback) {
         request({
-            url: 'https://graph.facebook.com/v2.6/' + webhook.recipient_id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender,age',
+            url: 'https://graph.facebook.com/v2.6/' + webhook.recipient_id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender,age_range',
             qs: {access_token:token},
             method: 'GET',
             json: {
@@ -217,7 +217,8 @@ var self = module.exports = {
         timezone = data.timezone
         profile_pic = data.profile_pic
         age = data.age
-        switch(data.gender.toLowerCase()) {
+
+        switch (data.gender) {
             case 'male':
                 gender = 0
             break
