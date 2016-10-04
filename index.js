@@ -4,6 +4,7 @@ const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const data = require('./data.json')
+var pg = require('pg');
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
@@ -69,8 +70,20 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGender":
 
                     api.looking_for = payload.data;
+
+                    pg.defaults.ssl = true;
+                    pg.connect(process.env.DATABASE_URL, function(err, client) {
+                        if (err) throw err;
+                        console.log('Connected to postgres! Getting schemas...');
+
+                        client
+                            .query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`)
+                            .on('row', function(row) {
+                                console.log(JSON.stringify(row));
+                        });
+                    });
+
                     let call = data.confirmGender
-                    
                     api.sendClusterTextMessage(call, recipient_id, function() {
                         console.log('done');
                     })
@@ -80,9 +93,9 @@ app.post('/webhook/', function (req, res) {
                 case "showPrivacySettings":
 
                     if (payload.data == false) {
-                        
+
                     } else if (payload.data == true) {
-                        
+
                     }
 
                 break;
