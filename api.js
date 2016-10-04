@@ -137,7 +137,7 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-
+                console.log('like wtf')
                 let call = data.getStarted
                 self.sendClusterTextMessage(call, webhook.recipient_id, function() {
                     console.log('done');
