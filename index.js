@@ -77,6 +77,16 @@ app.post('/webhook/', function (req, res) {
 
                 break;
 
+                case "showPrivacySettings":
+
+                    if (payload.data == false) {
+                        
+                    } else if (payload.data == true) {
+                        
+                    }
+
+                break;
+
                 default:
                     console.log('default')
             }

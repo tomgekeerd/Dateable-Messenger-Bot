@@ -18,19 +18,19 @@
 			"1":[],
 			"2":[
 				{
-        			"content_type":"text",
-        			"title":"Female",
+        			"content_type": "text",
+        			"title": "Female",
         			"payload": "{ \"method\": \"pickedGender\", \"data\": \"1\" }"
 
       			},
       			{
-     				"content_type":"text",
-       	 			"title":"Male",
+     				"content_type": "text",
+       	 			"title": "Male",
         			"payload": "{ \"method\": \"pickedGender\", \"data\": \"0\" }"
       			},
       			{
-     				"content_type":"text",
-       	 			"title":"Both",
+     				"content_type": "text",
+       	 			"title": "Both",
         			"payload": "{ \"method\": \"pickedGender\", \"data\": \"2\" }"
       			}
 			]
@@ -54,14 +54,14 @@
 			"0":[],
 			"1":[
           		{
-            		"type":"web_url",
-            		"url":"https://petersapparel.parseapp.com",
-            		"title":"Show Website"
+            		"type": "postback",
+            		"title": "Yes",
+            		"payload": "{ \"method\": \"showPrivacySettings\", \"data\": true }"
           		},
           		{
-           			"type":"postback",
-            		"title":"Start Chatting",
-            		"payload":"USER_DEFINED_PAYLOAD"
+           			"type": "postback",
+            		"title": "No",
+            		"payload": "{ \"method\": \"showPrivacySettings\", \"data\": false }"
           		}
         	]
 		},
@@ -76,10 +76,73 @@
 	},
 
 	"buttonTemplate": {
-  		"type":"template",
-  		"payload":{
-    		"template_type":"button",
-    		"text":""
+  		"type": "template",
+  		"payload": {
+    		"template_type": "button",
+    		"text": ""
   		}
+	},
+
+	"privacySettings": [
+
+		{
+			"title": "Sharing your profile picture",
+            "image_url": "",
+            "subtitle": "",
+            "buttons": [
+            	{
+                	"type": "postback",
+                	"title": "",
+                	"payload": ""
+              	}
+            ]
+        },
+
+        {
+			"title": "Sharing your last name",
+            "subtitle": "",
+            "buttons": [
+            	{
+                	"type": "postback",
+                	"title": "",
+                	"payload": ""
+              	}
+            ]
+        },
+
+        {
+			"title": "Sharing your facebook profile",
+            "subtitle": "",
+            "buttons": [
+            	{
+                	"type": "postback",
+                	"title": "",
+                	"payload": ""
+              	}
+            ]
+        },
+
+        {
+			"title": "Sharing your age",
+            "subtitle": "",
+            "buttons": [
+            	{
+                	"type": "postback",
+                	"title": "",
+                	"payload": ""
+              	}
+            ]
+        }
+
+	],
+
+	"genericTemplate": {
+        "type": "template",
+        "payload": {
+            "template_type": "generic",
+            "elements": [{
+
+            }]
+        }
 	}
 }
