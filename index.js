@@ -70,9 +70,8 @@ app.post('/webhook/', function (req, res) {
 
                     looking_for = payloadData;
                     let call = data.confirmGender
-                    let messageMethod = call.method 
                     
-                    api.sendClusterTextMessage(messageMethod, call, recipient_id, function() {
+                    api.sendClusterTextMessage(call, recipient_id, function() {
                         console.log('done');
                     })
 

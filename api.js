@@ -63,12 +63,12 @@ var self = module.exports = {
         })
     },
 
-    sendClusterTextMessage: function(method, call, recipient, callback) {
+    sendClusterTextMessage: function(call, recipient, callback) {
 
         var i = 0
         var sendMessages = function() {
-            if (i < messages.length) {
-                switch (method) {
+            if (i < call.messages.length) {
+                switch (call.method) {
                     case "send":
                         if (call.q_reply && call.q_reply[i] != "") {
                             self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], function() {
@@ -134,9 +134,7 @@ var self = module.exports = {
             } else {
 
                 let call = data.getStarted
-                let messageMethod = call.method 
-
-                self.sendClusterTextMessage(messageMethod, call, webhook.recipient_id, function() {
+                self.sendClusterTextMessage(call, webhook.recipient_id, function() {
                     console.log('done');
                 })
             }
