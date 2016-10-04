@@ -20,17 +20,26 @@
 				{
         			"content_type":"text",
         			"title":"Female",
-        			"payload":"pickedGenderFemale"
+        			"payload": {
+        				"method": "pickedGender",
+        				"data": 0
+        			}
       			},
       			{
      				"content_type":"text",
        	 			"title":"Male",
-        			"payload":"pickedGenderMale"
+        			"payload": {
+        				"method": "pickedGender",
+        				"data": 0
+        			}
       			},
       			{
      				"content_type":"text",
        	 			"title":"Both",
-        			"payload":"pickedGenderBoth"
+        			"payload": {
+        				"method": "pickedGender",
+        				"data": 2
+        			}
       			}
 			]
 		},
@@ -43,6 +52,14 @@
 		],
 		"method": "send"
 	},
+
+	"confirmGender": {
+		"messages": [
+			"Great, you can always change settings later if you want. Press the menubutton 'Settings' or just ask me while you are not chatting with anyone.",
+			"Because your profile will be seen by others in your nabourhood, would like to change anything to your privacy settings?"
+		],
+		"method": "send"
+	}
 
 	"changeGender": {
 		"messages": [

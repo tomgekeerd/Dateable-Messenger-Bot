@@ -32,7 +32,7 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 
 var self = module.exports = {
 
-    sendTextMessage: function(sender, text, q_replies, callback) {
+    sendTextMessage: function(recipient, text, q_replies, callback) {
 
         let messageData = {
             text: text
@@ -47,7 +47,7 @@ var self = module.exports = {
             qs: {access_token:token},
             method: 'POST',
             json: {
-                recipient: {id:sender},
+                recipient: {id:recipient},
                 message: messageData,
             }
         }, function(error, response, body) {
@@ -63,12 +63,50 @@ var self = module.exports = {
         })
     },
 
+    sendClusterTextMessage: function(method, messages, recipient, callback) {
+
+        var i = 0
+        var sendMessages = function() {
+            if (i < method.messages.length) {
+                switch (method) {
+                    case "send":
+                        if (method.q_reply && method.q_reply[i] != "") {
+                            self.sendTextMessage(recipient, method.messages[i], method.q_reply[i], function() {
+                                sendMessages()
+                            })
+                        } else {
+                            self.sendTextMessage(recipient, method.messages[i], "", function() {
+                                sendMessages()
+                            })
+                        }
+                    break
+
+                    case "random":
+
+                    break
+
+                    case "pick-one":
+
+                    break
+
+                    default:
+                        console.log(method.messages[i])
+                }
+                i++
+            } else {
+                callback();
+            }
+        }
+        sendMessages();
+
+    }
+
     startChat: function() {
 
 
     },
 
-    sendGreetingMessages: function(sender, name) {
+    sendGreetingMessages: function(recipient, name) {
         let messageData = {
             "attachment": {
                 "type": "template",
@@ -87,49 +125,49 @@ var self = module.exports = {
             qs: {access_token:token},
             method: 'POST',
             json: {
-                recipient: {id:sender},
+                recipient: {id:recipient},
                 message: messageData,
             }
         }, function(error, response, body) {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                var i = 0
-                var getStartedMessages = function() {
-                    if (i < data.getStarted.messages.length) {
-                        switch (data.getStarted.method) {
-                            case "send":
-                                if (data.getStarted.q_reply[i] != "") {
-                                    self.sendTextMessage(sender, data.getStarted.messages[i], data.getStarted.q_reply[i], function() {
-                                        getStartedMessages()
-                                    })
-                                } else {
-                                    self.sendTextMessage(sender, data.getStarted.messages[i], "", function() {
-                                        getStartedMessages()
-                                    })
-                                }
-                            break
+                // var i = 0
+                // var getStartedMessages = function() {
+                //     if (i < data.getStarted.messages.length) {
+                //         switch (data.getStarted.method) {
+                //             case "send":
+                //                 if (data.getStarted.q_reply[i] != "") {
+                //                     self.sendTextMessage(recipient, data.getStarted.messages[i], data.getStarted.q_reply[i], function() {
+                //                         getStartedMessages()
+                //                     })
+                //                 } else {
+                //                     self.sendTextMessage(recipient, data.getStarted.messages[i], "", function() {
+                //                         getStartedMessages()
+                //                     })
+                //                 }
+                //             break
 
-                            case "random":
+                //             case "random":
 
-                            break
+                //             break
 
-                            case "pick-one":
+                //             case "pick-one":
 
-                            break
+                //             break
 
-                            default:
-                                console.log(data.getStarted.messages[i])
-                        }
-                        i++
-                    }
-                }
-                getStartedMessages();
+                //             default:
+                //                 console.log(data.getStarted.messages[i])
+                //         }
+                //         i++
+                //     }
+                // }
+                // getStartedMessages();
             }
         })
     },
 
-    sendGenericMessage: function(sender) {
+    sendGenericMessage: function(recipient) {
         let messageData = {
             "attachment": {
                 "type": "template",
@@ -166,7 +204,7 @@ var self = module.exports = {
             qs: {access_token:token},
             method: 'POST',
             json: {
-                recipient: {id:sender},
+                recipient: {id:recipient},
                 message: messageData,
             }
         }, function(error, response, body) {

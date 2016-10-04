@@ -37,15 +37,6 @@ app.post('/webhook/', function (req, res) {
         let recipient_id = event.sender.id
         exports.recipient_id = recipient_id
 
-        if (event.message && event.message.text) {
-            let text = event.message.text
-            if (text === 'Generic') {
-                api.sendGenericMessage(recipient_id)
-                continue
-            }
-            api.sendTextMessage(recipient_id, text.substring(0, 200))
-        }
-
         if (event.postback) {
             let postback = event.postback.payload
             switch (postback) {
@@ -69,23 +60,28 @@ app.post('/webhook/', function (req, res) {
         }
 
         if (event.message.quick_reply.payload) {
-            let payload = event.message.quick_reply.payload
-            switch (payload) {
-                case "pickedGenderBoth":
-                    api.sendTextMessage(recipient_id, "Selected gender: Both");
-                break;
 
-                case "pickedGenderMale":
-                    api.sendTextMessage(recipient_id, "Selected gender: Male");
-                break;
+            let payloadMethod = event.message.quick_reply.payload.method
+            let payloadData = event.message.quick_reply.payload.data
 
-                case "pickedGenderFemale":
-                    api.sendTextMessage(recipient_id, "Selected gender: Female");
+            switch (payloadMethod) {
+
+                case "pickedGender":
+
+                    looking_for = payloadData;
+                    let messageMethod = data.confirmGender.method 
+                    let messages = data.confirmGender 
+                    
+                    api.sendClusterTextMessage(messageMethod, messages, recipient_id, function() {
+                        console.log('done');
+                    })
+                    
                 break;
 
                 default:
                     console.log('default')
             }
+
         }
     }
     res.sendStatus(200)
