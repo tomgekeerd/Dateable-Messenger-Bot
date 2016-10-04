@@ -59,7 +59,7 @@
 			"Because your profile will be seen by others in your nabourhood, would like to change anything to your privacy settings?"
 		],
 		"method": "send"
-	}
+	},
 
 	"changeGender": {
 		"messages": [
