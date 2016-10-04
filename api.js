@@ -44,9 +44,9 @@ var self = module.exports = {
             messageData = {}
 
             let button = data.buttonTemplate
-            button.text = text
-            button.buttons = buttons
-            
+            button.payload.text = text
+            button.payload.buttons = buttons
+
             messageData.attachment = button
         }
 
