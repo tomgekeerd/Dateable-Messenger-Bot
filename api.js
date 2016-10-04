@@ -216,7 +216,7 @@ var self = module.exports = {
         locale = data.locale
         timezone = data.timezone
         profile_pic = data.profile_pic
-        age = data.age
+        // age = data.age
 
         switch (data.gender) {
             case 'male':
