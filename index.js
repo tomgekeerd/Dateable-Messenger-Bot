@@ -31,7 +31,7 @@ app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 
-        let event = JSON.parse(req.body.entry[0].messaging[i])
+        let event = req.body.entry[0].messaging[i]
         console.log(event)
 
         let recipient_id = event.sender.id
@@ -61,14 +61,13 @@ app.post('/webhook/', function (req, res) {
 
         if (event.message.quick_reply.payload) {
 
-            let payloadMethod = event.message.quick_reply.payload.method
-            let payloadData = event.message.quick_reply.payload.data
+            let payload = JSON.parse(event.message.quick_reply.paload)
 
-            switch (payloadMethod) {
+            switch (payload.method) {
 
                 case "pickedGender":
 
-                    looking_for = payloadData;
+                    looking_for = payload.data;
                     let call = data.confirmGender
                     
                     api.sendClusterTextMessage(call, recipient_id, function() {
