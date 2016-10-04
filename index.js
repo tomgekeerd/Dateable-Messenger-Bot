@@ -32,7 +32,8 @@ app.post('/webhook/', function (req, res) {
     for (let i = 0; i < messaging_events.length; i++) {
 
         let event = req.body.entry[0].messaging[i]
-
+        console.log(event)
+        
         let recipient_id = event.sender.id
         exports.recipient_id = recipient_id
 
@@ -81,7 +82,7 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGenderFemale":
                     api.sendTextMessage(recipient_id, "Selected gender: Female");
                 break;
-                
+
                 default:
                     console.log('default')
             }
