@@ -206,7 +206,6 @@ var self = module.exports = {
                 console.log('Error: ', response.body.error)
             }
         })
-        
     },
 
     getUserInsights: function(callback) {

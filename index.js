@@ -64,7 +64,7 @@ app.post('/webhook/', function (req, res) {
 
         if (event.message.quick_replies.payload) {
 
-            let payload = JSON.parse(event.message.quick_replies.payload)
+            let payload = JSON.parse(event.message.quick_reply.payload)
 
             switch (payload.method) {
 
