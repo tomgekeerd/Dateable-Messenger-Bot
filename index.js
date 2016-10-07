@@ -4,6 +4,7 @@ const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const data = require('./data.json')
+var pg = require('pg');
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
@@ -70,6 +71,25 @@ app.post('/webhook/', function (req, res) {
 
                     api.looking_for = payload.data;
                     let call = data.confirmGender
+
+                    const results = [];
+
+                    pg.defaults.ssl = true;
+                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                        if(err) {
+                            done();
+                            console.log(err);
+                        }
+
+                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
+                        query.on('row', (row) => {
+                            results.push(row);
+                        });
+
+                        query.on('end', () => {
+                            done();
+                        });
+                    });
                     
                     api.sendClusterTextMessage(call, recipient_id, function() {
                         console.log('done');
