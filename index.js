@@ -4,6 +4,7 @@ const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const data = require('./data.json')
+var pg = require('pg');
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
@@ -30,11 +31,10 @@ app.get('/webhook/', function (req, res) {
 // to post data
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
-
     for (let i = 0; i < messaging_events.length; i++) {
 
         let event = req.body.entry[0].messaging[i]
-        console.log("This is an event" + event)
+        console.log(event)
 
         let recipient_id = event.sender.id
         exports.recipient_id = recipient_id
@@ -61,7 +61,7 @@ app.post('/webhook/', function (req, res) {
             continue
         }
 
-        if (event.message.quick_replies.payload) {
+        if (event.message.quick_reply.payload) {
 
             let payload = JSON.parse(event.message.quick_reply.payload)
 
@@ -70,35 +70,20 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGender":
 
                     api.looking_for = payload.data;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-                    // const results = [];
-                    // pg.defaults.ssl = true;
-                    // pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                    //     console.log("klaar!");
-                    //     if(err) {
-                    //         done();
-                    //         console.log(err);
-                    //     }
+                    pg.defaults.ssl = true;
+                    pg.connect(process.env.DATABASE_URL, function(err, client) {
+                        if (err) throw err;
+                        console.log('Connected to postgres! Getting schemas...');
 
-                    //     const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
-                    //     query.on('row', (row) => {
-                    //         results.push(row);
-                    //         console.log(row);
-                    //     });
+                        client
+                            .query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`)
+                            .on('row', function(row) {
+                                console.log(JSON.stringify(row));
+                        });
+                    });
 
-                    //     query.on('end', () => {
-                    //         done();
-                    //     });
-                    // });
-
-=======
->>>>>>> parent of e10ef86... UPDATING
-=======
->>>>>>> parent of e10ef86... UPDATING
                     let call = data.confirmGender
-                    
                     api.sendClusterTextMessage(call, recipient_id, function() {
                         console.log('done');
                     })
@@ -108,9 +93,9 @@ app.post('/webhook/', function (req, res) {
                 case "showPrivacySettings":
 
                     if (payload.data == false) {
-                        
+
                     } else if (payload.data == true) {
-                        
+
                     }
 
                 break;

@@ -132,18 +132,6 @@
                 	"payload": ""
               	}
             ]
-        },
-
-        {
-        	"title": "Sharing your location",
-        	"subtitle": "",
-            "buttons": [
-            	{
-                	"type": "postback",
-                	"title": "",
-                	"payload": ""
-              	}
-            ]
         }
 
 	],
