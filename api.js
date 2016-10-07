@@ -55,8 +55,6 @@ var self = module.exports = {
             messageData.attachment = button
         }
 
-        console.log(messageData)
-
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token:token},
@@ -151,7 +149,6 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                console.log('like wtf')
                 let call = data.getStarted
                 self.sendClusterTextMessage(call, webhook.recipient_id, function() {
                     console.log('done');
