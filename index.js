@@ -57,7 +57,7 @@ app.post('/webhook/', function (req, res) {
 
                 case "showPrivacySettings":
 
-                    if (payload.data == true) {
+                    if (postback.data == true) {
                         // TODO
                     } else {
 
