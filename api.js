@@ -31,6 +31,8 @@ exports.looking_for = looking_for;
 var age_range = "";
 exports.age_range = age_range;
 
+var privacy_dict = {};
+
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
 var self = module.exports = {
@@ -162,6 +164,26 @@ var self = module.exports = {
 
         let messageData = data.genericTemplate
         let privacys = data.privacySettings
+
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, function(err, client) {
+            if (err) throw err;
+            console.log('Connected to postgres! Getting schemas...');
+
+            client
+                .query(`SELECT * FROM privacy_settings WHERE fb_id = ${recipient_id}`)
+                .on('row', function(row) {
+                    callbackData = JSON.stringify(row);
+
+                    privacy_dict.profile_pic = row.profile_pic
+                    privacy_dict.full_name = row.full_name
+                    privacy_dict.fbprofile = row.fbprofile
+                    privacy_dict.age = row.age
+                    privacy_dict.location = row.location
+
+                    console.log(privacy_dict);
+            });
+        });
 
         for (var i = privacys.length - 1; i >= 0; i--) {
 
