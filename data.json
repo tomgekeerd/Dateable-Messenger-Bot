@@ -45,23 +45,23 @@
 		"method": "send"
 	},
 
-	"confirmGender": {
+	"confirmPrivacySettings": {
 		"messages": [
-			"Great, you can always change settings later if you want. Press the 'Settings' button in the menu or just ask me while you are not chatting with anyone.",
+			"Great, you can always change these settings later if you want. Press the 'Settings' button in the menu or just ask me while you are not chatting with anyone.",
 			"Because your profile will be seen by others in your nabourhood, would like to change anything to your privacy settings?"
 		],
 		"buttons": {
 			"0":[],
 			"1":[
           		{
-            		"type":"web_url",
-            		"url":"https://petersapparel.parseapp.com",
-            		"title":"Show Website"
+            		"type":"postback",
+            		"title":"Yes",
+        			"payload": "{ \"method\": \"showPrivacySettings\", \"data\": true }"
           		},
           		{
            			"type":"postback",
-            		"title":"Start Chatting",
-            		"payload":"USER_DEFINED_PAYLOAD"
+            		"title":"No",
+        			"payload": "{ \"method\": \"showPrivacySettings\", \"data\": false }"
           		}
         	]
 		},

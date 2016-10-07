@@ -259,10 +259,8 @@ var self = module.exports = {
             const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
             countQuery.on('row', (row) => {
                 if (row.count == 0) {
-                    const insertQuery = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
-                    insertQuery.on('row', (row) => {
-                        results.push(row);
-                    });
+                    const insertDetailsQuery = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
+                    const insertPrivacySettings = client.query(`INSERT INTO privacy_settings (fb_id, full_name, fbprofile, age, location) VALUES ('${webhook.recipient_id}', 1, 1, 1, 1`);
                 }
             });
 

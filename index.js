@@ -70,7 +70,7 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGender":
 
                     api.looking_for = payload.data;
-                    let call = data.confirmGender
+                    let call = data.confirmPrivacySettings
 
                     const results = [];
 
@@ -94,6 +94,12 @@ app.post('/webhook/', function (req, res) {
                     api.sendClusterTextMessage(call, recipient_id, function() {
                         console.log('done');
                     })
+
+                break;
+
+                case "showPrivacySettings":
+
+                    
 
                 break;
 
