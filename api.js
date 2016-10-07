@@ -87,6 +87,7 @@ var self = module.exports = {
                             self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], "", function() {
                                 sendMessages()
                             })
+                    
                         } else if (call.buttons && call.buttons[i] != "") {
                             self.sendTextMessage(recipient, call.messages[i], "", call.buttons[i], function() {
                                 sendMessages()
