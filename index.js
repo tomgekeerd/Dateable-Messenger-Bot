@@ -78,7 +78,6 @@ app.post('/webhook/', function (req, res) {
                         if(err) {
                             done();
                             console.log(err);
-                            return res.status(500).json({success: false, data: err});
                         }
 
                         const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
@@ -88,7 +87,6 @@ app.post('/webhook/', function (req, res) {
 
                         query.on('end', () => {
                             done();
-                            return res.json(results);
                         });
                     });
 

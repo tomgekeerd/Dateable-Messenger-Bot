@@ -265,7 +265,6 @@ var self = module.exports = {
             if(err) {
                 done();
                 console.log(err);
-                return res.status(500).json({success: false, data: err});
             }
 
             const query = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
@@ -275,9 +274,7 @@ var self = module.exports = {
 
             query.on('end', () => {
                 done();
-                return res.json(results);
             });
-            
         });
 
     }
