@@ -80,7 +80,6 @@ app.post('/webhook/', function (req, res) {
                             .query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`)
                             .on('row', function(row) {
                                 console.log(JSON.stringify(row));
-                            }
                             .on('end', () => { 
                                 client.end();
                         });
