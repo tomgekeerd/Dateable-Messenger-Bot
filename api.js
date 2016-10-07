@@ -258,17 +258,24 @@ var self = module.exports = {
 
         self.sendGreetingMessages(webhook.recipient_id, firstname)
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, function(err, client) {
-            if (err) throw err;
-            console.log('Connected to postgres! Getting schemas...');
+        const results = [];
 
-            client
-                .query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`)
-                .on('row', function(row) {
-                    console.log(JSON.stringify(row));
-                .on('end', () => { 
-                    client.end();
+        pg.defaults.ssl = true;
+        pg.connect(connectionString, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
+                return res.status(500).json({success: false, data: err});
+            }
+
+            const query = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
+            query.on('row', (row) => {
+                results.push(row);
+            });
+
+            query.on('end', () => {
+                done();
+                return res.json(results);
             });
         });
 
