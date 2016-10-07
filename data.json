@@ -87,7 +87,7 @@
         			"payload": "{ \"method\": \"startChat\" }"
           		}
         	]
-		}
+		},
 		"method": "send"
 	},
 
