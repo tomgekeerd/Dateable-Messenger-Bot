@@ -4,7 +4,6 @@ const api = require("./api.js");
 const express = require('express')
 const bodyParser = require('body-parser')
 const data = require('./data.json')
-var pg = require('pg');
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
@@ -71,6 +70,7 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGender":
 
                     api.looking_for = payload.data;
+<<<<<<< HEAD
 
                     // const results = [];
                     // pg.defaults.ssl = true;
@@ -92,7 +92,10 @@ app.post('/webhook/', function (req, res) {
                     //     });
                     // });
 
+=======
+>>>>>>> parent of e10ef86... UPDATING
                     let call = data.confirmGender
+                    
                     api.sendClusterTextMessage(call, recipient_id, function() {
                         console.log('done');
                     })
@@ -102,9 +105,9 @@ app.post('/webhook/', function (req, res) {
                 case "showPrivacySettings":
 
                     if (payload.data == false) {
-
+                        
                     } else if (payload.data == true) {
-
+                        
                     }
 
                 break;
