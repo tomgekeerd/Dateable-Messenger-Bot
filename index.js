@@ -71,17 +71,24 @@ app.post('/webhook/', function (req, res) {
 
                     api.looking_for = payload.data;
 
+                    const results = [];
                     pg.defaults.ssl = true;
-                    pg.connect(process.env.DATABASE_URL, function(err, client) {
-                        if (err) throw err;
-                        console.log('Connected to postgres! Getting schemas...');
+                    pg.connect(connectionString, (err, client, done) => {
 
-                        client
-                            .query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`)
-                            .on('row', function(row) {
-                                console.log(JSON.stringify(row));
-                            .on('end', () => { 
-                                client.end();
+                        if(err) {
+                            done();
+                            console.log(err);
+                            return res.status(500).json({success: false, data: err});
+                        }
+
+                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
+                        query.on('row', (row) => {
+                            results.push(row);
+                        });
+
+                        query.on('end', () => {
+                            done();
+                            return res.json(results);
                         });
                     });
 
