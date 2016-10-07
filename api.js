@@ -261,7 +261,7 @@ var self = module.exports = {
         const results = [];
 
         pg.defaults.ssl = true;
-        pg.connect(connectionString, (err, client, done) => {
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             if(err) {
                 done();
                 console.log(err);

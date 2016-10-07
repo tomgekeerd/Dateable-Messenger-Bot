@@ -73,7 +73,7 @@ app.post('/webhook/', function (req, res) {
 
                     const results = [];
                     pg.defaults.ssl = true;
-                    pg.connect(connectionString, (err, client, done) => {
+                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                         if(err) {
                             done();
