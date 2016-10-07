@@ -71,6 +71,7 @@ app.post('/webhook/', function (req, res) {
 
                     api.looking_for = payload.data;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                     // const results = [];
                     // pg.defaults.ssl = true;
@@ -92,6 +93,8 @@ app.post('/webhook/', function (req, res) {
                     //     });
                     // });
 
+=======
+>>>>>>> parent of e10ef86... UPDATING
 =======
 >>>>>>> parent of e10ef86... UPDATING
                     let call = data.confirmGender
