@@ -256,7 +256,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const countQuery = client.query(`COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
+            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
             countQuery.on('row', (row) => {
                 if (row.count == 0) {
                     const insertQuery = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
@@ -265,7 +265,7 @@ var self = module.exports = {
                     });
                 }
             });
-            
+
         });
 
     }
