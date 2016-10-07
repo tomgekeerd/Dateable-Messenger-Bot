@@ -41,7 +41,7 @@ app.post('/webhook/', function (req, res) {
 
         if (event.postback) {
             let postback = event.postback.payload
-            switch (postback) {
+            switch (postback.method) {
 
                 case "getStarted":
                     api.getUserInsights(api.receivedUserInsights);
@@ -68,7 +68,7 @@ app.post('/webhook/', function (req, res) {
                     }
 
                 break;
-                
+
                 default:
                     api.sendTextMessage(recipient_id, "A postback without understandance");
             }
