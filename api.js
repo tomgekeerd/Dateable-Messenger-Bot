@@ -277,6 +277,7 @@ var self = module.exports = {
                 done();
                 return res.json(results);
             });
+            
         });
 
     }
