@@ -267,6 +267,8 @@ var self = module.exports = {
                 .query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`)
                 .on('row', function(row) {
                     console.log(JSON.stringify(row));
+                .on('end', () => { 
+                    client.end();
             });
         });
 
