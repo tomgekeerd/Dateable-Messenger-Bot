@@ -232,7 +232,7 @@ var self = module.exports = {
         timezone = data.timezone
         profile_pic = data.profile_pic
 
-        switch(data.gender.lower) {
+        switch(data.gender) {
             case 'male':
                 gender = 0
             break
@@ -249,8 +249,6 @@ var self = module.exports = {
 
         self.sendGreetingMessages(webhook.recipient_id, firstname)
 
-        const results = [];
-
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             if(err) {
@@ -258,10 +256,16 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const query = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
-            query.on('row', (row) => {
-                results.push(row);
+            const countQuery = client.query(`COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
+            countQuery.on('row', (row) => {
+                if (row.count == 0) {
+                    const query = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
+                    query.on('row', (row) => {
+                        results.push(row);
+                    });
+                }
             });
+            
 
             query.on('end', () => {
                 done();
