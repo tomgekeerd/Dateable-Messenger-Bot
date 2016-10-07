@@ -40,7 +40,7 @@ app.post('/webhook/', function (req, res) {
         exports.recipient_id = recipient_id
 
         if (event.postback) {
-            let postback = event.postback.payload
+            let postback = JSON.parse(event.postback.payload)
             switch (postback.method) {
 
                 case "getStarted":
