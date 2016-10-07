@@ -99,7 +99,15 @@ app.post('/webhook/', function (req, res) {
 
                 case "showPrivacySettings":
 
-                    
+                    if (payload.data == true) {
+                        // TODO
+                    } else {
+
+                        let call = data.suggestStartChat
+                        api.sendClusterTextMessage(call, recipient_id, function() {
+                            console.log("Done")
+                        })
+                    }
 
                 break;
 

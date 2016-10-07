@@ -75,6 +75,22 @@
 		"method": "send"
 	},
 
+	"suggestStartChat": {
+		"messages": [
+			"OK! You are all set up, great! You are now able to start looking for other people around you. If you are ready for it, tap the button to start your first chat!"
+		],
+		"buttons": {
+			"0":[
+          		{
+            		"type":"postback",
+            		"title":"Start chat",
+        			"payload": "{ \"method\": \"startChat\" }"
+          		}
+        	]
+		}
+		"method": "send"
+	},
+
 	"buttonTemplate": {
   		"type":"template",
   		"payload":{
