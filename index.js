@@ -74,7 +74,7 @@ app.post('/webhook/', function (req, res) {
                     const results = [];
                     pg.defaults.ssl = true;
                     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-
+                        console.log("klaar!");
                         if(err) {
                             done();
                             console.log(err);
@@ -83,6 +83,7 @@ app.post('/webhook/', function (req, res) {
                         const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
                         query.on('row', (row) => {
                             results.push(row);
+                            console.log(row);
                         });
 
                         query.on('end', () => {
