@@ -26,7 +26,12 @@ var timezone = "";
 exports.timezone = timezone
 
 var looking_for = -1;
-exports.looking_for = -1;
+exports.looking_for = looking_for;
+
+var age_range = "";
+exports.age_range = age_range;
+
+var privacy_dict = {};
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
@@ -155,38 +160,40 @@ var self = module.exports = {
         })
     },
 
-    sendGenericMessage: function(recipient) {
-        let messageData = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "First card",
-                        "subtitle": "Element #1 of an hscroll",
-                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                        "buttons": [{
-                            "type": "web_url",
-                            "url": "https://www.messenger.com",
-                            "title": "web url"
-                        }, {
-                            "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for first element in a generic bubble",
-                        }],
-                    }, {
-                        "title": "Second card",
-                        "subtitle": "Element #2 of an hscroll",
-                        "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                        "buttons": [{
-                            "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for second element in a generic bubble",
-                        }],
-                    }]
-                }
+    sendPrivacySettings: function(recipient) {
+
+        let messageData = data.genericTemplate
+        let privacys = data.privacySettings
+
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, function(err, client) {
+            if (err) throw err;
+            console.log('Connected to postgres! Getting schemas...');
+
+            client
+                .query(`SELECT * FROM privacy_settings WHERE fb_id = ${recipient_id}`)
+                .on('row', function(row) {
+                    callbackData = JSON.stringify(row);
+
+                    privacy_dict.profile_pic = row.profile_pic
+                    privacy_dict.full_name = row.full_name
+                    privacy_dict.fbprofile = row.fbprofile
+                    privacy_dict.age = row.age
+                    privacy_dict.location = row.location
+
+                    console.log(privacy_dict);
+            });
+        });
+
+        for (var i = privacys.length - 1; i >= 0; i--) {
+
+            if (privacys[i].image_url) {
+                privacys[i].image_url = profile_pic
             }
+
+            messageData.elements[i] = privacys[i]
         }
+            
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token:token},
@@ -202,6 +209,7 @@ var self = module.exports = {
                 console.log('Error: ', response.body.error)
             }
         })
+        
     },
 
     getUserInsights: function(callback) {
@@ -231,8 +239,9 @@ var self = module.exports = {
         locale = data.locale
         timezone = data.timezone
         profile_pic = data.profile_pic
+        // age = data.age
 
-        switch(data.gender.lower) {
+        switch (data.gender) {
             case 'male':
                 gender = 0
             break
@@ -248,6 +257,25 @@ var self = module.exports = {
         // Send a greeting message
 
         self.sendGreetingMessages(webhook.recipient_id, firstname)
+
+        const results = [];
+
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
+            }
+
+            const query = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
+            query.on('row', (row) => {
+                results.push(row);
+            });
+
+            query.on('end', () => {
+                done();
+            });
+        });
 
     }
 
