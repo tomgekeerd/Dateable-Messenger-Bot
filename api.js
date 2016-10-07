@@ -260,7 +260,7 @@ var self = module.exports = {
             countQuery.on('row', (row) => {
                 if (row.count == 0) {
                     client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
-                    client.query(`INSERT INTO privacy_settings (fb_id, full_name, fbprofile, age, location, profile_pic) VALUES (${webhook.recipient_id}, 1, 1, 1, 1, 1`);
+                    client.query(`INSERT INTO privacy_settings (fb_id, full_name, fbprofile, age, location, profile_pic) VALUES (${webhook.recipient_id}, 1, 1, 1, 1, 1);`);
                 }
             });
 
