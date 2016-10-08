@@ -1,6 +1,6 @@
 'use strict'
 
-const api = require("./api.js");
+const api = require('./api.js');
 const express = require('express')
 const bodyParser = require('body-parser')
 const data = require('./data.json')
@@ -30,6 +30,7 @@ app.get('/webhook/', function (req, res) {
 
 // to post data
 app.post('/webhook/', function (req, res) {
+    console.log(req);
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 
