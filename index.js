@@ -73,8 +73,10 @@ app.post('/webhook/', function (req, res) {
                     api.sendTextMessage(recipient_id, "A postback without understandance");
             }
             continue
-            
-        } else if (event.message.quick_reply.payload) {
+
+        } 
+
+        if (event.message.quick_reply.payload) {
 
             let payload = JSON.parse(event.message.quick_reply.payload)
 
@@ -106,9 +108,10 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
-        } else if (event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+        } 
 
-            var latDone = 0;
+        if (event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+
             let payload = JSON.parse(event.message.attachments[0].payload)
 
             api.loc_latitude = payload.coordinates.lat
