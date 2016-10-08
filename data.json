@@ -45,7 +45,23 @@
 		"method": "send"
 	},
 
-	"confirmPrivacySettings": {
+	"confirmGender": {
+		"messages": [
+			"Also",
+			"Because your profile will be seen by others in your nabourhood, would like to change anything to your privacy settings?"
+		],
+		
+    	"q_reply": {
+			"0":[
+				{
+        			"content_type":"location"
+      			}
+			]
+		},
+ 		"method": "send"
+	},
+
+	"confirmLocation": {
 		"messages": [
 			"Great, you can always change these settings later if you want. Press the 'Settings' button in the menu or just ask me while you are not chatting with anyone.",
 			"Because your profile will be seen by others in your nabourhood, would like to change anything to your privacy settings?"

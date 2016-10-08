@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
-                    api.sendTextMessage(recipient_id, "Let's start a chat");
+                    
                 break;
 
                 case "help":
