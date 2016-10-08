@@ -74,9 +74,7 @@ app.post('/webhook/', function (req, res) {
             }
             continue
 
-        } 
-
-        if (event.message.quick_reply.payload) {
+        } else if (event.message.quick_reply.payload) {
 
             let payload = JSON.parse(event.message.quick_reply.payload)
 
@@ -108,9 +106,7 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
-        } 
-
-        if (event.message.attachments[0].payload.coordinates.lat) {
+        } else if (event.message.attachments[0].payload.coordinates.lat) {
 
             let payload = JSON.parse(event.message.attachments[0].payload)
 
