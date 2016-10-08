@@ -124,8 +124,8 @@ app.post('/webhook/', function (req, res) {
                     console.log(err);
                 }
 
-                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id}`);
-                client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id}`);
+                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id};`);
+                client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id};`);
 
             });
         }
