@@ -1,6 +1,6 @@
 'use strict'
 
-const api = require("./api.js");
+const api = require('./api.js');
 const express = require('express')
 const bodyParser = require('body-parser')
 const data = require('./data.json')
@@ -30,6 +30,7 @@ app.get('/webhook/', function (req, res) {
 
 // to post data
 app.post('/webhook/', function (req, res) {
+    console.log(req);
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 
@@ -48,7 +49,7 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
-                    
+
                 break;
 
                 case "help":
@@ -86,8 +87,6 @@ app.post('/webhook/', function (req, res) {
                     api.looking_for = payload.data;
                     let call = data.confirmGender
 
-                    const results = [];
-
                     pg.defaults.ssl = true;
                     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         if(err) {
@@ -95,14 +94,8 @@ app.post('/webhook/', function (req, res) {
                             console.log(err);
                         }
 
-                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
-                        query.on('row', (row) => {
-                            results.push(row);
-                        });
-
-                        query.on('end', () => {
-                            done();
-                        });
+                        client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
+            
                     });
                     
                     api.sendClusterTextMessage(call, recipient_id, function() {
@@ -115,6 +108,27 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
+        }
+
+        if (event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+
+            var latDone = 0;
+            let payload = JSON.parse(event.message.quick_reply.payload)
+
+            api.loc_latitude = payload.coordinates.lat
+            api.loc_longitude = payload.coordinates.long
+
+            pg.defaults.ssl = true;
+            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                if(err) {
+                    done();
+                    console.log(err);
+                }
+
+                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id};`);
+                client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id};`);
+
+            });
         }
     }
     res.sendStatus(200)
