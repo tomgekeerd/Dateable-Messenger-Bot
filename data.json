@@ -47,13 +47,11 @@
 
 	"confirmGender": {
 		"messages": [
-			"Also",
-			"Because your profile will be seen by others in your nabourhood, would like to change anything to your privacy settings?"
+			"Also, to find others in your nabourhood, would you please share your location?"
 		],
 		
     	"q_reply": {
-    		"0":[],
-			"1":[
+			"0":[
 				{
         			"content_type":"location"
       			}

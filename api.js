@@ -28,6 +28,12 @@ exports.timezone = timezone
 var looking_for = -1;
 exports.looking_for = -1;
 
+var loc_latitude = -1;
+exports.loc_latitude = -1;
+
+var loc_longitude = -1;
+exports.loc_longitude = -1;
+
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
 var self = module.exports = {
@@ -259,7 +265,7 @@ var self = module.exports = {
             const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
             countQuery.on('row', (row) => {
                 if (row.count == 0) {
-                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id});`);
+                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id}, -1, -1);`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, fbprofile, age, location, profile_pic) VALUES (${webhook.recipient_id}, 1, 1, 1, 1, 1);`);
                 }
             });

@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
-                    
+
                 break;
 
                 case "help":
@@ -86,8 +86,6 @@ app.post('/webhook/', function (req, res) {
                     api.looking_for = payload.data;
                     let call = data.confirmGender
 
-                    const results = [];
-
                     pg.defaults.ssl = true;
                     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         if(err) {
@@ -95,11 +93,8 @@ app.post('/webhook/', function (req, res) {
                             console.log(err);
                         }
 
-                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
-                        query.on('row', (row) => {
-                            results.push(row);
-                        });
-
+                        client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
+            
                         query.on('end', () => {
                             done();
                         });
@@ -115,6 +110,28 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
+        }
+
+        if (event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+
+            api.loc_latitude = event.message.attachments[0].payload.coordinates.lat
+            api.loc_longitude = event.message.attachments[0].payload.coordinates.long
+
+            pg.defaults.ssl = true;
+            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                if(err) {
+                    done();
+                    console.log(err);
+                }
+
+                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id}`);
+                client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id}`);
+
+                query.on('end', () => {
+                    api.sendTextMessage(recipient_id, "Updated location!");
+                    done();
+                });
+            });
         }
     }
     res.sendStatus(200)
