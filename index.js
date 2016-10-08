@@ -39,7 +39,7 @@ app.post('/webhook/', function (req, res) {
         let recipient_id = event.sender.id
         exports.recipient_id = recipient_id
 
-        if (event.postback) {
+        if ('postback' in event) {
             let postback = JSON.parse(event.postback.payload)
             switch (postback.method) {
 
@@ -74,7 +74,7 @@ app.post('/webhook/', function (req, res) {
             }
             continue
 
-        } else if (event.message.quick_reply.payload) {
+        } else if ('quick_reply' in event.message && 'payload' in event.message.quick_reply) {
 
             let payload = JSON.parse(event.message.quick_reply.payload)
 
@@ -106,7 +106,7 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
-        } else if (event.message.attachments[0].payload.coordinates.lat) {
+        } else if ('attachments' in event.message && 'payload' in event.message.attachments && 'coordinates' in event.message.attachments.payload) {
 
             let payload = JSON.parse(event.message.attachments[0].payload)
 
