@@ -84,7 +84,7 @@ app.post('/webhook/', function (req, res) {
                 case "pickedGender":
 
                     api.looking_for = payload.data;
-                    let call = data.confirmPrivacySettings
+                    let call = data.confirmGender
 
                     const results = [];
 
