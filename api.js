@@ -145,6 +145,8 @@ var self = module.exports = {
         }, function(error, response, body) {
             if (error) {
                 console.log('Error sending messages: ', error)
+            } else if (response.body.error) {
+                console.log('Error sending messages: ', response.body.error)
             } else {
                 console.log('like wtf')
                 let call = data.getStarted
