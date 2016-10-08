@@ -92,8 +92,10 @@ app.post('/webhook/', function (req, res) {
                             console.log(err);
                         }
 
-                        client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
-            
+                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
+                        query.on('end', () => {
+                            done();
+                        });
                     });
                     
                     api.sendClusterTextMessage(call, recipient_id, function() {
@@ -116,8 +118,8 @@ app.post('/webhook/', function (req, res) {
             pg.defaults.ssl = true;
             pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 if(err) {
-                    done();
                     console.log(err);
+                    done();
                 }
 
                 client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id};`);
