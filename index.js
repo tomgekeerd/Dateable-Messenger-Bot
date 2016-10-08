@@ -95,9 +95,6 @@ app.post('/webhook/', function (req, res) {
 
                         client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
             
-                        query.on('end', () => {
-                            done();
-                        });
                     });
                     
                     api.sendClusterTextMessage(call, recipient_id, function() {
@@ -114,8 +111,11 @@ app.post('/webhook/', function (req, res) {
 
         if (event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
 
-            api.loc_latitude = event.message.attachments[0].payload.coordinates.lat
-            api.loc_longitude = event.message.attachments[0].payload.coordinates.long
+            var latDone = 0;
+            let payload = JSON.parse(event.message.quick_reply.payload)
+
+            api.loc_latitude = payload.coordinates.lat
+            api.loc_longitude = payload.coordinates.long
 
             pg.defaults.ssl = true;
             pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -127,10 +127,6 @@ app.post('/webhook/', function (req, res) {
                 client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id}`);
                 client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id}`);
 
-                query.on('end', () => {
-                    api.sendTextMessage(recipient_id, "Updated location!");
-                    done();
-                });
             });
         }
     }
