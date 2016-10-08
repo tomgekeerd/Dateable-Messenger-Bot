@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
 
         } 
 
-        if (event.message.attachments[0].payload.coordinates.lat && event.message.attachments[0].payload.coordinates.long) {
+        if (event.message.attachments[0].payload.coordinates.lat) {
 
             let payload = JSON.parse(event.message.attachments[0].payload)
 
