@@ -93,7 +93,7 @@ app.post('/webhook/', function (req, res) {
                             console.log(err);
                         }
 
-                        client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id}`);
+                        client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
             
                     });
                     
