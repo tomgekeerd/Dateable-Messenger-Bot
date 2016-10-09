@@ -136,37 +136,36 @@ app.post('/webhook/', function (req, res) {
             // Get geo details
 
             geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
-                console.log(res);
-                api.geo_location = res.city + " " + res.country;
-            });
+                api.geo_location = res.city + ", " + res.administrativeLevels.level1short + ", " + res.country;
 
-            // UPDATE in db
+                // UPDATE in db
 
-            pg.defaults.ssl = true;
-            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                if(err) {
-                    console.log(err);
-                    done();
-                }
-
-                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}' WHERE fb_id=${recipient_id};`);
-
-                const query = client.query(`SELECT * FROM users;`);
-                query.on('row', function(row) {
-                    if (row.loc_latitude != -1 && row.loc_longitude != -1) {
-                        // Succesfully completed queries
-
-                        let call = data.confirmLocation
-                        api.sendClusterTextMessage(call, recipient_id, function() {
-                            console.log('done');
-                        })
+                pg.defaults.ssl = true;
+                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                    if(err) {
+                        console.log(err);
+                        done();
                     }
-                });
 
-                query.on('end', () => {
-                    done();
-                });
+                    client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}' WHERE fb_id=${recipient_id};`);
 
+                    const query = client.query(`SELECT * FROM users;`);
+                    query.on('row', function(row) {
+                        if (row.loc_latitude != -1 && row.loc_longitude != -1) {
+                            // Succesfully completed queries
+
+                            let call = data.confirmLocation
+                            api.sendClusterTextMessage(call, recipient_id, function() {
+                                console.log('done');
+                            })
+                        }
+                    });
+
+                    query.on('end', () => {
+                        done();
+                    });
+
+                });
             });
         }
     }
