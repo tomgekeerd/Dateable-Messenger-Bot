@@ -125,7 +125,21 @@ app.post('/webhook/', function (req, res) {
                 client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id};`);
                 client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id};`);
 
-                console.log('set location')
+                const query = client.query(`SELECT * FROM users;`);
+                query.on('row', function(row) {
+                    if (row.loc_latitude != -1 && row.loc_longitude != -1) {
+                        // Succesfully completed queries
+
+                        let call = data.confirmLocation
+                        api.sendClusterTextMessage(call, recipient_id, function() {
+                            console.log('done');
+                        })
+                    }
+                });
+
+                query.on('end', () => {
+                    done();
+                });
 
             });
         }
