@@ -108,7 +108,7 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
-        } else if ('attachments' in event.message && 'payload' in event.message.attachments) {
+        } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
 
             let payload = JSON.parse(event.message.attachments[0].payload)
 
