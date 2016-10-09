@@ -38,6 +38,31 @@
 		"method": "send"
 	},
 
+	"getStartedRevisited": {
+		"messages": [
+			"Hey! I see you already set up. You have the same settings as when you left me.",
+			"If you ever want to change these settings, press the 'Settins' button in the menu or just ask me while you're not chatting with anyone.",
+			"Would you like to start a chat right now?"
+		],
+		"buttons": {
+			"0":[],
+			"1":[],
+			"2":[
+          		{
+            		"type":"postback",
+            		"title":"Yes",
+        			"payload": "{ \"method\": \"startChat\", \"data\": true }"
+          		},
+          		{
+           			"type":"postback",
+            		"title":"No",
+        			"payload": "{ \"method\": \"startChat\", \"data\": false }"
+          		}
+        	]
+		},
+		"method": "send"
+	},
+
 	"startChat": {
 		"messages": [
 			"You want to start a chat? Let me know who to hit you up!"

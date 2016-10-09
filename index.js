@@ -48,7 +48,11 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
+                    if (postback.data == true) {
 
+                    } else {
+                        api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
+                    }
                 break;
 
                 case "help":

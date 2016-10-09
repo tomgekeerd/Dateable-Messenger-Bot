@@ -124,14 +124,18 @@ var self = module.exports = {
 
     },
 
-    sendGreetingMessages: function(recipient, name) {
+    sendGreetingMessages: function(recipient, name, first_time) {
+        var titleOfMessage = "Welcome to this bot, " + name + "!";
+        if (!first_time) {
+            titleOfMessage = "Welcome to this bot again, " + name + "!";
+        }
         let messageData = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
                     "elements": [{
-                        "title": "Welcome to this bot, " + name + "!",
+                        "title": titleOfMessage,
                         "subtitle": "Let me explain what you can do with me.",
                         "image_url": "https://pbs.twimg.com/profile_images/664257671768354816/w2ZlpSd6.png"
                     }]
@@ -150,11 +154,17 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                console.log('like wtf')
-                let call = data.getStarted
-                self.sendClusterTextMessage(call, webhook.recipient_id, function() {
-                    console.log('done');
-                })
+                if (first_time) {
+                    let call = data.getStarted
+                    self.sendClusterTextMessage(call, webhook.recipient_id, function() {
+                        console.log('done');
+                    })
+                } else {
+                    let call = data.getStartedRevisited
+                    self.sendClusterTextMessage(call, webhook.recipient_id, function() {
+                        console.log('done');
+                    })
+                }
             }
         })
     },
@@ -251,8 +261,6 @@ var self = module.exports = {
 
         // Send a greeting message
 
-        self.sendGreetingMessages(webhook.recipient_id, firstname)
-
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             if(err) {
@@ -263,8 +271,24 @@ var self = module.exports = {
             const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
             countQuery.on('row', (row) => {
                 if (row.count == 0) {
+
                     client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id}, -1, -1);`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, fbprofile, age, location, profile_pic) VALUES (${webhook.recipient_id}, 1, 1, 1, 1, 1);`);
+
+                    const checkUsersQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${webhook.recipient_id};`)
+                    checkUsersQuery.on('row', (row) => {
+                        if (row.count > 0) {
+                            const checkPrivacyQuery = client.query(`SELECT COUNT(*) FROM privacy_settings WHERE fb_id=${webhook.recipient_id};`)
+                            checkPrivacyQuery.on('row', (row) => {
+                                if (row.count > 0) {
+                                    self.sendGreetingMessages(webhook.recipient_id, firstname, true);
+                                }
+                            })
+                        }
+                    })
+
+                } else if (row.count > 0) {
+                    self.sendGreetingMessages(webhook.recipient_id, firstname, false);
                 }
             });
 
