@@ -136,7 +136,8 @@ app.post('/webhook/', function (req, res) {
             // Get geo details
 
             geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
-                let json = JSON.stringify(res)
+                let strings = JSON.stringify(res)
+                let json = JSON.parse(strings)
 
                 api.geo_location = json.city + ", " + json.administrativeLevels.level1short + ", " + json.country;
 
