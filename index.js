@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
 
         } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
 
-            let payload = JSON.parse(event.message.attachments[0].payload)
+            let payload = event.message.attachments[0].payload
 
             api.loc_latitude = payload.coordinates.lat
             api.loc_longitude = payload.coordinates.long
