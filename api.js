@@ -7,8 +7,6 @@ var webhook = require('./index.js');
 
 // Variables
  
-var geocoder = NodeGeocoder(options);
-
 var firstname = "";
 exports.firstname = firstname
 
