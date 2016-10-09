@@ -6,6 +6,20 @@ const bodyParser = require('body-parser')
 const data = require('./data.json')
 var pg = require('pg');
 const app = express()
+var NodeGeocoder = require('node-geocoder');
+
+// Variables
+
+var options = {
+  provider: 'google',
+ 
+  // Optional depending on the providers 
+  httpAdapter: 'https', // Default 
+  apiKey: 'AIzaSyBkUEl7Sxsl4z5TKbMsjnEgUDKzUSESwk0', // for Mapquest, OpenCage, Google Premier 
+  formatter: null         // 'gpx', 'string', ... 
+};
+
+var geocoder = NodeGeocoder(options);
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -119,6 +133,15 @@ app.post('/webhook/', function (req, res) {
             api.loc_latitude = payload.coordinates.lat
             api.loc_longitude = payload.coordinates.long
 
+            // Get geo details
+
+            geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
+                console.log(res);
+                api.geo_location = res.city + " " + res.country;
+            });
+
+            // UPDATE in db
+
             pg.defaults.ssl = true;
             pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 if(err) {
@@ -126,8 +149,7 @@ app.post('/webhook/', function (req, res) {
                     done();
                 }
 
-                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude} WHERE fb_id=${recipient_id};`);
-                client.query(`UPDATE users SET loc_longitude=${api.loc_longitude} WHERE fb_id=${recipient_id};`);
+                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location=${} WHERE fb_id=${recipient_id};`);
 
                 const query = client.query(`SELECT * FROM users;`);
                 query.on('row', function(row) {

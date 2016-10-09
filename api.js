@@ -6,6 +6,8 @@ var pg = require('pg');
 var webhook = require('./index.js');
 
 // Variables
+ 
+var geocoder = NodeGeocoder(options);
 
 var firstname = "";
 exports.firstname = firstname
@@ -26,13 +28,16 @@ var timezone = "";
 exports.timezone = timezone
 
 var looking_for = -1;
-exports.looking_for = -1;
+exports.looking_for = looking_for;
 
 var loc_latitude = -1;
-exports.loc_latitude = -1;
+exports.loc_latitude = loc_latitude;
 
 var loc_longitude = -1;
-exports.loc_longitude = -1;
+exports.loc_longitude = loc_longitude;
+
+var geo_location = "";
+exports.geo_location = geo_location
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
@@ -121,6 +126,34 @@ var self = module.exports = {
 
     startChat: function() {
 
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
+            }
+
+            const preferences_query = client.query(`SELECT * FROM users WHERE fb_id = ${webhook.recipient_id};`)
+            preferences_query.on('row', (row) => {
+                var looking_for_gender = ""
+                switch (row.looking_for) {
+                    case 0:
+                        looking_for_gender = "men"
+                    break
+
+                    case 1:
+                        looking_for_gender = "women"
+                    break
+
+                    case 2:
+                        looking_for_gender = "both gender"
+                    break
+
+                    default:()
+                }
+                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of ")
+            })
+        })
 
     },
 
@@ -259,7 +292,7 @@ var self = module.exports = {
                 gender = 2
         }
 
-        // Send a greeting message
+        // Add details into db
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -281,6 +314,9 @@ var self = module.exports = {
                             const checkPrivacyQuery = client.query(`SELECT COUNT(*) FROM privacy_settings WHERE fb_id=${webhook.recipient_id};`)
                             checkPrivacyQuery.on('row', (row) => {
                                 if (row.count > 0) {
+
+                                    // Send greeting
+
                                     self.sendGreetingMessages(webhook.recipient_id, firstname, true);
                                 }
                             })
@@ -288,6 +324,9 @@ var self = module.exports = {
                     })
 
                 } else if (row.count > 0) {
+
+                    // Send greeting
+
                     self.sendGreetingMessages(webhook.recipient_id, firstname, false);
                 }
             });
