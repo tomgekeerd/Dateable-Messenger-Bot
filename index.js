@@ -149,7 +149,7 @@ app.post('/webhook/', function (req, res) {
                     done();
                 }
 
-                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location=${} WHERE fb_id=${recipient_id};`);
+                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location=${api.geo_location} WHERE fb_id=${recipient_id};`);
 
                 const query = client.query(`SELECT * FROM users;`);
                 query.on('row', function(row) {
