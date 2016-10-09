@@ -63,7 +63,7 @@ app.post('/webhook/', function (req, res) {
 
                 case "startChat":
                     if (postback.data == true) {
-
+                        api.startChat();
                     } else {
                         api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
                     }
@@ -138,7 +138,7 @@ app.post('/webhook/', function (req, res) {
             geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
 
                 // JSON validations
-                
+
                 let strings = JSON.stringify(res)
                 let json = JSON.parse(strings)
 
