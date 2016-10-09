@@ -150,7 +150,7 @@ var self = module.exports = {
                     default:
                         looking_for_gender = "noone"
                 }
-                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of ")
+                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location)
             });
         })
 
