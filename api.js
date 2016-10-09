@@ -134,7 +134,7 @@ var self = module.exports = {
             }
 
             const preferences_query = client.query(`SELECT * FROM users WHERE fb_id = ${webhook.recipient_id};`)
-            preferences_query.on('row', (row) => {
+            preferences_query.on('row', function(row) {
                 var looking_for_gender = ""
                 switch (row.looking_for) {
                     case 0:
@@ -149,10 +149,11 @@ var self = module.exports = {
                         looking_for_gender = "both gender"
                     break
 
-                    default:()
+                    default:
+                        looking_for_gender = "noone"
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of ")
-            })
+            });
         })
 
     },
