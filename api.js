@@ -170,11 +170,18 @@ var self = module.exports = {
                                     "title": results[i].first_name + " " + results[i].last_name,
                                     "subtitle": results[i].geo_location,
                                     "image_url": results[i].profile_pic,
-                                    "buttons": [{
-                                        "type": "postback",
-                                        "title": "Chat",
-                                        "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`,
-                                    }]
+                                    "buttons": [
+                                        {
+                                            "type": "postback",
+                                            "title": "Chat",
+                                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                                        },
+                                        {
+                                            "type": "postback",
+                                            "title": "View profile",
+                                            "payload": `{ \"method\": \"showFBProfile\", \"data\": ${results[i].fb_id} }`
+                                        }
+                                    ]
                                 }
                                 send_array.push(card);
                             }   
@@ -303,6 +310,7 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
+                console.log(body)
                 callback(body)
             }
         })
