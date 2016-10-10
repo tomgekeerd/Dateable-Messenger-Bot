@@ -35,7 +35,10 @@ var loc_longitude = -1;
 exports.loc_longitude = loc_longitude;
 
 var geo_location = "";
-exports.geo_location = geo_location
+exports.geo_location = geo_location;
+
+var search_area = "";
+exports.search_area = search_area;
 
 const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
 
@@ -150,11 +153,26 @@ var self = module.exports = {
                     default:
                         looking_for_gender = "noone"
                 }
-                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location)
+                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
             });
         })
 
     },
+
+    findPeople: function(gender, location, search_area) {
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
+            }
+
+            const search_query = client.query(`SELECT * FROM users WHERE gender=${gender} AND search_area='${search_area}' AND fb_id IS NOT ${webhook.recipient_id}`)
+            search_query.on('row', function(row) {
+                console.log(row)
+            })
+        })
+    }
 
     sendGreetingMessages: function(recipient, name, first_time) {
         var titleOfMessage = "Welcome to this bot, " + name + "!";
