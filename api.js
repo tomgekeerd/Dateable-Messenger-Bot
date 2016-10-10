@@ -155,7 +155,7 @@ var self = module.exports = {
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
                 self.findPeople(row.looking_for, "", row.search_area, function(results) {
-                    console.log(results);
+                    console.log("hahah " + results);
                 });
             });
         })
