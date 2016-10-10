@@ -165,26 +165,70 @@ var self = module.exports = {
                         if (results.length > 0) {
                             self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
 
-                            for (var i = results.length - 1; i >= 0; i--) {
-                                let card = {
-                                    "title": results[i].first_name + " " + results[i].last_name,
-                                    "subtitle": results[i].geo_location,
-                                    "image_url": results[i].profile_pic,
-                                    "buttons": [
-                                        {
-                                            "type": "postback",
-                                            "title": "Chat",
-                                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
-                                        },
-                                        {
-                                            "type": "postback",
-                                            "title": "View profile",
-                                            "payload": `{ \"method\": \"showFBProfile\", \"data\": ${results[i].fb_id} }`
-                                        }
-                                    ]
+                            pg.defaults.ssl = true;
+                            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                if(err) {
+                                    done();
+                                    console.log(err);
                                 }
-                                send_array.push(card);
-                            }   
+
+                                for (var i = results.length - 1; i >= 0; i--) {
+
+                                    const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id = ${results[i].fb_id};`)
+                                    privacy_settings.on('row', function(privacy_row) {
+
+                                        var name = ""
+                                        var location = ""
+                                        var image = ""
+
+                                        if (privacy_row.full_name == 0) {
+                                            name = results[i].first_name
+                                        } else if (privacy_row.full_name == 1) {
+                                            name = results[i].first_name + " " + results[i].last_name
+                                        }
+
+                                        if (privacy_row.location == 0) {
+                                            // Close, Med, Far
+                                            var distance = self.getDistanceFromLatLonInKm(results[i].loc_latitude, results[i].loc_longitude, row.loc_latitude, row.loc_longitude)
+                                            if (distance <= maxDistance / 3) {
+                                                location = "Near"
+                                            } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
+                                                location = "Close"
+                                            } else if (distance > (maxDistance / 3) * 2) {
+                                                location = "Far"
+                                            }
+                                        } else if (privacy_row.full_name == 1) {
+                                            location = results[i].geo_location
+                                        }
+
+                                        if (privacy_row.profile_pic == 0) {
+                                            // Woman, Man
+                                            if (results[i].gender == 0) {
+                                                image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
+                                            } else if (results[i].gender == 1) {
+                                                image = "http://aucet.in/it/staffs/female.jpg"
+                                            }
+                                        } else if (privacy_row.full_name == 1) {
+                                            image = results[i].profile_pic
+                                        }
+
+                                        let card = {
+                                            "title": name,
+                                            "subtitle": location,
+                                            "image_url": image,
+                                            "buttons": [
+                                                {
+                                                    "type": "postback",
+                                                    "title": "Chat",
+                                                    "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                                                }
+                                            ]
+                                        }
+                                        send_array.push(card);
+
+                                    })
+                                }  
+                            })
 
                             self.sendGenericMessage(webhook.recipient_id, send_array);
                         } else {
@@ -220,7 +264,7 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= 25.0) {
+                    if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
                         small_found_array.push(big_found_array[i]);
                     }
                 }
