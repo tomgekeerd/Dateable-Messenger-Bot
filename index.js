@@ -155,7 +155,7 @@ app.post('/webhook/', function (req, res) {
 
                     client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${recipient_id};`);
 
-                    const query = client.query(`SELECT * FROM users;`);
+                    const query = client.query(`SELECT * FROM users WHERE fb_id=${webhook.recipient_id};`);
                     query.on('row', function(row) {
                         if (row.loc_latitude != -1 && row.loc_longitude != -1) {
                             // Succesfully completed queries

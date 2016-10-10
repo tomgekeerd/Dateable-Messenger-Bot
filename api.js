@@ -161,6 +161,9 @@ var self = module.exports = {
     },
 
     findPeople: function(gender, location, search_area) {
+
+        var found_array = [];
+
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             if(err) {
@@ -170,7 +173,7 @@ var self = module.exports = {
 
             const search_query = client.query(`SELECT * FROM users WHERE gender=${gender} AND search_area='${search_area}' AND fb_id <> ${webhook.recipient_id};`)
             search_query.on('row', function(row) {
-                console.log(row)
+                found_array.push(row);
             })
         })
     },
