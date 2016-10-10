@@ -7,7 +7,7 @@ var webhook = require('./index.js');
 
 // Variables
 
-var maxDistance = 25;
+var maxDistance = 25.0;
  
 var firstname = "";
 exports.firstname = firstname
@@ -269,6 +269,7 @@ var self = module.exports = {
                         small_found_array.push(big_found_array[i]);
                     }
                 }
+                console.log(small_found_array)
                 callback(small_found_array); 
             })
         })
