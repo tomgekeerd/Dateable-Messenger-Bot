@@ -129,5 +129,15 @@
     		"template_type":"button",
     		"text":""
   		}
+	},
+
+	"genericTemplate": {
+        "type": "template",
+        "payload": {
+            "template_type": "generic",
+            "elements": [
+
+            ]
+        }
 	}
 }

@@ -177,8 +177,9 @@ var self = module.exports = {
                                     }]
                                 }
                                 send_array.push(card);
-                            }
-                            console.log(send_array);
+                            }   
+
+                            let messageData
                         } else {
                             self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
                         }
@@ -266,38 +267,13 @@ var self = module.exports = {
         })
     },
 
-    sendGenericMessage: function(recipient) {
-        let messageData = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "First card",
-                        "subtitle": "Element #1 of an hscroll",
-                        "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-                        "buttons": [{
-                            "type": "web_url",
-                            "url": "https://www.messenger.com",
-                            "title": "web url"
-                        }, {
-                            "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for first element in a generic bubble",
-                        }],
-                    }, {
-                        "title": "Second card",
-                        "subtitle": "Element #2 of an hscroll",
-                        "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-                        "buttons": [{
-                            "type": "postback",
-                            "title": "Postback",
-                            "payload": "Payload for second element in a generic bubble",
-                        }],
-                    }]
-                }
-            }
-        }
+    sendGenericMessage: function(recipient, cards) {
+            messageData = {}
+
+            let generic = data.genericTemplate
+            generic.payload.elements = cards
+            messageData.attachment = generic
+
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token:token},
