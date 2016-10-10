@@ -6,6 +6,8 @@ var pg = require('pg');
 var webhook = require('./index.js');
 
 // Variables
+
+var maxDistance = 25;
  
 var firstname = "";
 exports.firstname = firstname
@@ -153,27 +155,46 @@ var self = module.exports = {
                     default:
                         looking_for_gender = "noone"
                 }
-                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
-                self.findPeople(row.looking_for, "", row.search_area, function(results) {
+                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", function() {
 
-                    // First, inform the user about the hits
+                    self.findPeople(row.looking_for, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
 
-                    if (results.length > 0) {
-                        self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+                        var send_array = [];
+                        // First, inform the user about the hits
 
-                        
-                    } else {
-                        self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
-                    }
+                        if (results.length > 0) {
+                            self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+
+                            for (var i = results.length - 1; i >= 0; i--) {
+                                let card = {
+                                    "title": results[i].first_name + " " + results[i].last_name,
+                                    "subtitle": results[i].geo_location,
+                                    "image_url": results[i].profile_pic,
+                                    "buttons": [{
+                                        "type": "postback",
+                                        "title": "Chat",
+                                        "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`,
+                                    }]
+                                }
+                                send_array.push(card);
+                            }
+                            console.log(send_array);
+                        } else {
+                            self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
+                        }
+
+                    });
+
                 });
             });
         })
 
     },
 
-    findPeople: function(gender, location, search_area, callback) {
+    findPeople: function(gender, lat, long, search_area, callback) {
 
-        var found_array = [];
+        var big_found_array = [];
+        var small_found_array = [];
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -184,12 +205,18 @@ var self = module.exports = {
 
             const search_query = client.query(`SELECT * FROM users WHERE gender=${gender} AND search_area='${search_area}' AND fb_id <> ${webhook.recipient_id};`)
             search_query.on('row', function(row) {
-                found_array.push(row);
+                big_found_array.push(row);
             })
 
             search_query.on('end', () => {
                 done();
-                callback(found_array);
+
+                for (var i = big_found_array.length - 1; i >= 0; i--) {
+                    if (getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= 25.0) {
+                        small_found_array.push(big_found_array[i]);
+                    }
+                }
+                callback(small_found_array); 
             })
         })
     },
