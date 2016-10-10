@@ -229,10 +229,14 @@ var self = module.exports = {
                                                 }
                                             ]
                                         }
+
                                         send_array.push(card);
+
+                                        if (send_array.length == results.length) {
+                                            self.sendGenericMessage(webhook.recipient_id, send_array);
+                                        }
                                     })
                                 }  
-                                self.sendGenericMessage(webhook.recipient_id, send_array);
                             })
                         } else {
                             self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
@@ -331,7 +335,6 @@ var self = module.exports = {
         generic.payload.elements = cards
         messageData.attachment = generic
 
-        console.log(messageData)
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token:token},
