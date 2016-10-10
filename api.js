@@ -154,14 +154,15 @@ var self = module.exports = {
                         looking_for_gender = "noone"
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
-                var hits = self.findPeople(row.looking_for, "", row.search_area);
-                console.log(hits);
+                self.findPeople(row.looking_for, "", row.search_area, function(results) {
+                    console.log(results);
+                });
             });
         })
 
     },
 
-    findPeople: function(gender, location, search_area) {
+    findPeople: function(gender, location, search_area, callback) {
 
         var found_array = [];
 
@@ -179,7 +180,7 @@ var self = module.exports = {
 
             search_query.on('end', () => {
                 done();
-                return found_array;
+                callback(found_array);
             })
         })
     },
