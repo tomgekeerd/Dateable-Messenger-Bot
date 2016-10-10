@@ -179,7 +179,7 @@ var self = module.exports = {
                                 send_array.push(card);
                             }   
 
-                            let messageData
+                            self.sendGenericMessage(webhook.recipient_id, send_array);
                         } else {
                             self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
                         }
@@ -268,11 +268,11 @@ var self = module.exports = {
     },
 
     sendGenericMessage: function(recipient, cards) {
-            messageData = {}
 
-            let generic = data.genericTemplate
-            generic.payload.elements = cards
-            messageData.attachment = generic
+        messageData = {}
+        let generic = data.genericTemplate
+        generic.payload.elements = cards
+        messageData.attachment = generic
 
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
