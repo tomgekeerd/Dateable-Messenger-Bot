@@ -269,7 +269,7 @@ var self = module.exports = {
 
     sendGenericMessage: function(recipient, cards) {
 
-        messageData = {}
+        let messageData = {}
         let generic = data.genericTemplate
         generic.payload.elements = cards
         messageData.attachment = generic
