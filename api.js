@@ -154,6 +154,7 @@ var self = module.exports = {
                         looking_for_gender = "noone"
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
+                findPeople(looking_for_gender, "", row.search_area);
             });
         })
 
@@ -172,7 +173,7 @@ var self = module.exports = {
                 console.log(row)
             })
         })
-    }
+    },
 
     sendGreetingMessages: function(recipient, name, first_time) {
         var titleOfMessage = "Welcome to this bot, " + name + "!";
