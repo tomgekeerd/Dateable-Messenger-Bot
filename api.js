@@ -154,7 +154,7 @@ var self = module.exports = {
                         looking_for_gender = "noone"
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
-                self.findPeople(row.looking_for, "", row.search_area);
+                console.log(self.findPeople(row.looking_for, "", row.search_area));
             });
         })
 
