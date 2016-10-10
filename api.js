@@ -140,17 +140,20 @@ var self = module.exports = {
             const preferences_query = client.query(`SELECT * FROM users WHERE fb_id = ${webhook.recipient_id};`)
             preferences_query.on('row', function(row) {
                 var looking_for_gender = ""
+                var looking_for_gender_one = ""
                 switch (row.looking_for) {
                     case 0:
                         looking_for_gender = "men"
+                        looking_for_gender_one = "man"
                     break
 
                     case 1:
                         looking_for_gender = "women"
+                        looking_for_gender_one = "woman"
                     break
 
                     case 2:
-                        looking_for_gender = "both gender"
+                        looking_for_gender = "people"
                     break
 
                     default:
@@ -164,7 +167,11 @@ var self = module.exports = {
                         // First, inform the user about the hits
 
                         if (results.length > 0) {
-                            self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+                            if (results.length == 1) {
+                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+                            } else if (results.length > 1) {
+                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
+                            }
 
                             pg.defaults.ssl = true;
                             pg.connect(process.env.DATABASE_URL, (err, client, done) => {
