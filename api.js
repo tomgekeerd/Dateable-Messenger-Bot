@@ -234,9 +234,8 @@ var self = module.exports = {
 
                                     })
                                 }  
+                                self.sendGenericMessage(webhook.recipient_id, send_array);
                             })
-
-                            self.sendGenericMessage(webhook.recipient_id, send_array);
                         } else {
                             self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
                         }
