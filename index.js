@@ -84,12 +84,26 @@ app.post('/webhook/', function (req, res) {
                             const query = client.query(`SELECT * FROM users WHERE fb_id=${postback.data};`);
 
                             query.on('row', function(row) {
-                                api.sendTextMessage(recipient_id, "I'll ask " + row.first_name + " for a chat with you. Hang on, you'll get a message when you are ready to talk");
+                                api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + row.first_name + "?", "", "", function() {
+                                    let card = [{
+                                        "title": row.first_name + " " + row.last_name,
+                                        "subtitle": row.geo_location,
+                                        "image_url": row.image_url,
+                                        "buttons": [
+                                            {
+                                                "type": "postback",
+                                                "title": "Chat",
+                                                "payload": `{ \"method\": \"startChat\", \"data\": ${postback.data} }`
+                                            }
+                                        ]
+                                    }]
+                                    api.sendGenericMessage(postback.data, card)
+                                    api.sendTextMessage(recipient_id, "I just asked " + row.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                })
                             })
 
                             query.on('end', () => {
                                 done();
-                                api.sendTextMessage(postback.data, "Someone is fucking interested to fuck you tonight! Respond!")
                             });
 
                         });
