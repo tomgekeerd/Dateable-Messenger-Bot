@@ -114,7 +114,7 @@ var self = module.exports = {
                     break
 
                     default:
-                        console.log(method.messages[i])
+                        console.log('method.messages[i]')
                 }
                 i++
             } else {
@@ -155,7 +155,16 @@ var self = module.exports = {
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...")
                 self.findPeople(row.looking_for, "", row.search_area, function(results) {
-                    console.log("hahah " + results);
+
+                    // First, inform the user about the hits
+
+                    if (results.length > 0) {
+                        self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+
+                        
+                    } else {
+                        self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
+                    }
                 });
             });
         })
@@ -291,7 +300,6 @@ var self = module.exports = {
             if (error) {
                 console.log('Error sending messages: ', error)
             } else {
-                console.log(body)
                 callback(body)
             }
         })
