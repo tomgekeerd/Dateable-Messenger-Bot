@@ -182,6 +182,8 @@ var self = module.exports = {
                                         var location = ""
                                         var image = ""
 
+                                        console.log(results[0])
+
                                         if (privacy_row.full_name == 0) {
                                             name = results[i].first_name
                                         } else if (privacy_row.full_name == 1) {
@@ -269,7 +271,6 @@ var self = module.exports = {
                         small_found_array.push(big_found_array[i]);
                     }
                 }
-                console.log(small_found_array)
                 callback(small_found_array); 
             })
         })
