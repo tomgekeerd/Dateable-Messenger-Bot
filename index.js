@@ -156,11 +156,13 @@ app.post('/webhook/', function (req, res) {
 
                     const query = client.query(`SELECT * FROM users WHERE fb_id=${webhook.recipient_id};`);
                     query.on('row', function(row) {
+                        console.log(row)
                         if (row.loc_latitude != -1 && row.loc_longitude != -1) {
 
                             // Succesfully completed queries
 
                             let call = data.confirmLocation
+                            console.log('row')
                             api.sendClusterTextMessage(call, recipient_id, function() {
                                 console.log('done');
                             })

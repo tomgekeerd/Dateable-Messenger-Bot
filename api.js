@@ -88,6 +88,7 @@ var self = module.exports = {
     sendClusterTextMessage: function(call, recipient, callback) {
 
         var i = 0
+        console.log('wauw')
         var sendMessages = function() {
             if (i < call.messages.length) {
                 switch (call.method) {
