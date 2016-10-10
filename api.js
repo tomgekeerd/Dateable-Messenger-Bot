@@ -173,7 +173,7 @@ var self = module.exports = {
                                     console.log(err);
                                 }
 
-                                for (var i = 0; i < results.length; i++) {
+                                for (var i = 0; i < results.length - 1; i++) {
 
                                     const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${results[i].fb_id};`)
                                     privacy_settings.on('row', function(privacy_row) {
