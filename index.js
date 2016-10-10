@@ -51,8 +51,9 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
+        let recipient_id = -1;
         if (isInChat == false) {
-            let recipient_id = event.sender.id
+            recipient_id = event.sender.id
             exports.recipient_id = recipient_id
         } else {
 
