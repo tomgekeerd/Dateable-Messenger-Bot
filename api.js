@@ -168,7 +168,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const search_query = client.query(`SELECT * FROM users WHERE gender=${gender} AND search_area='${search_area}' AND fb_id IS NOT ${webhook.recipient_id}`)
+            const search_query = client.query(`SELECT * FROM users WHERE gender=${gender} AND search_area='${search_area}' AND fb_id IS NOT ${webhook.recipient_id};`)
             search_query.on('row', function(row) {
                 console.log(row)
             })
