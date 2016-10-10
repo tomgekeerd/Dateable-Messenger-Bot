@@ -48,7 +48,7 @@ app.post('/webhook/', function (req, res) {
     for (let i = 0; i < messaging_events.length; i++) {
 
         let event = req.body.entry[0].messaging[i]
-        console.log(event)
+
         let recipient_id = event.sender.id
         exports.recipient_id = recipient_id
 
@@ -157,7 +157,7 @@ app.post('/webhook/', function (req, res) {
                     const query = client.query(`SELECT * FROM users WHERE fb_id=${webhook.recipient_id};`);
                     query.on('row', function(row) {
                         if (row.loc_latitude != -1 && row.loc_longitude != -1) {
-                            
+
                             // Succesfully completed queries
 
                             let call = data.confirmLocation
