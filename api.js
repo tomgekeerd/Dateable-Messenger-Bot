@@ -178,7 +178,7 @@ var self = module.exports = {
 
             search_query.on('end', () => {
                 done();
-                return found_array;
+                console.log(found_array);
             })
         })
     },
