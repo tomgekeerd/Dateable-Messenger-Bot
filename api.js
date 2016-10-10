@@ -189,10 +189,6 @@ var self = module.exports = {
                                         var location = ""
                                         var image = ""
 
-                                        console.log(results[0].first_name)
-                                        console.log(i)
-                                        console.log(results[i].first_name)
-
                                         if (privacy_row.full_name == 0) {
                                             name = results[i].first_name
                                         } else if (privacy_row.full_name == 1) {

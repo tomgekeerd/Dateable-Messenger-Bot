@@ -19,6 +19,8 @@ var options = {
   formatter: null         // 'gpx', 'string', ... 
 };
 
+var isInChat = false;
+
 var geocoder = NodeGeocoder(options);
 
 app.set('port', (process.env.PORT || 5000))
@@ -49,8 +51,12 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
-        let recipient_id = event.sender.id
-        exports.recipient_id = recipient_id
+        if (!isInChat) {
+            let recipient_id = event.sender.id
+            exports.recipient_id = recipient_id
+        } else {
+
+        }
 
         if ('postback' in event) {
             let postback = JSON.parse(event.postback.payload)
@@ -63,8 +69,30 @@ app.post('/webhook/', function (req, res) {
                 case "startChat":
                     if (postback.data == true) {
                         api.startChat();
-                    } else {
+                    } else if (postback.data == false) {
                         api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
+                    } else {
+
+                        pg.defaults.ssl = true;
+                        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                            if(err) {
+                                done();
+                                console.log(err);
+                            }
+
+                            const query = client.query(`SELECT * FROM users WHERE fb_id=${postback.data};`);
+
+                            query.on('row', function(row) {
+                                api.sendTextMessage(recipient_id, "I'll ask " + row.first_name + " for a chat with you. Hang on, you'll get a message when you are ready to talk");
+                            })
+
+                            query.on('end', () => {
+                                done();
+                                api.sendTextMessage(postback.data, "Someone is fucking interested to fuck you tonight! Respond!")
+                            });
+
+                        });
+
                     }
                 break;
 
