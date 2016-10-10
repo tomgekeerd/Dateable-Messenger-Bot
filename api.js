@@ -331,6 +331,7 @@ var self = module.exports = {
         generic.payload.elements = cards
         messageData.attachment = generic
 
+        console.log(messageData)
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
             qs: {access_token:token},
