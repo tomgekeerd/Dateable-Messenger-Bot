@@ -415,6 +415,10 @@ var self = module.exports = {
                         }
                     })
 
+                    checkUsersQuery.on('end', () => {
+                        done();
+                    })
+
                 } else {
 
                     // Send greeting
@@ -422,6 +426,10 @@ var self = module.exports = {
                     self.sendGreetingMessages(webhook.recipient_id, firstname, false);
                 }
             });
+
+            countQuery.on('end', () => {
+                done();
+            })
 
         });
 
