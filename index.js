@@ -68,12 +68,12 @@ app.post('/webhook/', function (req, res) {
                 break;
 
                 case "startChat":
+
                     if (postback.data == true) {
                         api.startChat();
                     } else if (postback.data == false) {
                         api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
                     } else {
-
                         pg.defaults.ssl = true;
                         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             if(err) {
@@ -81,24 +81,30 @@ app.post('/webhook/', function (req, res) {
                                 console.log(err);
                             }
 
-                            const query = client.query(`SELECT * FROM users WHERE fb_id=${postback.data};`);
+                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data};`);
+                            dataQuery.on('row', function(row) {
 
-                            query.on('row', function(row) {
-                                api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + row.first_name + "?", "", "", function() {
-                                    let card = [{
-                                        "title": row.first_name + " " + row.last_name,
-                                        "subtitle": row.geo_location,
-                                        "image_url": row.image_url,
-                                        "buttons": [
-                                            {
-                                                "type": "postback",
-                                                "title": "Chat",
-                                                "payload": `{ \"method\": \"startChat\", \"data\": ${postback.data} }`
-                                            }
-                                        ]
-                                    }]
-                                    api.sendGenericMessage(postback.data, card)
-                                    api.sendTextMessage(recipient_id, "I just asked " + row.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                let chat_id = randomInt(0, 2093891025);
+
+                                const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${chat_id}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                addQuery.on('row', function(row) {
+
+                                    api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + row.first_name + "?", "", "", function() {
+                                        let card = [{
+                                            "title": row.first_name + " " + row.last_name,
+                                            "subtitle": row.geo_location,
+                                            "image_url": row.profile_pic,
+                                            "buttons": [
+                                                {
+                                                    "type": "postback",
+                                                    "title": "Chat",
+                                                    "payload": `{ \"method\": \"acceptChat\", \"data\": ${chat_id} }`
+                                                }
+                                            ]
+                                        }]
+                                        api.sendGenericMessage(postback.data, card)
+                                        api.sendTextMessage(recipient_id, "I just asked " + row.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                    })
                                 })
                             })
 
@@ -209,6 +215,10 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
+
+function randomInt (low, high) {
+    return Math.floor(Math.random() * (high - low) + low);
+}
 
 // spin spin sugar
 app.listen(app.get('port'), function() {
