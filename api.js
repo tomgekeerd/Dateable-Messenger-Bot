@@ -212,7 +212,7 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    if (getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= 25.0) {
+                    if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= 25.0) {
                         small_found_array.push(big_found_array[i]);
                     }
                 }
