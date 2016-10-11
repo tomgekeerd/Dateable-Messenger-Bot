@@ -197,7 +197,7 @@ app.post('/webhook/', function (req, res) {
                     console.log('default')
             }
 
-        } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
+        } else if ('attachments' in event.message && 'payload' in event.message.attachments[0] && 'coordinates' in event.message.attachments[0].payload && 'lat' in event.message.attachments[0].payload.coordinates) {
 
             let payload = event.message.attachments[0].payload
 
