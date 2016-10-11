@@ -213,14 +213,14 @@ var self = module.exports = {
                     var image = ""
 
                     if (privacy_row.full_name == 0) {
-                        name = results[i].first_name
+                        name = results.first_name
                     } else if (privacy_row.full_name == 1) {
-                        name = results[i].first_name + " " + results[i].last_name
+                        name = results.first_name + " " + results.last_name
                     }
 
                     if (privacy_row.location == 0) {
                         // Close, Med, Far
-                        var distance = self.getDistanceFromLatLonInKm(results[i].loc_latitude, results[i].loc_longitude, row.loc_latitude, row.loc_longitude)
+                        var distance = self.getDistanceFromLatLonInKm(results.loc_latitude, results.loc_longitude, row.loc_latitude, row.loc_longitude)
                         if (distance <= maxDistance / 3) {
                             location = "Near"
                         } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
@@ -229,18 +229,18 @@ var self = module.exports = {
                             location = "Far"
                         }
                     } else if (privacy_row.full_name == 1) {
-                        location = results[i].geo_location
+                        location = results.geo_location
                     }
 
                     if (privacy_row.profile_pic == 0) {
                         // Woman, Man
-                        if (results[i].gender == 0) {
+                        if (results.gender == 0) {
                             image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
-                        } else if (results[i].gender == 1) {
+                        } else if (results.gender == 1) {
                             image = "http://aucet.in/it/staffs/female.jpg"
                         }
                     } else if (privacy_row.full_name == 1) {
-                        image = results[i].profile_pic
+                        image = results.profile_pic
                     }
 
                     let card = {};
@@ -270,7 +270,7 @@ var self = module.exports = {
                                 {
                                     "type": "postback",
                                     "title": "Chat",
-                                    "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                                    "payload": `{ \"method\": \"startChat\", \"data\": ${results.fb_id} }`
                                 }
                             ]
                         }
