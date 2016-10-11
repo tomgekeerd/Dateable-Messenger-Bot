@@ -234,6 +234,7 @@ app.post('/webhook/', function (req, res) {
                 });
             });
         } else {
+            console.log(event.message);
             if (isInChat) {
 
                 // Alright, this msg has to be sent to the other we are in a chat with
