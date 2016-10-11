@@ -364,7 +364,7 @@ var self = module.exports = {
 
         let messageData = {}
         let generic = data.genericTemplate
-        generic.payload.elements = JSON.stringify(cards)
+        generic.payload.elements = JSON.parse(JSON.stringify(cards))
         messageData.attachment = generic
 
 
