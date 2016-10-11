@@ -181,76 +181,99 @@ var self = module.exports = {
                                 }
 
                                 for (let i = 0; i < results.length; i++) {
-
-                                    const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${results[i].fb_id};`)
-                                    privacy_settings.on('row', function(privacy_row) {
-
-                                        var name = ""
-                                        var location = ""
-                                        var image = ""
-
-                                        if (privacy_row.full_name == 0) {
-                                            name = results[i].first_name
-                                        } else if (privacy_row.full_name == 1) {
-                                            name = results[i].first_name + " " + results[i].last_name
-                                        }
-
-                                        if (privacy_row.location == 0) {
-                                            // Close, Med, Far
-                                            var distance = self.getDistanceFromLatLonInKm(results[i].loc_latitude, results[i].loc_longitude, row.loc_latitude, row.loc_longitude)
-                                            if (distance <= maxDistance / 3) {
-                                                location = "Near"
-                                            } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
-                                                location = "Close"
-                                            } else if (distance > (maxDistance / 3) * 2) {
-                                                location = "Far"
+                                        self.getPrivacyCardOfUser(results.fb_id, function(card) {
+                                            send_array.push(card);
+                                            if (send_array.length == results.length) {
+                                                self.sendGenericMessage(webhook.recipient_id, send_array);
                                             }
-                                        } else if (privacy_row.full_name == 1) {
-                                            location = results[i].geo_location
-                                        }
-
-                                        if (privacy_row.profile_pic == 0) {
-                                            // Woman, Man
-                                            if (results[i].gender == 0) {
-                                                image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
-                                            } else if (results[i].gender == 1) {
-                                                image = "http://aucet.in/it/staffs/female.jpg"
-                                            }
-                                        } else if (privacy_row.full_name == 1) {
-                                            image = results[i].profile_pic
-                                        }
-
-                                        let card = {
-                                            "title": name,
-                                            "subtitle": location,
-                                            "image_url": image,
-                                            "buttons": [
-                                                {
-                                                    "type": "postback",
-                                                    "title": "Chat",
-                                                    "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
-                                                }
-                                            ]
-                                        }
-
-                                        send_array.push(card);
-
-                                        if (send_array.length == results.length) {
-                                            self.sendGenericMessage(webhook.recipient_id, send_array);
-                                        }
+                                        })
                                     })
                                 }  
                             })
                         } else {
                             self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
                         }
-
                     });
-
                 });
             });
         })
+    },
 
+    getPrivacyCardOfUser: function(user_id, accept, callback)  {
+        const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`)
+        privacy_settings.on('row', function(privacy_row) {
+
+            var name = ""
+            var location = ""
+            var image = ""
+
+            if (privacy_row.full_name == 0) {
+                name = results[i].first_name
+            } else if (privacy_row.full_name == 1) {
+                name = results[i].first_name + " " + results[i].last_name
+            }
+
+            if (privacy_row.location == 0) {
+                // Close, Med, Far
+                var distance = self.getDistanceFromLatLonInKm(results[i].loc_latitude, results[i].loc_longitude, row.loc_latitude, row.loc_longitude)
+                if (distance <= maxDistance / 3) {
+                    location = "Near"
+                } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
+                    location = "Close"
+                } else if (distance > (maxDistance / 3) * 2) {
+                    location = "Far"
+                }
+            } else if (privacy_row.full_name == 1) {
+                location = results[i].geo_location
+            }
+
+            if (privacy_row.profile_pic == 0) {
+                // Woman, Man
+                if (results[i].gender == 0) {
+                    image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
+                } else if (results[i].gender == 1) {
+                    image = "http://aucet.in/it/staffs/female.jpg"
+                }
+            } else if (privacy_row.full_name == 1) {
+                image = results[i].profile_pic
+            }
+
+            let card = {};
+            if (accept) {
+                card = {
+                    "title": name,
+                    "subtitle": location,
+                    "image_url": image,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Chat",
+                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Chat",
+                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                        }
+                    ]
+                }
+            } else {
+                card = {
+                    "title": name,
+                    "subtitle": location,
+                    "image_url": image,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Chat",
+                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                        }
+                    ]
+                }
+            }
+            
+            callback(card);
+        })
     },
 
     findPeople: function(gender, lat, long, search_area, callback) {
@@ -445,10 +468,6 @@ var self = module.exports = {
 
         });
 
-    },
-
-    randomInt: function(low, high) {
-        return Math.floor(Math.random() * (high - low) + low);
     },
 
     getDistanceFromLatLonInKm: function(lat1, lon1, lat2, lon2) {
