@@ -52,7 +52,7 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
         console.log(event)
-        
+
         let recipient_id = -1;
 
         if (recipient_id == -1) {
@@ -246,15 +246,23 @@ app.post('/webhook/', function (req, res) {
                 chatQuery.on('row', function(row) {
                     if (row.is_in_chat != 0) {
                         // Alright, this msg has to be sent to the other we are in a chat with
-                        const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
-                        chatQuery.on('row', function(row) {
+                        const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
+                        sendMSG.on('row', function(row) {
                             if (row.initiator == recipient_id) {
                                 api.sendTextMessage(row.responder, event.message.text)
                             } else if (row.responder == recipient_id) {
                                 api.sendTextMessage(row.initiator, event.message.text)
                             }
                         })
+
+                        sendMSG.on('end', () => {
+                            done();
+                        })
                     }
+                })
+
+                chatQuery.on('end', () => {
+                    done();
                 })
             })
         }
