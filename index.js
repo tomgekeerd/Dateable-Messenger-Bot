@@ -10,9 +10,6 @@ var NodeGeocoder = require('node-geocoder');
 
 // Variables
 
-var chat_id = -1;
-var recipient_id = -1;
-
 var options = {
   provider: 'google',
  
@@ -21,8 +18,6 @@ var options = {
   apiKey: 'AIzaSyBkUEl7Sxsl4z5TKbMsjnEgUDKzUSESwk0', // for Mapquest, OpenCage, Google Premier 
   formatter: null         // 'gpx', 'string', ... 
 };
-
-var isInChat = false;
 
 var geocoder = NodeGeocoder(options);
 
@@ -50,14 +45,16 @@ app.get('/webhook/', function (req, res) {
 // to post data
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
+
     for (let i = 0; i < messaging_events.length; i++) {
 
         let event = req.body.entry[0].messaging[i]
 
-        if (isInChat == false) {
-            recipient_id = event.sender.id
-            exports.recipient_id = recipient_id
-        }
+        let recipient_id = -1;
+
+        recipient_id = event.sender.id
+        exports.recipient_id = recipient_id
+        
 
         if ('postback' in event) {
             let postback = JSON.parse(event.postback.payload)
@@ -78,19 +75,18 @@ app.post('/webhook/', function (req, res) {
                         }
 
                         const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}';`);
-                        chatQuery.on('end', () => {
-                            isInChat = true;
-                            chat_id = postback.data;
-
-                            let call = data.acceptedAChat
-                            api.sendClusterTextMessage(call, recipient_id, function() {
-                                console.log('done');
-                            })                        
+                        chatQuery.on('row', function(row) {
+                            const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} AND fb_id=${row.responder};`);
+                            usersQuery.on('end', () => {
+                                let call = data.acceptedAChat
+                                api.sendClusterTextMessage(call, recipient_id, function() {
+                                    console.log('done');
+                                })                        
+                            })
                         })
-
                     })
 
-                break;
+                break
 
                 case "startChat":
 
@@ -134,9 +130,8 @@ app.post('/webhook/', function (req, res) {
                                         })
                                     })
                                 })
-
-                            });
-                        });
+                            })
+                        })
 
                     }
                 break;
@@ -235,30 +230,29 @@ app.post('/webhook/', function (req, res) {
                 });
             });
         } else {
-            console.log(event.message);
+            pg.defaults.ssl = true;
+            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
-            if (isInChat) {
-                console.log('he is in chat')
-                // Alright, this msg has to be sent to the other we are in a chat with
+                if(err) {
+                    done();
+                    console.log(err);
+                }
 
-                pg.defaults.ssl = true;
-                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-
-                    if(err) {
-                        done();
-                        console.log(err);
+                const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${recipient_id};`);
+                chatQuery.on('row', function(row) {
+                    if (row.is_in_chat != 0) {
+                        // Alright, this msg has to be sent to the other we are in a chat with
+                        const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
+                        chatQuery.on('row', function(row) {
+                            if (row.initiator == recipient_id) {
+                                api.sendTextMessage(row.responder, event.message.text)
+                            } else if (row.responder == recipient_id) {
+                                api.sendTextMessage(row.initiator, event.message.text)
+                            }
+                        })
                     }
-                console.log(chat_id)
-
-                    const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${chat_id}';`);
-                    chatQuery.on('row', function(row) {
-                                        console.log(row)
-
-                        api.sendTextMessage(row.initiator, event.message.text)
-                    })
-
                 })
-            }
+            })
         }
     }
     res.sendStatus(200)

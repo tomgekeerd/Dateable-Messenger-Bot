@@ -441,7 +441,7 @@ var self = module.exports = {
             countQuery.on('row', (row) => {
                 if (row.count == 0 && row.loc_longitude != -1 && row.loc_latitude != -1 && row.looking_for != -1) {
 
-                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id}, -1, -1);`);
+                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id}, -1, -1, 0);`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${webhook.recipient_id}, 1, 1, 1, 1);`);
 
                     const checkUsersQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${webhook.recipient_id};`)
