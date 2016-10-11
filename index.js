@@ -76,30 +76,41 @@ app.post('/webhook/', function (req, res) {
                     } else {
                         pg.defaults.ssl = true;
                         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+
                             if(err) {
                                 done();
                                 console.log(err);
                             }
+
                             const cards = [];
-                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data};`);
+                            const me = {};
+                            const other = {};
+
+                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${recipient_id};`);
                             dataQuery.on('row', function(row) {
-                                api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + row.first_name + "?", "", "", function() {
-                                    api.getPrivacyCardOfUser(row.fb_id, true, row, function(card) {
+                                if (row.fb_id == recipient_id) {
+                                    me = row
+                                } else if (row.fb_id == postback.data) {
+                                    other = row
+                                }
+                            })
+
+                            dataQuery.on('end', () => {
+                                done();
+
+                                api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", function() {
+                                    api.getPrivacyCardOfUser(me.fb_id, true, row, function(card) {
                                         let methodAndData = JSON.parse(card.buttons[0].payload)
                                         const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
                                         addQuery.on('end', () => {
                                             cards.push(card)
                                             api.sendGenericMessage(postback.data, cards)
-                                            api.sendTextMessage(recipient_id, "I just asked " + row.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                            api.sendTextMessage(recipient_id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
                                         })
                                     })
                                 })
-                            })
 
-                            dataQuery.on('end', () => {
-                                done();
                             });
-
                         });
 
                     }
