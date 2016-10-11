@@ -247,7 +247,7 @@ app.post('/webhook/', function (req, res) {
                     }
 
                     const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id=${chat_id};`);
-                    chatQuery.on('row', function(row) => {
+                    chatQuery.on('row', function(row) {
                         api.sendTextMessage(row.initiator, event.message.text)
                     })
 
