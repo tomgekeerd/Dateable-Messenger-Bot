@@ -74,7 +74,7 @@ app.post('/webhook/', function (req, res) {
                             console.log(err);
                         }
 
-                        const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}';`);
+                        const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' LIMIT 1 RETURNING *;`);
                         chatQuery.on('row', function(row) {
                             const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
                             usersQuery.on('end', () => {
