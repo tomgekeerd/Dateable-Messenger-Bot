@@ -76,7 +76,7 @@ app.post('/webhook/', function (req, res) {
 
                         const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}';`);
                         chatQuery.on('row', function(row) {
-                            const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} AND fb_id=${row.responder};`);
+                            const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
                             usersQuery.on('end', () => {
                                 let call = data.acceptedAChat
                                 api.sendClusterTextMessage(call, recipient_id, function() {
