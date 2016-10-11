@@ -181,12 +181,11 @@ var self = module.exports = {
                                 }
 
                                 for (let i = 0; i < results.length; i++) {
-                                        self.getPrivacyCardOfUser(results.fb_id, function(card) {
-                                            send_array.push(card);
-                                            if (send_array.length == results.length) {
-                                                self.sendGenericMessage(webhook.recipient_id, send_array);
-                                            }
-                                        })
+                                    self.getPrivacyCardOfUser(results.fb_id, function(card) {
+                                        send_array.push(card);
+                                        if (send_array.length == results.length) {
+                                            self.sendGenericMessage(webhook.recipient_id, send_array);
+                                        }
                                     })
                                 }  
                             })
@@ -240,22 +239,21 @@ var self = module.exports = {
 
             let card = {};
             if (accept) {
+                let chat_id = randomInt(0, 2093891025);
                 card = {
                     "title": name,
                     "subtitle": location,
                     "image_url": image,
-                    "buttons": [
-                        {
+                    "buttons": [{
                             "type": "postback",
                             "title": "Chat",
-                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                            "payload": `{ \"method\": \"acceptChat\", \"data\": ${chat_id} }`
                         },
-                        {
+                        {   
                             "type": "postback",
-                            "title": "Chat",
-                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
-                        }
-                    ]
+                            "title": "Reject",
+                            "payload": `{ \"method\": \"rejectChat\", \"data\": ${chat_id} }`
+                    }]
                 }
             } else {
                 card = {
