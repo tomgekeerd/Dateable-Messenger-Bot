@@ -245,7 +245,7 @@ var self = module.exports = {
 
                     let card = {};
                     if (accept) {
-                        let chat_id = randomInt(0, 2093891025);
+                        let chat_id = self.randomInt(0, 2093891025);
                         card = {
                             "title": name,
                             "subtitle": location,
