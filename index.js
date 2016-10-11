@@ -240,7 +240,7 @@ app.post('/webhook/', function (req, res) {
                     done();
                     console.log(err);
                 }
-
+                console.log(recipient_id)
                 const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${recipient_id};`);
                 chatQuery.on('row', function(row) {
                     if (row.is_in_chat != 0) {
