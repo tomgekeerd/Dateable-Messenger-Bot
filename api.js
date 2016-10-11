@@ -177,7 +177,7 @@ var self = module.exports = {
                             }
 
                             for (let i = 0; i < results.length; i++) {
-                                self.getPrivacyCardOfUser(results[i].fb_id, true, results[i], function(card) {
+                                self.getPrivacyCardOfUser(results[i].fb_id, false, results[i], function(card) {
                                     send_array.push(card);
                                     if (send_array.length == results.length) {
                                         self.sendGenericMessage(webhook.recipient_id, send_array);
