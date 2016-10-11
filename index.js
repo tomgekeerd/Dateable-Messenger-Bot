@@ -170,7 +170,7 @@ app.post('/webhook/', function (req, res) {
             // Get geo details
 
             geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
-                
+
                 // JSON validations
 
                 let strings = JSON.stringify(res)
@@ -200,10 +200,6 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
-
-function randomInt (low, high) {
-    return Math.floor(Math.random() * (high - low) + low);
-}
 
 // spin spin sugar
 app.listen(app.get('port'), function() {
