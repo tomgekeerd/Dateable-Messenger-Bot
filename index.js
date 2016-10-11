@@ -10,6 +10,9 @@ var NodeGeocoder = require('node-geocoder');
 
 // Variables
 
+var chat_id = -1;
+var recipient_id = -1;
+
 var options = {
   provider: 'google',
  
@@ -51,8 +54,6 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
-        var recipient_id = -1;
-        var chat_id = -1;
         if (isInChat == false) {
             recipient_id = event.sender.id
             exports.recipient_id = recipient_id
