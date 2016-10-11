@@ -235,8 +235,9 @@ app.post('/webhook/', function (req, res) {
             });
         } else {
             console.log(event.message);
-            if (isInChat) {
 
+            if (isInChat) {
+                console.log('he is in chat')
                 // Alright, this msg has to be sent to the other we are in a chat with
 
                 pg.defaults.ssl = true;
@@ -246,9 +247,12 @@ app.post('/webhook/', function (req, res) {
                         done();
                         console.log(err);
                     }
+                console.log(chat_id)
 
                     const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${chat_id}';`);
                     chatQuery.on('row', function(row) {
+                                        console.log(row)
+
                         api.sendTextMessage(row.initiator, event.message.text)
                     })
 
