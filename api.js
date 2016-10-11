@@ -173,22 +173,16 @@ var self = module.exports = {
                                 self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
                             }
 
-                            pg.defaults.ssl = true;
-                            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                                if(err) {
-                                    done();
-                                    console.log(err);
-                                }
+                            
 
-                                for (let i = 0; i < results.length; i++) {
-                                    self.getPrivacyCardOfUser(results.fb_id, function(card) {
-                                        send_array.push(card);
-                                        if (send_array.length == results.length) {
-                                            self.sendGenericMessage(webhook.recipient_id, send_array);
-                                        }
-                                    })
-                                }  
-                            })
+                            for (let i = 0; i < results.length; i++) {
+                                self.getPrivacyCardOfUser(results.fb_id, function(card) {
+                                    send_array.push(card);
+                                    if (send_array.length == results.length) {
+                                        self.sendGenericMessage(webhook.recipient_id, send_array);
+                                    }
+                                })
+                            }  
                         } else {
                             self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
                         }
@@ -199,78 +193,86 @@ var self = module.exports = {
     },
 
     getPrivacyCardOfUser: function(user_id, accept, callback)  {
-        const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`)
-        privacy_settings.on('row', function(privacy_row) {
 
-            var name = ""
-            var location = ""
-            var image = ""
-
-            if (privacy_row.full_name == 0) {
-                name = results[i].first_name
-            } else if (privacy_row.full_name == 1) {
-                name = results[i].first_name + " " + results[i].last_name
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
             }
+            const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`)
+            privacy_settings.on('row', function(privacy_row) {
 
-            if (privacy_row.location == 0) {
-                // Close, Med, Far
-                var distance = self.getDistanceFromLatLonInKm(results[i].loc_latitude, results[i].loc_longitude, row.loc_latitude, row.loc_longitude)
-                if (distance <= maxDistance / 3) {
-                    location = "Near"
-                } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
-                    location = "Close"
-                } else if (distance > (maxDistance / 3) * 2) {
-                    location = "Far"
-                }
-            } else if (privacy_row.full_name == 1) {
-                location = results[i].geo_location
-            }
+                var name = ""
+                var location = ""
+                var image = ""
 
-            if (privacy_row.profile_pic == 0) {
-                // Woman, Man
-                if (results[i].gender == 0) {
-                    image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
-                } else if (results[i].gender == 1) {
-                    image = "http://aucet.in/it/staffs/female.jpg"
+                if (privacy_row.full_name == 0) {
+                    name = results[i].first_name
+                } else if (privacy_row.full_name == 1) {
+                    name = results[i].first_name + " " + results[i].last_name
                 }
-            } else if (privacy_row.full_name == 1) {
-                image = results[i].profile_pic
-            }
 
-            let card = {};
-            if (accept) {
-                let chat_id = randomInt(0, 2093891025);
-                card = {
-                    "title": name,
-                    "subtitle": location,
-                    "image_url": image,
-                    "buttons": [{
-                            "type": "postback",
-                            "title": "Chat",
-                            "payload": `{ \"method\": \"acceptChat\", \"data\": ${chat_id} }`
-                        },
-                        {   
-                            "type": "postback",
-                            "title": "Reject",
-                            "payload": `{ \"method\": \"rejectChat\", \"data\": ${chat_id} }`
-                    }]
+                if (privacy_row.location == 0) {
+                    // Close, Med, Far
+                    var distance = self.getDistanceFromLatLonInKm(results[i].loc_latitude, results[i].loc_longitude, row.loc_latitude, row.loc_longitude)
+                    if (distance <= maxDistance / 3) {
+                        location = "Near"
+                    } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
+                        location = "Close"
+                    } else if (distance > (maxDistance / 3) * 2) {
+                        location = "Far"
+                    }
+                } else if (privacy_row.full_name == 1) {
+                    location = results[i].geo_location
                 }
-            } else {
-                card = {
-                    "title": name,
-                    "subtitle": location,
-                    "image_url": image,
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Chat",
-                            "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
-                        }
-                    ]
+
+                if (privacy_row.profile_pic == 0) {
+                    // Woman, Man
+                    if (results[i].gender == 0) {
+                        image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
+                    } else if (results[i].gender == 1) {
+                        image = "http://aucet.in/it/staffs/female.jpg"
+                    }
+                } else if (privacy_row.full_name == 1) {
+                    image = results[i].profile_pic
                 }
-            }
-            
-            callback(card);
+
+                let card = {};
+                if (accept) {
+                    let chat_id = randomInt(0, 2093891025);
+                    card = {
+                        "title": name,
+                        "subtitle": location,
+                        "image_url": image,
+                        "buttons": [{
+                                "type": "postback",
+                                "title": "Chat",
+                                "payload": `{ \"method\": \"acceptChat\", \"data\": ${chat_id} }`
+                            },
+                            {   
+                                "type": "postback",
+                                "title": "Reject",
+                                "payload": `{ \"method\": \"rejectChat\", \"data\": ${chat_id} }`
+                        }]
+                    }
+                } else {
+                    card = {
+                        "title": name,
+                        "subtitle": location,
+                        "image_url": image,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Chat",
+                                "payload": `{ \"method\": \"startChat\", \"data\": ${results[i].fb_id} }`
+                            }
+                        ]
+                    }
+                }
+                
+                callback(card);
+            })
         })
     },
 
