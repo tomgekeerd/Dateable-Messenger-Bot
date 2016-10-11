@@ -51,8 +51,8 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
-        let recipient_id = -1;
-        let chat_id = -1;
+        var recipient_id = -1;
+        var chat_id = -1;
         if (isInChat == false) {
             recipient_id = event.sender.id
             exports.recipient_id = recipient_id
@@ -76,7 +76,7 @@ app.post('/webhook/', function (req, res) {
                             console.log(err);
                         }
 
-                        const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id=${postback.data};`);
+                        const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}';`);
                         chatQuery.on('end', () => {
                             isInChat = true;
                             chat_id = postback.data;
@@ -246,7 +246,7 @@ app.post('/webhook/', function (req, res) {
                         console.log(err);
                     }
 
-                    const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id=${chat_id};`);
+                    const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${chat_id}';`);
                     chatQuery.on('row', function(row) {
                         api.sendTextMessage(row.initiator, event.message.text)
                     })
