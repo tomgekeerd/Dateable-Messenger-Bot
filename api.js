@@ -169,13 +169,15 @@ var self = module.exports = {
 
                         if (results.length > 0) {
                             if (results.length == 1) {
-                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+
+                                console.log("idont get it")
+                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
                             } else if (results.length > 1) {
-                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
+                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
                             }
 
                             for (let i = 0; i < results.length; i++) {
-                                self.getPrivacyCardOfUser(results.fb_id, true, results, function(card) {
+                                self.getPrivacyCardOfUser(results[i].fb_id, true, results[i], function(card) {
                                     send_array.push(card);
                                     if (send_array.length == results.length) {
                                         self.sendGenericMessage(webhook.recipient_id, send_array);
