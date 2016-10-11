@@ -82,7 +82,7 @@ app.post('/webhook/', function (req, res) {
                             chat_id = postback.data;
 
                             let call = data.acceptedAChat
-                            self.sendClusterTextMessage(call, recipient_id, function() {
+                            api.sendClusterTextMessage(call, recipient_id, function() {
                                 console.log('done');
                             })                        
                         })
