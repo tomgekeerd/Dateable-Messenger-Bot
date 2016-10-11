@@ -176,7 +176,7 @@ var self = module.exports = {
                             
 
                             for (let i = 0; i < results.length; i++) {
-                                self.getPrivacyCardOfUser(results.fb_id, function(card) {
+                                self.getPrivacyCardOfUser(results.fb_id, true, results, function(card) {
                                     send_array.push(card);
                                     if (send_array.length == results.length) {
                                         self.sendGenericMessage(webhook.recipient_id, send_array);
@@ -192,7 +192,7 @@ var self = module.exports = {
         })
     },
 
-    getPrivacyCardOfUser: function(user_id, accept, callback)  {
+    getPrivacyCardOfUser: function(user_id, accept, results, callback)  {
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {

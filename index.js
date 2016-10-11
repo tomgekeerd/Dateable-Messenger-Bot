@@ -84,7 +84,7 @@ app.post('/webhook/', function (req, res) {
                             const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data};`);
                             dataQuery.on('row', function(row) {
                                 api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + row.first_name + "?", "", "", function() {
-                                    api.getPrivacyCardOfUser(row.fb_id, true, function(card) {
+                                    api.getPrivacyCardOfUser(row.fb_id, true, row, function(card) {
                                         const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${card.buttons[0].data}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
                                         addQuery.on('end', () => {
                                             api.sendGenericMessage(postback.data, card)
