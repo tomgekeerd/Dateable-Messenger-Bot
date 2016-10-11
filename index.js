@@ -83,8 +83,8 @@ app.post('/webhook/', function (req, res) {
                             }
 
                             const cards = [];
-                            const me = {};
-                            const other = {};
+                            var me = {};
+                            var other = {};
 
                             const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${recipient_id};`);
                             dataQuery.on('row', function(row) {

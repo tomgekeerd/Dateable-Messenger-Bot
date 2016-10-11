@@ -169,8 +169,6 @@ var self = module.exports = {
 
                         if (results.length > 0) {
                             if (results.length == 1) {
-
-                                console.log("idont get it")
                                 self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
                             } else if (results.length > 1) {
                                 self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
@@ -275,7 +273,6 @@ var self = module.exports = {
                             ]
                         }
                     }
-                    
                     callback(card);
                 })
             })
