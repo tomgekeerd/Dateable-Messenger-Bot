@@ -364,10 +364,9 @@ var self = module.exports = {
 
         let messageData = {}
         let generic = data.genericTemplate
-        generic.payload.elements = cards
+        generic.payload.elements = JSON.stringify(cards)
         messageData.attachment = generic
 
-        console.log(cards)
 
         request({
             url: 'https://graph.facebook.com/v2.6/me/messages',
