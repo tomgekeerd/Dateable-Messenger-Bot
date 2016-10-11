@@ -161,7 +161,7 @@ var self = module.exports = {
                 }
                 self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", function() {
 
-                    self.findPeople(row.looking_for, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
+                    self.findPeople(row.looking_for, row.gender, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
 
                         console.log(results);
                         var send_array = [];
@@ -279,7 +279,7 @@ var self = module.exports = {
         })
     },
 
-    findPeople: function(gender, lat, long, search_area, callback) {
+    findPeople: function(looking_for, gender, lat, long, search_area, callback) {
 
         var big_found_array = [];
         var small_found_array = [];
@@ -291,7 +291,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const search_query = client.query(`SELECT * FROM users WHERE gender=${gender} AND search_area='${search_area}' AND fb_id <> ${webhook.recipient_id};`)
+            const search_query = client.query(`SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${webhook.recipient_id};`)
             search_query.on('row', function(row) {
                 big_found_array.push(row);
             })
