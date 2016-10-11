@@ -10,6 +10,8 @@ var NodeGeocoder = require('node-geocoder');
 
 // Variables
 
+var recipient_id = -1;
+
 var options = {
   provider: 'google',
  
@@ -50,10 +52,10 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
-        let recipient_id = -1;
-
-        recipient_id = event.sender.id
-        exports.recipient_id = recipient_id
+        if (recipient_id == -1) {}
+            recipient_id = event.sender.id
+            exports.recipient_id = recipient_id
+        }
         
 
         if ('postback' in event) {
