@@ -257,7 +257,13 @@ var self = module.exports = {
                                     "type": "postback",
                                     "title": "Reject",
                                     "payload": `{ \"method\": \"rejectChat\", \"data\": ${chat_id} }`
-                            }]
+                                },
+                                {   
+                                    "type": "postback",
+                                    "title": "Block",
+                                    "payload": `{ \"method\": \"blockChat\", \"data\": ${chat_id} }`
+                                }
+                            ]
                         }
                     } else {
                         card = {

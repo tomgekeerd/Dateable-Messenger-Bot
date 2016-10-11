@@ -52,11 +52,10 @@ app.post('/webhook/', function (req, res) {
         let event = req.body.entry[0].messaging[i]
 
         let recipient_id = -1;
+        let chat_id = -1;
         if (isInChat == false) {
             recipient_id = event.sender.id
             exports.recipient_id = recipient_id
-        } else {
-
         }
 
         if ('postback' in event) {
@@ -65,6 +64,31 @@ app.post('/webhook/', function (req, res) {
 
                 case "getStarted":
                     api.getUserInsights(api.receivedUserInsights);
+                break;
+
+                case "acceptChat":
+
+                    pg.defaults.ssl = true;
+                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+
+                        if(err) {
+                            done();
+                            console.log(err);
+                        }
+
+                        const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id=${postback.data};`);
+                        chatQuery.on('end', () => {
+                            isInChat = true;
+                            chat_id = postback.data;
+
+                            let call = data.acceptedAChat
+                            self.sendClusterTextMessage(call, recipient_id, function() {
+                                console.log('done');
+                            })                        
+                        })
+
+                    })
+
                 break;
 
                 case "startChat":
@@ -209,6 +233,26 @@ app.post('/webhook/', function (req, res) {
                 
                 });
             });
+        } else {
+            if (isInChat) {
+
+                // Alright, this msg has to be sent to the other we are in a chat with
+
+                pg.defaults.ssl = true;
+                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+
+                    if(err) {
+                        done();
+                        console.log(err);
+                    }
+
+                    const chatQuery = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id=${chat_id};`);
+                    chatQuery.on('row', function(row) => {
+                        api.sendTextMessage(row.initiator, event.message.text)
+                    })
+
+                })
+            }
         }
     }
     res.sendStatus(200)
