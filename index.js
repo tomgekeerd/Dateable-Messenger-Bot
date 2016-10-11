@@ -52,13 +52,12 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
 
-        if (recipient_id == -1) {}
+        let recipient_id = -1;
+
+        if (recipient_id == -1) {
             recipient_id = event.sender.id
             exports.recipient_id = recipient_id
-
-            console.log('its a shame')
         }
-        
 
         if ('postback' in event) {
             let postback = JSON.parse(event.postback.payload)
@@ -161,6 +160,7 @@ app.post('/webhook/', function (req, res) {
                 default:
                     api.sendTextMessage(recipient_id, "A postback without understandance");
             }
+            continue
 
         } else if ('quick_reply' in event.message && 'payload' in event.message.quick_reply) {
 
@@ -257,6 +257,7 @@ app.post('/webhook/', function (req, res) {
                 })
             })
         }
+    }
     res.sendStatus(200)
 })
 
