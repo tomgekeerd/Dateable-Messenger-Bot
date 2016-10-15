@@ -85,15 +85,15 @@ app.post('/webhook/', function (req, res) {
                         if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
                             // interactive msg
                             if (event.message.attachments[0].payload.type == 'location') {
-                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", event.message.attachments[0])
+                                api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
                             } else if (event.message.attachments[0].payload.type == 'image') {
-                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", event.message.attachments[0].payload.url)
+                                api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url)
                             } else if (event.message.attachments[0].payload.type == 'audio') {
-                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", "location", event.message.attachments[0].payload.url)
+                                api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
                             } else if (event.message.attachments[0].payload.type == 'file') {
-                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", "location", "audio", "video", event.message.attachments[0].payload.url)
+                                api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].payload.url)
                             } else if (event.message.attachments[0].payload.type == 'video') {
-                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", "location", "audio", event.message.attachments[0].payload.url)
+                                api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
                             }
                         } else {
                             // text msg
@@ -286,7 +286,6 @@ app.post('/webhook/', function (req, res) {
 
                         }
                     } 
-                }
             })
 
             chatQuery.on('end', () => {
