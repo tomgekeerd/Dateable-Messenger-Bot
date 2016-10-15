@@ -92,7 +92,7 @@ app.post('/webhook/', function (req, res) {
 
                             if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
                                 // interactive msg
-
+                                console.log(event.message.attachments[0].payload.type)
                                 console.log('in the bed alone')
                                 if (event.message.attachments[0].payload.type == 'location') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
