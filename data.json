@@ -157,8 +157,8 @@
 
 	"interactiveTemplate": {
 		"type":"",
-      	"payload":{
-        	
+      	"payload": {
+        	"url": ""
       	}
 	}
 }

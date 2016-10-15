@@ -53,6 +53,7 @@ var self = module.exports = {
         }
 
         var iTemplate = data.interactiveTemplate
+        console.log(iTemplate)
 
         if (q_replies != "") {
             messageData.quick_replies = q_replies
@@ -66,6 +67,7 @@ var self = module.exports = {
             messageData = {}
             iTemplate.type = "image"
             iTemplate.payload.url = image
+            console.log('baby come on' + )
         } else if (location != "") {
             console.log(location)
         } else if (audio != "") {
@@ -82,7 +84,6 @@ var self = module.exports = {
             iTemplate.payload.url = file
         }
 
-        console.log(iTemplate)
         if (iTemplate != data.interactiveTemplate) {
             messageData.attachment = iTemplate
         }
