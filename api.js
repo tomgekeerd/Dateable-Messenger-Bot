@@ -67,7 +67,7 @@ var self = module.exports = {
             messageData = {}
             iTemplate.type = "image"
             iTemplate.payload.url = image
-            console.log('baby come on' + )
+            console.log('baby come on' + image)
         } else if (location != "") {
             console.log(location)
         } else if (audio != "") {
