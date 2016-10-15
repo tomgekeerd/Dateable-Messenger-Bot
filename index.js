@@ -97,6 +97,7 @@ app.post('/webhook/', function (req, res) {
                                 if (event.message.attachments[0].payload.type == 'location') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].payload.type == 'image') {
+                                    console.log('image')
                                     api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url, "", "", "", "")
                                 } else if (event.message.attachments[0].payload.type == 'audio') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
