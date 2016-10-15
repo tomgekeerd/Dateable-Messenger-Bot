@@ -92,19 +92,16 @@ app.post('/webhook/', function (req, res) {
 
                             if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
                                 // interactive msg
-                                console.log(event.message.attachments[0].payload.type)
-                                console.log('in the bed alone')
-                                if (event.message.attachments[0].payload.type == 'location') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
-                                } else if (event.message.attachments[0].payload.type == 'image') {
-                                    console.log('image')
-                                    api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url, "", "", "", "")
-                                } else if (event.message.attachments[0].payload.type == 'audio') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
-                                } else if (event.message.attachments[0].payload.type == 'file') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].payload.url)
-                                } else if (event.message.attachments[0].payload.type == 'video') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
+                                if (event.message.attachments[0].type == 'location') {
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].url)
+                                } else if (event.message.attachments[0].type == 'image') {
+                                    api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].url)
+                                } else if (event.message.attachments[0].type == 'audio') {
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].url)
+                                } else if (event.message.attachments[0].type == 'file') {
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].url)
+                                } else if (event.message.attachments[0].type == 'video') {
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].url)
                                 }
                             } else {
                                 // text msg
