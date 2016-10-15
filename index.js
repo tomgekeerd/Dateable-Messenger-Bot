@@ -93,15 +93,15 @@ app.post('/webhook/', function (req, res) {
                             if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
                                 // interactive msg
                                 if (event.message.attachments[0].type == 'location') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].url)
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'image') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].url)
+                                    api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'audio') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].url)
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'file') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].url)
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'video') {
-                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].url)
+                                    api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
                                 }
                             } else {
                                 // text msg
