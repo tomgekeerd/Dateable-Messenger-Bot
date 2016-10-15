@@ -70,7 +70,7 @@ app.post('/webhook/', function (req, res) {
                 if (row.is_in_chat != 0) {
                     // Alright, this msg has to be sent to the other we are in a chat with
 
-                    const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
+                    let sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
                     sendMSG.on('row', function(row) {
 
                         const humanToSendTo = -1;
