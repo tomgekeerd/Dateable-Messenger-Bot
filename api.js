@@ -52,7 +52,7 @@ var self = module.exports = {
             text: text
         }
 
-        let iTemplate = data.interactiveTemplate
+        var iTemplate = data.interactiveTemplate
 
         if (q_replies != "") {
             messageData.quick_replies = q_replies
@@ -82,6 +82,7 @@ var self = module.exports = {
             iTemplate.payload.url = file
         }
 
+        console.log(iTemplate)
         if (iTemplate != data.interactiveTemplate) {
             messageData.attachment = iTemplate
         }
