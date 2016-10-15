@@ -51,7 +51,7 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
         console.log(event)
-
+        console.log(event.message.attachment)
         let recipient_id = -1;
 
         if (recipient_id == -1) {
@@ -71,6 +71,8 @@ app.post('/webhook/', function (req, res) {
             chatQuery.on('row', function(row) {
                 if (row.is_in_chat != 0) {
                     // Alright, this msg has to be sent to the other we are in a chat with
+
+
                     const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
                     sendMSG.on('row', function(row) {
                         if (row.initiator == recipient_id) {
@@ -222,7 +224,7 @@ app.post('/webhook/', function (req, res) {
                                 console.log('default')
                         }
 
-                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0] && 'coordinates' in event.message.attachments[0].payload && 'lat' in event.message.attachments[0].payload.coordinates) {
+                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0] && 'coordinates' in event.message.attachments[0].payload && 'lat' in event.message.attachments[0].payload.coordinates && 'long' in event.message.attachments[0].payload.coordinates) {
 
                         let payload = event.message.attachments[0].payload
 
@@ -257,6 +259,8 @@ app.post('/webhook/', function (req, res) {
                                 })
                             });
                         });
+                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0] && 'coordinates' in event.message.attachments[0].payload && 'lat' in event.message.attachments[0].payload.coordinates && 'long' in event.message.attachments[0].payload.coordinates) {
+
                     }
                 }
             })
