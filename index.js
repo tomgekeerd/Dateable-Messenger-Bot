@@ -65,225 +65,233 @@ app.post('/webhook/', function (req, res) {
                 console.log(err);
             }
             console.log(recipient_id)
-            const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${recipient_id};`);
-            chatQuery.on('row', function(row) {
-                if (row.is_in_chat != 0) {
-                    // Alright, this msg has to be sent to the other we are in a chat with
 
-                    const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
-                    sendMSG.on('row', function(row) {
+            const checkUsers = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${recipient_id};`);
+            checkUsers.on('row', function(row) {
+                if (row.count > 0) {
+                    const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${recipient_id};`);
+                    chatQuery.on('row', function(row) {
+                        if (row.is_in_chat != 0) {
+                            // Alright, this msg has to be sent to the other we are in a chat with
 
-                        let humanToSendTo = -1;
-                        if (row.initiator == recipient_id) {
-                            humanToSendTo = row.responder;
-                        } else if (row.responder == recipient_id) {
-                            humanToSendTo = row.initiator;
-                        }
+                            const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
+                            sendMSG.on('row', function(row) {
 
-                        if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
-                            // interactive msg
-                            if (event.message.attachments[0].payload.type == 'location') {
-                                api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
-                            } else if (event.message.attachments[0].payload.type == 'image') {
-                                api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url)
-                            } else if (event.message.attachments[0].payload.type == 'audio') {
-                                api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
-                            } else if (event.message.attachments[0].payload.type == 'file') {
-                                api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].payload.url)
-                            } else if (event.message.attachments[0].payload.type == 'video') {
-                                api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
-                            }
-                        } else {
-                            // text msg
-                            api.sendTextMessage(humanToSendTo, event.message.text)
-                        }
+                                let humanToSendTo = -1;
+                                if (row.initiator == recipient_id) {
+                                    humanToSendTo = row.responder;
+                                } else if (row.responder == recipient_id) {
+                                    humanToSendTo = row.initiator;
+                                }
 
-                    })
-
-                    sendMSG.on('end', () => {
-                        done();
-                    })
-                } else {
-
-                    if ('postback' in event) {
-                        let postback = JSON.parse(event.postback.payload)
-                        switch (postback.method) {
-
-                            case "getStarted":
-                                api.getUserInsights(api.receivedUserInsights);
-                            break;
-
-                            case "acceptChat":
-
-                                pg.defaults.ssl = true;
-                                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-
-                                    if(err) {
-                                        done();
-                                        console.log(err);
+                                if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
+                                    // interactive msg
+                                    if (event.message.attachments[0].payload.type == 'location') {
+                                        api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
+                                    } else if (event.message.attachments[0].payload.type == 'image') {
+                                        api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url)
+                                    } else if (event.message.attachments[0].payload.type == 'audio') {
+                                        api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
+                                    } else if (event.message.attachments[0].payload.type == 'file') {
+                                        api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].payload.url)
+                                    } else if (event.message.attachments[0].payload.type == 'video') {
+                                        api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
                                     }
-
-                                    const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' RETURNING *;`);
-                                    chatQuery.on('row', function(row) {
-                                        const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
-                                        usersQuery.on('end', () => {
-                                            let call = data.acceptedAChat
-                                            api.sendClusterTextMessage(call, recipient_id, function() {
-                                                console.log('done');
-                                            })                        
-                                        })
-                                    })
-                                })
-
-                            break
-
-                            case "startChat":
-
-                                if (postback.data == true) {
-                                    api.startChat();
-                                } else if (postback.data == false) {
-                                    api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
                                 } else {
-                                    pg.defaults.ssl = true;
-                                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                    // text msg
+                                    api.sendTextMessage(humanToSendTo, event.message.text)
+                                }
 
-                                        if(err) {
-                                            done();
-                                            console.log(err);
-                                        }
+                            })
 
-                                        const cards = [];
-                                        var me = {};
-                                        var other = {};
+                            sendMSG.on('end', () => {
+                                done();
+                            })
+                        } else {
 
-                                        const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${recipient_id};`);
-                                        dataQuery.on('row', function(row) {
-                                            if (row.fb_id == recipient_id) {
-                                                me = row
-                                            } else if (row.fb_id == postback.data) {
-                                                other = row
+                            if ('postback' in event) {
+                                let postback = JSON.parse(event.postback.payload)
+                                switch (postback.method) {
+
+                                    case "getStarted":
+                                        api.getUserInsights(api.receivedUserInsights);
+                                    break;
+
+                                    case "acceptChat":
+
+                                        pg.defaults.ssl = true;
+                                        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+
+                                            if(err) {
+                                                done();
+                                                console.log(err);
                                             }
-                                        })
 
-                                        dataQuery.on('end', () => {
-                                            done();
-
-                                            api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", "", "", "", "", "", function() {
-                                                api.getPrivacyCardOfUser(me.fb_id, true, me, function(card) {
-                                                    let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                    const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
-                                                    addQuery.on('end', () => {
-                                                        cards.push(card)
-                                                        api.sendGenericMessage(postback.data, cards)
-                                                        api.sendTextMessage(recipient_id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
-                                                    })
+                                            const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' RETURNING *;`);
+                                            chatQuery.on('row', function(row) {
+                                                const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
+                                                usersQuery.on('end', () => {
+                                                    let call = data.acceptedAChat
+                                                    api.sendClusterTextMessage(call, recipient_id, function() {
+                                                        console.log('done');
+                                                    })                        
                                                 })
                                             })
                                         })
-                                    })
 
+                                    break
+
+                                    case "startChat":
+
+                                        if (postback.data == true) {
+                                            api.startChat();
+                                        } else if (postback.data == false) {
+                                            api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
+                                        } else {
+                                            pg.defaults.ssl = true;
+                                            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+
+                                                if(err) {
+                                                    done();
+                                                    console.log(err);
+                                                }
+
+                                                const cards = [];
+                                                var me = {};
+                                                var other = {};
+
+                                                const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${recipient_id};`);
+                                                dataQuery.on('row', function(row) {
+                                                    if (row.fb_id == recipient_id) {
+                                                        me = row
+                                                    } else if (row.fb_id == postback.data) {
+                                                        other = row
+                                                    }
+                                                })
+
+                                                dataQuery.on('end', () => {
+                                                    done();
+
+                                                    api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", "", "", "", "", "", function() {
+                                                        api.getPrivacyCardOfUser(me.fb_id, true, me, function(card) {
+                                                            let methodAndData = JSON.parse(card.buttons[0].payload)
+                                                            const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                                            addQuery.on('end', () => {
+                                                                cards.push(card)
+                                                                api.sendGenericMessage(postback.data, cards)
+                                                                api.sendTextMessage(recipient_id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                                            })
+                                                        })
+                                                    })
+                                                })
+                                            })
+
+                                        }
+
+                                    break;
+
+                                    case "help":
+                                        api.sendTextMessage(recipient_id, "You want help huh?");
+                                    break;
+
+                                    case "showPrivacySettings":
+
+                                        if (postback.data == true) {
+                                            // TODO
+                                        } else {
+
+                                            let call = data.suggestStartChat
+                                            api.sendClusterTextMessage(call, recipient_id, function() {
+                                                console.log("Done")
+                                            })
+                                        }
+
+                                    break;
+
+                                    default:
+                                        api.sendTextMessage(recipient_id, "A postback without understandance");
                                 }
 
-                            break;
+                            } else if ('quick_reply' in event.message && 'payload' in event.message.quick_reply) {
 
-                            case "help":
-                                api.sendTextMessage(recipient_id, "You want help huh?");
-                            break;
+                                let payload = JSON.parse(event.message.quick_reply.payload)
 
-                            case "showPrivacySettings":
+                                switch (payload.method) {
 
-                                if (postback.data == true) {
-                                    // TODO
-                                } else {
+                                    case "pickedGender":
 
-                                    let call = data.suggestStartChat
-                                    api.sendClusterTextMessage(call, recipient_id, function() {
-                                        console.log("Done")
-                                    })
+                                        api.looking_for = payload.data;
+                                        let call = data.confirmGender
+
+                                        pg.defaults.ssl = true;
+                                        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                            if(err) {
+                                                done();
+                                                console.log(err);
+                                            }
+
+                                            const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
+                                            query.on('end', () => {
+                                                done();
+                                            });
+                                        });
+                                        
+                                        api.sendClusterTextMessage(call, recipient_id, function() {
+                                            console.log('done');
+                                        })
+
+                                    break;
+
+                                    default:
+                                        console.log('default')
                                 }
 
-                            break;
+                            } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
 
-                            default:
-                                api.sendTextMessage(recipient_id, "A postback without understandance");
-                        }
+                                if (event.message.attachments[0].payload.type == 'location') {}
+                                    let payload = event.message.attachments[0].payload
 
-                    } else if ('quick_reply' in event.message && 'payload' in event.message.quick_reply) {
+                                    api.loc_latitude = payload.coordinates.lat
+                                    api.loc_longitude = payload.coordinates.long
 
-                        let payload = JSON.parse(event.message.quick_reply.payload)
+                                    // Get geo details
 
-                        switch (payload.method) {
+                                    geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
 
-                            case "pickedGender":
+                                        // JSON validations
 
-                                api.looking_for = payload.data;
-                                let call = data.confirmGender
+                                        let strings = JSON.stringify(res)
+                                        let json = JSON.parse(strings)
 
-                                pg.defaults.ssl = true;
-                                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                                    if(err) {
-                                        done();
-                                        console.log(err);
-                                    }
+                                        api.geo_location = json[0].city + ", " + json[0].administrativeLevels.level1short + ", " + json[0].country;
 
-                                    const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
-                                    query.on('end', () => {
-                                        done();
+                                        // UPDATE in db
+
+                                        pg.defaults.ssl = true;
+                                        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                            if(err) {
+                                                console.log(err);
+                                                done();
+                                            }
+
+                                            client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${recipient_id};`);
+
+                                            let call = data.confirmLocation
+                                            api.sendClusterTextMessage(call, recipient_id, function() {
+                                                console.log('done');
+                                            })
+                                        });
                                     });
-                                });
-                                
-                                api.sendClusterTextMessage(call, recipient_id, function() {
-                                    console.log('done');
-                                })
+                                } else if (event.message.attachments[0].payload.type == 'image') {
 
-                            break;
+                                } else if (event.message.attachments[0].payload.type == 'audio') {
 
-                            default:
-                                console.log('default')
-                        }
+                                }
+                            } 
+                    })
+                } else {
 
-                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
-
-                        if (event.message.attachments[0].payload.type == 'location') {}
-                            let payload = event.message.attachments[0].payload
-
-                            api.loc_latitude = payload.coordinates.lat
-                            api.loc_longitude = payload.coordinates.long
-
-                            // Get geo details
-
-                            geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
-
-                                // JSON validations
-
-                                let strings = JSON.stringify(res)
-                                let json = JSON.parse(strings)
-
-                                api.geo_location = json[0].city + ", " + json[0].administrativeLevels.level1short + ", " + json[0].country;
-
-                                // UPDATE in db
-
-                                pg.defaults.ssl = true;
-                                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                                    if(err) {
-                                        console.log(err);
-                                        done();
-                                    }
-
-                                    client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${recipient_id};`);
-
-                                    let call = data.confirmLocation
-                                    api.sendClusterTextMessage(call, recipient_id, function() {
-                                        console.log('done');
-                                    })
-                                });
-                            });
-                        } else if (event.message.attachments[0].payload.type == 'image') {
-
-                        } else if (event.message.attachments[0].payload.type == 'audio') {
-
-                        }
-                    } 
+                }
             })
 
             chatQuery.on('end', () => {
