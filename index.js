@@ -72,14 +72,35 @@ app.post('/webhook/', function (req, res) {
                 if (row.is_in_chat != 0) {
                     // Alright, this msg has to be sent to the other we are in a chat with
 
-
                     const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
                     sendMSG.on('row', function(row) {
+
+                        const humanToSendTo = -1;
                         if (row.initiator == recipient_id) {
-                            api.sendTextMessage(row.responder, event.message.text)
+                            humanToSendTo = row.responder;
                         } else if (row.responder == recipient_id) {
-                            api.sendTextMessage(row.initiator, event.message.text)
+                            humanToSendTo = row.initiator;
                         }
+    sendTextMessage: function(recipient, text, q_replies, buttons, image, location, audio, video, file, callback) {
+
+                        if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
+                            // interactive msg
+                            if (event.message.attachments[0].payload.type == 'location') {
+                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", event.message.attachments[0])
+                            } else if (event.message.attachments[0].payload.type == 'image') {
+                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", event.message.attachments[0].payload.url)
+                            } else if (event.message.attachments[0].payload.type == 'audio') {
+                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", "location", event.message.attachments[0].payload.url)
+                            } else if (event.message.attachments[0].payload.type == 'file') {
+                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", "location", "audio", "video", event.message.attachments[0].payload.url)
+                            } else if (event.message.attachments[0].payload.type == 'video') {
+                                api.sendTextMessage(humanToSendTo, "text", "q_reply", "buttons", "image", "location", "audio", event.message.attachments[0].payload.url)
+                            }
+                        } else {
+                            // text msg
+                            api.sendTextMessage(humanToSendTo, event.message.text)
+                        }
+
                     })
 
                     sendMSG.on('end', () => {
@@ -150,7 +171,7 @@ app.post('/webhook/', function (req, res) {
                                         dataQuery.on('end', () => {
                                             done();
 
-                                            api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", function() {
+                                            api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", "", "", "", "", "", function() {
                                                 api.getPrivacyCardOfUser(me.fb_id, true, me, function(card) {
                                                     let methodAndData = JSON.parse(card.buttons[0].payload)
                                                     const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
@@ -224,42 +245,48 @@ app.post('/webhook/', function (req, res) {
                                 console.log('default')
                         }
 
-                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0] && 'coordinates' in event.message.attachments[0].payload && 'lat' in event.message.attachments[0].payload.coordinates && 'long' in event.message.attachments[0].payload.coordinates) {
+                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
 
-                        let payload = event.message.attachments[0].payload
+                        if (event.message.attachments[0].payload.type == 'location') {}
+                            let payload = event.message.attachments[0].payload
 
-                        api.loc_latitude = payload.coordinates.lat
-                        api.loc_longitude = payload.coordinates.long
+                            api.loc_latitude = payload.coordinates.lat
+                            api.loc_longitude = payload.coordinates.long
 
-                        // Get geo details
+                            // Get geo details
 
-                        geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
+                            geocoder.reverse({lat:api.loc_latitude, lon:api.loc_longitude}, function(err, res) {
 
-                            // JSON validations
+                                // JSON validations
 
-                            let strings = JSON.stringify(res)
-                            let json = JSON.parse(strings)
+                                let strings = JSON.stringify(res)
+                                let json = JSON.parse(strings)
 
-                            api.geo_location = json[0].city + ", " + json[0].administrativeLevels.level1short + ", " + json[0].country;
+                                api.geo_location = json[0].city + ", " + json[0].administrativeLevels.level1short + ", " + json[0].country;
 
-                            // UPDATE in db
+                                // UPDATE in db
 
-                            pg.defaults.ssl = true;
-                            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                                if(err) {
-                                    console.log(err);
-                                    done();
-                                }
+                                pg.defaults.ssl = true;
+                                pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                    if(err) {
+                                        console.log(err);
+                                        done();
+                                    }
 
-                                client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${recipient_id};`);
+                                    client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${recipient_id};`);
 
-                                let call = data.confirmLocation
-                                api.sendClusterTextMessage(call, recipient_id, function() {
-                                    console.log('done');
-                                })
+                                    let call = data.confirmLocation
+                                    api.sendClusterTextMessage(call, recipient_id, function() {
+                                        console.log('done');
+                                    })
+                                });
                             });
-                        });
-                    }
+                        } else if (event.message.attachments[0].payload.type == 'image') {
+
+                        } else if (event.message.attachments[0].payload.type == 'audio') {
+
+                        }
+                    } 
                 }
             })
 

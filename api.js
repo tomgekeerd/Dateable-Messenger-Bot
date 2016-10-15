@@ -46,22 +46,44 @@ const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK
 
 var self = module.exports = {
 
-    sendTextMessage: function(recipient, text, q_replies, buttons, callback) {
+    sendTextMessage: function(recipient, text, q_replies, buttons, image, location, audio, video, file, callback) {
 
         let messageData = {
             text: text
         }
 
+        let iTemplate = data.interactiveTemplate
+
         if (q_replies != "") {
             messageData.quick_replies = q_replies
         } else if (buttons != "") {
             messageData = {}
-
             let button = data.buttonTemplate
             button.payload.text = text
             button.payload.buttons = buttons
-
             messageData.attachment = button
+        } else if (image != "") {
+            messageData = {}
+            iTemplate.type = "image"
+            iTemplate.payload.url = image
+        } else if (location != "") {
+            console.log(location)
+        } else if (audio != "") {
+            messageData = {}
+            iTemplate.type = "audio"
+            iTemplate.payload.url = audio
+        } else if (video != "") {
+            messageData = {}
+            iTemplate.type = "video"
+            iTemplate.payload.url = video
+        } else if (file != "") {
+            messageData = {}
+            iTemplate.type = "file"
+            iTemplate.payload.url = file
+        }
+
+        if (iTemplate != data.interactiveTemplate) {
+            messageData.attachment = iTemplate
         }
 
         request({
@@ -94,15 +116,15 @@ var self = module.exports = {
                 switch (call.method) {
                     case "send":
                         if (call.q_reply && call.q_reply[i] != "") {
-                            self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], "", function() {
+                            self.sendTextMessage(recipient, call.messages[i], call.q_reply[i], "", "", "", "", "", "", function() {
                                 sendMessages()
                             })
                         } else if (call.buttons && call.buttons[i] != "") {
-                            self.sendTextMessage(recipient, call.messages[i], "", call.buttons[i], function() {
+                            self.sendTextMessage(recipient, call.messages[i], "", call.buttons[i], "", "", "", "", "", function() {
                                 sendMessages()
                             })
                         } else {
-                            self.sendTextMessage(recipient, call.messages[i], "", "", function() {
+                            self.sendTextMessage(recipient, call.messages[i], "", "", "", "", "", "", "", function() {
                                 sendMessages()
                             })
                         }
@@ -159,7 +181,7 @@ var self = module.exports = {
                     default:
                         looking_for_gender = "noone"
                 }
-                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", function() {
+                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", "", "", "", "", "", function() {
 
                     self.findPeople(row.looking_for, row.gender, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
 
