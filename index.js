@@ -81,7 +81,6 @@ app.post('/webhook/', function (req, res) {
                         } else if (row.responder == recipient_id) {
                             humanToSendTo = row.initiator;
                         }
-    sendTextMessage: function(recipient, text, q_replies, buttons, image, location, audio, video, file, callback) {
 
                         if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
                             // interactive msg
