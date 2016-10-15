@@ -95,7 +95,7 @@ app.post('/webhook/', function (req, res) {
                                 // interactive msg
                                 if (event.message.attachments[0].type == 'location') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
-                                } else if (event.message.attachments[0].type == 'image') {
+                                } else if (event.message.attachments[0].type == 'image' && (event.sticker_id == 'undefined' || event.sticker_id == null)) {
                                     api.sendTextMessage(humanToSendTo, "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'audio') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", "", event.message.attachments[0].payload.url)
