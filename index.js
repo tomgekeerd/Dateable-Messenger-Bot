@@ -57,6 +57,7 @@ app.post('/webhook/', function (req, res) {
             exports.recipient_id = recipient_id
         }
 
+        console.log(event.postback)
         if ('postback' in event && 'payload' in event.postback && JSON.stringify(event.postback).indexOf("getStarted") > -1) {
             let postback = JSON.parse(event.postback.payload)
             if (postback.method == 'getStarted') {
