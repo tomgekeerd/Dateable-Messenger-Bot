@@ -198,7 +198,7 @@ app.post('/webhook/', function (req, res) {
                                 break;
 
                                 case "showPrivacySettings":
-
+                                    console.log("anusneukers")
                                     if (postback.data == true) {
                                         // TODO
                                     } else {
