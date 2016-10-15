@@ -51,7 +51,7 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]
         console.log(event)
-        console.log(event.message.attachment)
+        console.log(event.message.attachments)
         let recipient_id = -1;
 
         if (recipient_id == -1) {
@@ -259,8 +259,6 @@ app.post('/webhook/', function (req, res) {
                                 })
                             });
                         });
-                    } else if ('attachments' in event.message && 'payload' in event.message.attachments[0] && 'coordinates' in event.message.attachments[0].payload && 'lat' in event.message.attachments[0].payload.coordinates && 'long' in event.message.attachments[0].payload.coordinates) {
-
                     }
                 }
             })
