@@ -67,6 +67,7 @@ var self = module.exports = {
             messageData = {}
             iTemplate.type = "image"
             iTemplate.payload.url = image
+            messageData.attachment = iTemplate
             console.log('baby come on' + image)
         } else if (location != "") {
             console.log(location)
@@ -74,17 +75,16 @@ var self = module.exports = {
             messageData = {}
             iTemplate.type = "audio"
             iTemplate.payload.url = audio
+            messageData.attachment = iTemplate
         } else if (video != "") {
             messageData = {}
             iTemplate.type = "video"
             iTemplate.payload.url = video
+            messageData.attachment = iTemplate
         } else if (file != "") {
             messageData = {}
             iTemplate.type = "file"
             iTemplate.payload.url = file
-        }
-
-        if (iTemplate != data.interactiveTemplate) {
             messageData.attachment = iTemplate
         }
 
