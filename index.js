@@ -87,6 +87,9 @@ app.post('/webhook/', function (req, res) {
                                 humanToSendTo = row.initiator;
                             }
 
+                            console.log(event.message)
+                            console.log(event.message.attachments)
+
                             if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
                                 // interactive msg
                                 if (event.message.attachments[0].payload.type == 'location') {
