@@ -229,9 +229,9 @@ var self = module.exports = {
 
                 let humanToSendTo = -1;
                 if (row.initiator == id) {
-                    humanToSendTo = row.responder;
-                } else if (row.responder == id) {
                     humanToSendTo = row.initiator;
+                } else if (row.responder == id) {
+                    humanToSendTo = row.responder;
                 }     
 
                 const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
