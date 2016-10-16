@@ -142,7 +142,7 @@ app.post('/webhook/', function (req, res) {
                                 case "startChat":
 
                                     if (postback.data == true) {
-                                        api.startChat();
+                                        api.startChat(event.sender.id);
                                     } else if (postback.data == false) {
                                         api.sendTextMessage(event.sender.id, "Alright! Just beep me up when you are ready!");
                                     } else {

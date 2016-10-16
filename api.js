@@ -152,7 +152,7 @@ var self = module.exports = {
 
     },
 
-    startChat: function() {
+    startChat: function(id) {
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -161,7 +161,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const preferences_query = client.query(`SELECT * FROM users WHERE fb_id=${webhook.recipient_id};`)
+            const preferences_query = client.query(`SELECT * FROM users WHERE fb_id=${id};`)
             preferences_query.on('row', function(row) {
                 var looking_for_gender = ""
                 var looking_for_gender_one = ""
@@ -183,7 +183,7 @@ var self = module.exports = {
                     default:
                         looking_for_gender = "noone"
                 }
-                self.sendTextMessage(webhook.recipient_id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", "", "", "", "", "", function() {
+                self.sendTextMessage(id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", "", "", "", "", "", function() {
 
                     self.findPeople(row.looking_for, row.gender, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
 
@@ -193,21 +193,21 @@ var self = module.exports = {
 
                         if (results.length > 0) {
                             if (results.length == 1) {
-                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
+                                self.sendTextMessage(id, "I found " + results.length + " " + looking_for_gender_one + " in your nabourhood. Tap 'chat' if you would like to chat with one of them.")
                             } else if (results.length > 1) {
-                                self.sendTextMessage(webhook.recipient_id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
+                                self.sendTextMessage(id, "I found " + results.length + " " + looking_for_gender + " in your nabourhood. Tap 'chat' if you would like to chat with him/her")
                             }
 
                             for (let i = 0; i < results.length; i++) {
-                                self.getPrivacyCardOfUser(results[i].fb_id, false, results[i], function(card) {
+                                self.getPrivacyCardOfUser(id, results[i].fb_id, false, results[i], function(card) {
                                     send_array.push(card);
                                     if (send_array.length == results.length) {
-                                        self.sendGenericMessage(webhook.recipient_id, send_array);
+                                        self.sendGenericMessage(id, send_array);
                                     }
                                 })
                             }  
                         } else {
-                            self.sendTextMessage(webhook.recipient_id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
+                            self.sendTextMessage(id, "Unfortunately, I was unable to find someone in your nabourhood following your wishes. Please try again later.")
                         }
                     });
                 });
@@ -250,7 +250,7 @@ var self = module.exports = {
         })
     },
 
-    getPrivacyCardOfUser: function(user_id, accept, results, callback)  {
+    getPrivacyCardOfUser: function(id, user_id, accept, results, callback)  {
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -259,7 +259,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const user_info = client.query(`SELECT * FROM users WHERE fb_id=${webhook.recipient_id};`)
+            const user_info = client.query(`SELECT * FROM users WHERE fb_id=${id};`)
             user_info.on('row', function(row) {
 
                 const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`)
@@ -344,7 +344,7 @@ var self = module.exports = {
         })
     },
 
-    findPeople: function(looking_for, gender, lat, long, search_area, callback) {
+    findPeople: function(id, looking_for, gender, lat, long, search_area, callback) {
 
         var big_found_array = [];
         var small_found_array = [];
@@ -356,7 +356,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const search_query = client.query(`SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${webhook.recipient_id};`)
+            const search_query = client.query(`SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`)
             search_query.on('row', function(row) {
                 big_found_array.push(row);
             })
