@@ -289,10 +289,13 @@ app.post('/webhook/', function (req, res) {
                 })
                 chatQuery.on('end', () => {
                     done();
+                    console.log('done with everything')
                 })
             })
         }
     }
+    console.log(res)
+    console.log(req)
     res.sendStatus(200)
 })
 
