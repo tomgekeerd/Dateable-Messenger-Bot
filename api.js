@@ -185,7 +185,7 @@ var self = module.exports = {
                 }
                 self.sendTextMessage(id, "Looking for " + looking_for_gender + " in the nabourhood of " + row.geo_location + "...", "", "", "", "", "", "", "", function() {
 
-                    self.findPeople(row.looking_for, row.gender, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
+                    self.findPeople(id, row.looking_for, row.gender, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
 
                         console.log(results);
                         var send_array = [];
