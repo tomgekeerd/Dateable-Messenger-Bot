@@ -224,13 +224,13 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const chat_details = client.query(`SELECT * FROM chats WHERE chat_id=${chat_id};`)
+            const chat_details = client.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`)
             chat_details.on('row', function(row) {
 
                 const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`)
                 back_to_default.on('end', () => {
 
-                    const remove_query = client.query(`DELETE FROM chats WHERE chat_id=${chat_id};`)
+                    const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`)
                     remove_query.on('end', function(row) {
 
                         let humanToSendTo = -1;
