@@ -10,8 +10,6 @@ var NodeGeocoder = require('node-geocoder');
 
 // Variables
 
-var event.sender.id = -1;
-
 var options = {
   provider: 'google',
  
