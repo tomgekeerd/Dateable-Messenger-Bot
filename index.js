@@ -131,7 +131,11 @@ app.post('/webhook/', function (req, res) {
                                             usersQuery.on('end', () => {
                                                 let call = data.acceptedAChat
                                                 api.sendClusterTextMessage(call, event.sender.id, function() {
-                                                    console.log('done');
+                                                    if (row.initiator == event.sender.id) {
+                                                        api.sendClusterTextMessage(data.chatIsAccepted, row.responder)
+                                                    } else {
+                                                        api.sendClusterTextMessage(data.chatIsAccepted, row.initiator)
+                                                    }
                                                 })                        
                                             })
                                         })
