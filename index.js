@@ -88,9 +88,6 @@ app.post('/webhook/', function (req, res) {
                                 humanToSendTo = row.initiator;
                             }
 
-                            console.log(event.message)
-                            console.log(event.message.attachments)
-
                             if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
                                 // interactive msg
                                 if (event.message.attachments[0].type == 'location') {
@@ -103,6 +100,8 @@ app.post('/webhook/', function (req, res) {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'video') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
+                                } else if (event.message.attachments[0].type == 'image' && event.message.attachments[0].payload.sticker_id == 369239263222822) {
+                                    api.stopChat(row.is_in_chat)
                                 }
                             } else {
                                 // text msg

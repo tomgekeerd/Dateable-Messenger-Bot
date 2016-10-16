@@ -215,6 +215,41 @@ var self = module.exports = {
         })
     },
 
+    stopChat: function(chat_id) {
+
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
+            }
+
+            const chat_details = client.query(`SELECT * FROM chats WHERE chat_id=${chat_id};`)
+            chat_details.on('row', function(row) {
+
+                const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`)
+                back_to_default.on('end', () => {
+
+                    const remove_query = client.query(`DELETE FROM chats WHERE chat_id=${chat_id};`)
+                    remove_query.on('end', function(row) {
+
+                        let humanToSendTo = -1;
+                        if (row.initiator == webhook.recipient_id) {
+                            humanToSendTo = row.responder;
+                        } else if (row.responder == webhook.recipient_id) {
+                            humanToSendTo = row.initiator;
+                        }     
+
+                        self.sendTextMessage(humanToSendTo, "You've ended the chat")                       
+
+                    })
+
+                })
+
+            })
+        })
+    },
+
     getPrivacyCardOfUser: function(user_id, accept, results, callback)  {
 
         pg.defaults.ssl = true;
