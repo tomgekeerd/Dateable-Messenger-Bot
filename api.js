@@ -215,7 +215,7 @@ var self = module.exports = {
         })
     },
 
-    stopChat: function(chat_id) {
+    stopChat: function(id, chat_id) {
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -228,9 +228,9 @@ var self = module.exports = {
             chat_details.on('row', function(row) {
 
                 let humanToSendTo = -1;
-                if (row.initiator == webhook.recipient_id) {
+                if (row.initiator == id) {
                     humanToSendTo = row.responder;
-                } else if (row.responder == webhook.recipient_id) {
+                } else if (row.responder == id) {
                     humanToSendTo = row.initiator;
                 }     
 
