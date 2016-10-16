@@ -410,7 +410,7 @@ var self = module.exports = {
                 if (first_time) {
                     let call = data.getStarted
                     self.sendClusterTextMessage(call, recipient, function() {
-                        console.log('done');
+                        
                     })
                 } else {
                     let call = data.getStartedRevisited
