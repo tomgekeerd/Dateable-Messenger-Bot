@@ -10,7 +10,7 @@ var NodeGeocoder = require('node-geocoder');
 
 // Variables
 
-var recipient_id = -1;
+var event.sender.id = -1;
 
 var options = {
   provider: 'google',
@@ -49,19 +49,13 @@ app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 
-        let event = req.body.entry[0].messaging[i]
-        let recipient_id = -1;
-
-        if (recipient_id == -1) {
-            recipient_id = event.sender.id
-            exports.recipient_id = recipient_id
-        }
+        let event = req.body.entry[0].messaging[i]        
 
         console.log(event.postback)
         if ('postback' in event && 'payload' in event.postback && JSON.stringify(event.postback).indexOf("getStarted") > -1) {
             let postback = JSON.parse(event.postback.payload)
             if (postback.method == 'getStarted') {
-                api.getUserInsights(api.receivedUserInsights);
+                api.getUserInsights(event.sender.id, api.receivedUserInsights);
             }
         } else {
             pg.defaults.ssl = true;
@@ -71,9 +65,9 @@ app.post('/webhook/', function (req, res) {
                     done();
                     console.log(err);
                 }
-                console.log(recipient_id)
+                console.log(event.sender.id)
 
-                const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${recipient_id};`);
+                const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${event.sender.id};`);
                 chatQuery.on('row', function(row) {
                     if (row.is_in_chat != 0) {
                         // Alright, this msg has to be sent to the other we are in a chat with
@@ -82,9 +76,9 @@ app.post('/webhook/', function (req, res) {
                         sendMSG.on('row', function(row) {
 
                             let humanToSendTo = -1;
-                            if (row.initiator == recipient_id) {
+                            if (row.initiator == event.sender.id) {
                                 humanToSendTo = row.responder;
-                            } else if (row.responder == recipient_id) {
+                            } else if (row.responder == event.sender.id) {
                                 humanToSendTo = row.initiator;
                             }
 
@@ -138,7 +132,7 @@ app.post('/webhook/', function (req, res) {
                                             const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
                                             usersQuery.on('end', () => {
                                                 let call = data.acceptedAChat
-                                                api.sendClusterTextMessage(call, recipient_id, function() {
+                                                api.sendClusterTextMessage(call, event.sender.id, function() {
                                                     console.log('done');
                                                 })                        
                                             })
@@ -152,7 +146,7 @@ app.post('/webhook/', function (req, res) {
                                     if (postback.data == true) {
                                         api.startChat();
                                     } else if (postback.data == false) {
-                                        api.sendTextMessage(recipient_id, "Alright! Just beep me up when you are ready!");
+                                        api.sendTextMessage(event.sender.id, "Alright! Just beep me up when you are ready!");
                                     } else {
                                         pg.defaults.ssl = true;
                                         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -166,9 +160,9 @@ app.post('/webhook/', function (req, res) {
                                             var me = {};
                                             var other = {};
 
-                                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${recipient_id};`);
+                                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
                                             dataQuery.on('row', function(row) {
-                                                if (row.fb_id == recipient_id) {
+                                                if (row.fb_id == event.sender.id) {
                                                     me = row
                                                 } else if (row.fb_id == postback.data) {
                                                     other = row
@@ -181,11 +175,11 @@ app.post('/webhook/', function (req, res) {
                                                 api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", "", "", "", "", "", function() {
                                                     api.getPrivacyCardOfUser(me.fb_id, true, me, function(card) {
                                                         let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                        const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${recipient_id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                                        const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
                                                         addQuery.on('end', () => {
                                                             cards.push(card)
                                                             api.sendGenericMessage(postback.data, cards)
-                                                            api.sendTextMessage(recipient_id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                                            api.sendTextMessage(event.sender.id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
                                                         })
                                                     })
                                                 })
@@ -197,7 +191,7 @@ app.post('/webhook/', function (req, res) {
                                 break;
 
                                 case "help":
-                                    api.sendTextMessage(recipient_id, "You want help huh?");
+                                    api.sendTextMessage(event.sender.id, "You want help huh?");
                                 break;
 
                                 case "showPrivacySettings":
@@ -207,7 +201,7 @@ app.post('/webhook/', function (req, res) {
                                     } else {
 
                                         let call = data.suggestStartChat
-                                        api.sendClusterTextMessage(call, recipient_id, function() {
+                                        api.sendClusterTextMessage(call, event.sender.id, function() {
                                             console.log("Done")
                                         })
                                     }
@@ -215,7 +209,7 @@ app.post('/webhook/', function (req, res) {
                                 break;
 
                                 default:
-                                    api.sendTextMessage(recipient_id, "A postback without understandance");
+                                    api.sendTextMessage(event.sender.id, "A postback without understandance");
                             }
 
                         } else if ('quick_reply' in event.message && 'payload' in event.message.quick_reply) {
@@ -236,13 +230,13 @@ app.post('/webhook/', function (req, res) {
                                             console.log(err);
                                         }
 
-                                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${recipient_id};`);
+                                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${event.sender.id};`);
                                         query.on('end', () => {
                                             done();
                                         });
                                     });
                                     
-                                    api.sendClusterTextMessage(call, recipient_id, function() {
+                                    api.sendClusterTextMessage(call, event.sender.id, function() {
                                         console.log('done');
                                     })
 
@@ -280,10 +274,10 @@ app.post('/webhook/', function (req, res) {
                                             done();
                                         }
 
-                                        client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${recipient_id};`);
+                                        client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${event.sender.id};`);
 
                                         let call = data.confirmLocation
-                                        api.sendClusterTextMessage(call, recipient_id, function() {
+                                        api.sendClusterTextMessage(call, event.sender.id, function() {
                                             console.log('done');
                                         })
                                     });
@@ -301,10 +295,6 @@ app.post('/webhook/', function (req, res) {
             })
         }
     }
-
-    req.on('end', function(err) {
-        console.log('done met req')
-    })
     res.sendStatus(200)
 })
 

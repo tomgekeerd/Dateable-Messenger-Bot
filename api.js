@@ -409,12 +409,12 @@ var self = module.exports = {
             } else {
                 if (first_time) {
                     let call = data.getStarted
-                    self.sendClusterTextMessage(call, webhook.recipient_id, function() {
+                    self.sendClusterTextMessage(call, recipient, function() {
                         console.log('done');
                     })
                 } else {
                     let call = data.getStartedRevisited
-                    self.sendClusterTextMessage(call, webhook.recipient_id, function() {
+                    self.sendClusterTextMessage(call, recipient, function() {
                         console.log('done');
                     })
                 }
@@ -446,9 +446,9 @@ var self = module.exports = {
         })
     },
 
-    getUserInsights: function(callback) {
+    getUserInsights: function(id, callback) {
         request({
-            url: 'https://graph.facebook.com/v2.6/' + webhook.recipient_id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
+            url: 'https://graph.facebook.com/v2.6/' + id + '?fields=first_name,last_name,profile_pic,locale,timezone,gender',
             qs: {access_token:token},
             method: 'GET',
             json: {
@@ -459,12 +459,12 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else {
                 console.log(body)
-                callback(body)
+                callback(id, body)
             }
         })
     },
 
-    receivedUserInsights: function(data) {
+    receivedUserInsights: function(id, data) {
 
         // Saving user data
 
@@ -496,23 +496,23 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${webhook.recipient_id};`)
+            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${id};`)
             countQuery.on('row', (row) => {
                 if (row.count == 0 && row.loc_longitude != -1 && row.loc_latitude != -1 && row.looking_for != -1) {
 
-                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${webhook.recipient_id}, -1, -1, 0);`);
-                    client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${webhook.recipient_id}, 1, 1, 1, 1);`);
+                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0);`);
+                    client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
 
-                    const checkUsersQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${webhook.recipient_id};`)
+                    const checkUsersQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`)
                     checkUsersQuery.on('row', (row) => {
                         if (row.count > 0) {
-                            const checkPrivacyQuery = client.query(`SELECT COUNT(*) FROM privacy_settings WHERE fb_id=${webhook.recipient_id};`)
+                            const checkPrivacyQuery = client.query(`SELECT COUNT(*) FROM privacy_settings WHERE fb_id=${id};`)
                             checkPrivacyQuery.on('row', (row) => {
                                 if (row.count > 0) {
 
                                     // Send greeting
 
-                                    self.sendGreetingMessages(webhook.recipient_id, firstname, true);
+                                    self.sendGreetingMessages(id, firstname, true);
                                 }
                             })
                         }
@@ -526,7 +526,7 @@ var self = module.exports = {
 
                     // Send greeting
 
-                    self.sendGreetingMessages(webhook.recipient_id, firstname, false);
+                    self.sendGreetingMessages(id, firstname, false);
                 }
             });
 
