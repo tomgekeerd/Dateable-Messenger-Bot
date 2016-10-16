@@ -66,11 +66,11 @@ app.post('/webhook/', function (req, res) {
                 console.log(event.sender.id)
 
                 const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${event.sender.id};`);
-                chatQuery.on('row', function(row) {
-                    if (row.is_in_chat != 0) {
+                chatQuery.on('row', function(chat_row) {
+                    if (chat_row.is_in_chat != 0) {
                         // Alright, this msg has to be sent to the other we are in a chat with
 
-                        const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${row.is_in_chat}';`);
+                        const sendMSG = client.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${chat_row.is_in_chat}';`);
                         sendMSG.on('row', function(row) {
 
                             let humanToSendTo = -1;
@@ -93,7 +93,7 @@ app.post('/webhook/', function (req, res) {
                                 } else if (event.message.attachments[0].type == 'video') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'image' && event.message.attachments[0].payload.sticker_id == 369239263222822) {
-                                    api.stopChat(row.is_in_chat)
+                                    api.stopChat(chat_row.is_in_chat)
                                 }
                             } else {
                                 // text msg
