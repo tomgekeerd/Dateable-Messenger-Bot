@@ -130,7 +130,7 @@ app.post('/webhook/', function (req, res) {
                                             const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
                                             usersQuery.on('end', () => {
                                                 let call = data.acceptedAChat
-                                                api.sendClusterTextMessage(call, event.sender.id, function() {
+                                                api.sendGenericMessage(event.sender.id, "{ \"title\": \"You're are now chatting with each other!\", \"subtitle\": \"Tap the like button when you're done.\"}", function() {
                                                     if (row.initiator == event.sender.id) {
                                                         api.sendClusterTextMessage(data.chatIsAccepted, row.responder, function() {
 

@@ -422,11 +422,11 @@ var self = module.exports = {
         })
     },
 
-    sendGenericMessage: function(recipient, cards) {
+    sendGenericMessage: function(recipient, cards, callback) {
 
         let messageData = {}
         let generic = data.genericTemplate
-        generic.payload.elements = cards
+        generic.payload.elements = JSON.parse(cards)
         messageData.attachment = generic
 
         request({
