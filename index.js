@@ -137,7 +137,7 @@ app.post('/webhook/', function (req, res) {
                                             checkQuery.on('end', () => {
                                                 
                                                 const userDetails = client.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`)
-                                                userDetails.on('row', function(row) => {
+                                                userDetails.on('row', function(row) {
 
                                                     api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
 
