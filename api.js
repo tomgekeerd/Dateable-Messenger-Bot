@@ -450,6 +450,8 @@ var self = module.exports = {
                 console.log('Error sending messages: ', error)
             } else if (response.body.error) {
                 console.log('Error: ', response.body.error)
+            } else {
+                callback();
             }
         })
     },

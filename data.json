@@ -127,12 +127,18 @@
 		"messages": [
 			"Ring, ring! Awesome, you two guys are now chatting with each other! Have fun ;)"
 		],
+		"sub_msg": [
+			"Tap the like button when you're done."
+		],
 		"method": "send"
 	},
 
 	"acceptedAChat": {
 		"messages": [
 			"Awesome, you're now chatting with each other!"
+		],
+		"sub_msg": [
+			"Tap the like button when you're done."
 		],
 		"method": "send"
 	},
