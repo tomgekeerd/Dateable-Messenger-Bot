@@ -130,7 +130,7 @@ app.post('/webhook/', function (req, res) {
                                             console.log(err);
                                         }
 
-                                        const getDetails = client.query(`SELECT * FROM chats WHERE chat_id=${postback.data};`)
+                                        const getDetails = client.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`)
                                         getDetails.on('row', function(row) {
 
                                             const checkQuery = client.query(`INSERT INTO blocked (fb_id, blocked) VALUES (${row.responder}, ${row.initiator}) ON DUPLICATE KEY UPDATE fb_id=fb_id;`)
@@ -142,7 +142,7 @@ app.post('/webhook/', function (req, res) {
                                                     api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
 
                                                     })
-                                                    
+
                                                 })
 
                                             })
