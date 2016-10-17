@@ -380,6 +380,17 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
+
+                    const blocked = client.query(`SELECT COUNT(*) FROM blocked WHERE fb_id=${id} AND blocked=${big_found_array[i].fb_id};`)
+                    blocked.on('row', function(row) {
+                        if (row.count > 0) {
+                            delete big_found_array[i];
+                        }
+                    })
+
+                }
+
+                for (var i = big_found_array.length - 1; i >= 0; i--) {
                     if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
                         small_found_array.push(big_found_array[i]);
                     }
