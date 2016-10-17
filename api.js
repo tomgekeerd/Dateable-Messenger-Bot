@@ -381,7 +381,7 @@ var self = module.exports = {
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
 
-                    const blocked = client.query(`SELECT COUNT(*) FROM blocked WHERE fb_id=${id} AND blocked=${big_found_array[i].fb_id};`)
+                    const blocked = client.query(`SELECT COUNT(*) FROM blocked_users WHERE fb_id=${id} AND blocked=${big_found_array[i].fb_id};`)
                     blocked.on('row', function(row) {
                         if (row.count > 0) {
                             delete big_found_array[i];
