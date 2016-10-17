@@ -385,12 +385,15 @@ var self = module.exports = {
                         const blocked = client.query(`SELECT COUNT(*) FROM blocked_users WHERE fb_id=${big_found_array[i].fb_id} AND blocked=${id};`)
                         blocked.on('row', function(row) {
                             if (row.count > 0) {
-                                var removed = big_found_array.splice(i, 1);
+                                console.log(i)
+                                big_found_array.splice(i, 1);
                                 loop();
                             }
                         })
                         i++;
                     } else {
+                                                        console.log(big_found_array)
+
                         for (var i = big_found_array.length - 1; i >= 0; i--) {
                             if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
                                 small_found_array.push(big_found_array[i]);
