@@ -143,6 +143,26 @@
 		"method": "send"
 	},
 
+	"endedChat": {
+		"messages": [
+			"You've ended the chat"
+		],
+		"sub_msg": [
+			"Tap 'Start a Chat' when you want to start up another chat"
+		],
+		"method": "send"
+	},
+
+	"chatEnded": {
+		"messages": [
+			"The chat did end"
+		],
+		"sub_msg": [
+			"Tap 'Start a Chat' when you want to start up another chat"
+		],
+		"method": "send"
+	},
+
 	"buttonTemplate": {
   		"type":"template",
   		"payload":{
