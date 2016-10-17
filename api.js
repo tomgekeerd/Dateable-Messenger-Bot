@@ -236,6 +236,13 @@ var self = module.exports = {
                     humanToSendTo = row.responder;
                 }     
 
+                let humanTwo = -1;
+                if (humanToSendTo == row.initiator) {
+                    humanTwo = row.responder
+                } else {
+                    humanTwo = row.initiator
+                }
+
                 const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
                 back_to_default.on('end', () => {
 
@@ -246,15 +253,10 @@ var self = module.exports = {
                             
                         })
 
-                        if (humanToSendTo == row.initiator) {
-                            self.sendGenericMessage(row.responder, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
-                            
-                            })
-                        } else {
-                            self.sendGenericMessage(row.initiator, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
-                            
-                            })
-                        }
+                        self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                    
+                        })
+
                     })
 
                 })
