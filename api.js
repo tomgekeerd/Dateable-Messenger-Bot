@@ -294,11 +294,11 @@ var self = module.exports = {
                         // Close, Med, Far
                         var distance = self.getDistanceFromLatLonInKm(results.loc_latitude, results.loc_longitude, row.loc_latitude, row.loc_longitude)
                         if (distance <= maxDistance / 3) {
-                            location = "Near"
+                            location = "Distance: Near you"
                         } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
-                            location = "Close"
+                            location = "Distance: Close to you"
                         } else if (distance > (maxDistance / 3) * 2) {
-                            location = "Far"
+                            location = "Distance: Far from you"
                         }
                     } else if (privacy_row.full_name == 1) {
                         location = results.geo_location
