@@ -133,7 +133,7 @@ app.post('/webhook/', function (req, res) {
                                         const getDetails = client.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`)
                                         getDetails.on('row', function(row) {
 
-                                            const checkQuery = client.query(`INSERT INTO blocked_users (fb_id, blocked) VALUES(${row.responder}, ${row.initiator}) ON CONFLICT (fb_id) DO UPDATE SET fb_id=fb_id;`)
+                                            const checkQuery = client.query(`INSERT INTO blocked_users (fb_id, blocked) VALUES(${row.responder}, ${row.initiator}) ON CONFLICT DO NOTHING;`)
                                             checkQuery.on('end', () => {
                                                 
                                                 const userDetails = client.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`)
