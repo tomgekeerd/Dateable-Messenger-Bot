@@ -50,6 +50,9 @@ app.post('/webhook/', function (req, res) {
         let event = req.body.entry[0].messaging[i]        
 
         console.log(event.postback)
+        console.log(event.message)
+        console.log(event.message.attachments[0])
+
         if ('postback' in event && 'payload' in event.postback && JSON.stringify(event.postback).indexOf("getStarted") > -1) {
             let postback = JSON.parse(event.postback.payload)
             if (postback.method == 'getStarted') {
@@ -113,6 +116,10 @@ app.post('/webhook/', function (req, res) {
 
                                 case "getStarted":
                                     api.getUserInsights(api.receivedUserInsights);
+                                break;
+
+                                case "rejectChat": 
+
                                 break;
 
                                 case "acceptChat":
@@ -255,6 +262,7 @@ app.post('/webhook/', function (req, res) {
                         } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
 
                             if (event.message.attachments[0].payload.type == 'location') {
+
                                 let payload = event.message.attachments[0].payload
 
                                 api.loc_latitude = payload.coordinates.lat

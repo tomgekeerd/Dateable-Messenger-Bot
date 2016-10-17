@@ -311,7 +311,7 @@ var self = module.exports = {
                         } else if (results.gender == 1) {
                             image = "http://aucet.in/it/staffs/female.jpg"
                         }
-                    } else if (privacy_row.full_name == 1) {
+                    } else if (privacy_row.profile_pic == 1) {
                         image = results.profile_pic
                     }
 
