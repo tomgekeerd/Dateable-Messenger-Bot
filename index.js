@@ -120,6 +120,39 @@ app.post('/webhook/', function (req, res) {
 
                                 break;
 
+                                case "blockChat":
+
+                                    pg.defaults.ssl = true;
+                                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+
+                                        if(err) {
+                                            done();
+                                            console.log(err);
+                                        }
+
+                                        const getDetails = client.query(`SELECT * FROM chats WHERE chat_id=${postback.data};`)
+                                        getDetails.on('row', function(row) {
+
+                                            const checkQuery = client.query(`INSERT INTO blocked (fb_id, blocked) VALUES (${row.responder}, ${row.initiator}) ON DUPLICATE KEY UPDATE fb_id=fb_id;`)
+                                            checkQuery.on('end', () => {
+                                                
+                                                const userDetails = client.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`)
+                                                userDetails.on('row', () => {
+
+                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
+
+                                                    })
+                                                    
+                                                })
+
+                                            })
+
+                                        })
+
+                                    })
+
+                                break;
+
                                 case "acceptChat":
 
                                     pg.defaults.ssl = true;
