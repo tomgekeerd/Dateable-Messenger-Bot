@@ -396,12 +396,12 @@ var self = module.exports = {
                                 small_found_array.push(big_found_array[i]);
                             }
                         }
+                        callback(small_found_array); 
                     }
                 }
 
                 loop();
-                
-                callback(small_found_array); 
+
             })
         })
     },
