@@ -381,12 +381,12 @@ var self = module.exports = {
 
                 var i = 0;
                 while (i < big_found_array.length) {
+                    console.log(id)
+                    console.log("wtfwtfwtf" + i)
+                    console.log(big_found_array)
+                    console.log(row)
                     const blocked = client.query(`SELECT COUNT(*) FROM blocked_users WHERE fb_id=${big_found_array[i].fb_id} AND blocked=${id};`)
                     blocked.on('row', function(row) {
-                        console.log(id)
-                        console.log(i)
-                        console.log(big_found_array)
-                        console.log(row)
                         if (row.count > 0) {
                             big_found_array.splice(i, 1);
                         }
