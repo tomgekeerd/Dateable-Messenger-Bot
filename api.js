@@ -242,16 +242,16 @@ var self = module.exports = {
                     const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`)
                     remove_query.on('end', function(row) {
 
-                        api.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                        self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                             
                         })
 
                         if (humanToSendTo == row.initiator) {
-                            api.sendGenericMessage(row.responder, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                            self.sendGenericMessage(row.responder, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                             
                             })
                         } else {
-                            api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                            self.sendGenericMessage(row.initiator, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                             
                             })
                         }
