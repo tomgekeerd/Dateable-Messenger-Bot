@@ -253,7 +253,7 @@ var self = module.exports = {
                             
                         })
 
-                        self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                        self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
                     
                         })
 
