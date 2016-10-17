@@ -202,7 +202,9 @@ var self = module.exports = {
                                 self.getPrivacyCardOfUser(id, results[i].fb_id, false, results[i], function(card) {
                                     send_array.push(card);
                                     if (send_array.length == results.length) {
-                                        self.sendGenericMessage(id, send_array);
+                                        self.sendGenericMessage(id, send_array, function() {
+                                            console.log('weet je wel')
+                                        });
                                     }
                                 })
                             }  
