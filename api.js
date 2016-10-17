@@ -429,7 +429,9 @@ var self = module.exports = {
         let messageData = {}
         let generic = data.genericTemplate
         if (typeof cards == "string") {
-            generic.payload.elements = JSON.parse(cards)
+            var array = []
+            array.push(JSON.parse(cards))
+            generic.payload.elements = array
         } else {
             generic.payload.elements = cards
         }
