@@ -383,12 +383,14 @@ var self = module.exports = {
 
                     const blocked = client.query(`SELECT COUNT(*) FROM blocked_users WHERE fb_id=${id} AND blocked=${big_found_array[i].fb_id};`)
                     blocked.on('row', function(row) {
+                        console.log(row)
                         if (row.count > 0) {
                             delete big_found_array[i];
                         }
                     })
 
                 }
+                                        console.log(big_found_array)
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
                     if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
