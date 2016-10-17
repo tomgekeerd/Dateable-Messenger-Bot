@@ -428,7 +428,11 @@ var self = module.exports = {
 
         let messageData = {}
         let generic = data.genericTemplate
-        generic.payload.elements = JSON.parse(cards)
+        if (typeof cards == "string") {
+            generic.payload.elements = JSON.parse(cards)
+        } else {
+            generic.payload.elements = cards
+        }
         messageData.attachment = generic
 
         request({
