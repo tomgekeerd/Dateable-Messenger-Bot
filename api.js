@@ -379,8 +379,8 @@ var self = module.exports = {
             search_query.on('end', () => {
                 done();
 
-                for (var i = big_found_array.length - 1; i >= 0; i--) {
-
+                var i = 0;
+                while (i < big_found_array.length) {
                     const blocked = client.query(`SELECT COUNT(*) FROM blocked_users WHERE fb_id=${big_found_array[i].fb_id} AND blocked=${id};`)
                     blocked.on('row', function(row) {
                         console.log(id)
@@ -391,9 +391,10 @@ var self = module.exports = {
                             big_found_array.splice(i, 1);
                         }
                     })
-
+                    i++;
                 }
 
+                
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
                     if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
                         small_found_array.push(big_found_array[i]);
