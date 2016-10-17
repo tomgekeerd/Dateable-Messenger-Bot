@@ -258,10 +258,8 @@ app.post('/webhook/', function (req, res) {
                             }
 
                         } else if ('attachments' in event.message && 'payload' in event.message.attachments[0]) {
-                            console.log(event.message)
-                            console.log(event.message.attachments[0])
 
-                            if (event.message.attachments[0].payload.type == 'location') {
+                            if (event.message.attachments[0].type == 'location') {
 
                                 let payload = event.message.attachments[0].payload
 
@@ -296,9 +294,9 @@ app.post('/webhook/', function (req, res) {
                                         })
                                     });
                                 });
-                            } else if (event.message.attachments[0].payload.type == 'image') {
+                            } else if (event.message.attachments[0].type == 'image') {
 
-                            } else if (event.message.attachments[0].payload.type == 'audio') {
+                            } else if (event.message.attachments[0].type == 'audio') {
 
                             }
                         } 
