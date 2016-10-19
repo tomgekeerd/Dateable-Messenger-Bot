@@ -539,19 +539,17 @@ var self = module.exports = {
 
             const countQuery = client.query(`SELECT COUNT(*), first_name FROM users WHERE fb_id=${id} GROUP BY first_name;`)
             countQuery.on('row', function(row) {
+                console.log('wtf' + row.count + row.first_name)
                 if (row.count == 0) {
 
-                    const userQuery = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
+                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
 
-                    userQuery.on('row', function(row) {
-                        self.sendGreetingMessages(id, row.first_name, true);
-                    })    
+                    self.sendGreetingMessages(id, row.first_name, true);
 
                 } else {
 
                     // Send greeting
-
 
                     self.sendGreetingMessages(id, row.first_name, false);
                 }
