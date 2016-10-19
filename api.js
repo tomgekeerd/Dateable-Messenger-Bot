@@ -537,37 +537,23 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id} AND first_name=${firstname} AND last_name=${lastname} AND profile_pic=${profile_pic};`)
+            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id} RETURNING *;`)
             countQuery.on('row', (row) => {
                 if (row.count == 0) {
 
-                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0);`);
+                    const userQuery = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
 
-                    const checkUsersQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`)
-                    checkUsersQuery.on('row', (row) => {
-                        if (row.count > 0) {
-                            const checkPrivacyQuery = client.query(`SELECT COUNT(*) FROM privacy_settings WHERE fb_id=${id};`)
-                            checkPrivacyQuery.on('row', (row) => {
-                                if (row.count > 0) {
-
-                                    // Send greeting
-
-                                    self.sendGreetingMessages(id, firstname, true);
-                                }
-                            })
-                        }
-                    })
-
-                    checkUsersQuery.on('end', () => {
-                        done();
-                    })
+                    userQuery.on('row', function(row) {
+                        self.sendGreetingMessages(id, row.first_name, true);
+                    })    
 
                 } else {
 
                     // Send greeting
 
-                    self.sendGreetingMessages(id, firstname, false);
+
+                    self.sendGreetingMessages(id, row.first_name, false);
                 }
             });
 
