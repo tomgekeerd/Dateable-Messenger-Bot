@@ -537,9 +537,9 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id = ${id};`)
+            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id} AND first_name=${firstname} AND last_name=${lastname} AND profile_pic=${profile_pic};`)
             countQuery.on('row', (row) => {
-                if (row.count == 0 && row.loc_longitude != -1 && row.loc_latitude != -1 && row.looking_for != -1) {
+                if (row.count == 0) {
 
                     client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0);`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
