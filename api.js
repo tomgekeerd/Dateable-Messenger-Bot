@@ -538,7 +538,7 @@ var self = module.exports = {
             }
 
             const countQuery = client.query(`SELECT COUNT(*), first_name FROM users WHERE fb_id=${id} GROUP BY first_name;`)
-            countQuery.on('row', (row) => {
+            countQuery.on('row', function(row) {
                 if (row.count == 0) {
 
                     const userQuery = client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
