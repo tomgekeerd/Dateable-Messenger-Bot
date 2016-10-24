@@ -386,13 +386,13 @@ var self = module.exports = {
             search_query.on('end', () => {
                 done();
 
-                var i = 0;
-                loop(i);
+                for (var i = big_found_array.length - 1; i >= 0; i--) {
+                    loop(i)
+                }
 
             })
 
             var loop = function(i) {
-                console.log(i)
                 if (i < big_found_array.length) {
                     const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
                     blocked.on('row', function(row) {
@@ -400,9 +400,7 @@ var self = module.exports = {
                         if (blocked.indexOf(id) > -1) {
                             big_found_array.splice(i, 1);
                         }
-                        loop();
                     })
-                    i++;
                 } else {
                     for (var i = big_found_array.length - 1; i >= 0; i--) {
                         if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
