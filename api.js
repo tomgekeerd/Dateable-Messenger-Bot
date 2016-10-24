@@ -370,8 +370,9 @@ var self = module.exports = {
                 done();
                 console.log(err);
             }
-    
-            const query = "";
+                    console.log("come feel");
+
+            const query = ``;
             if (looking_for != 2){
                 query = `SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`
             } else {
