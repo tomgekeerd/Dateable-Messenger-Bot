@@ -370,8 +370,6 @@ var self = module.exports = {
                 done();
                 console.log(err);
             }
-                    console.log("come feel");
-                                console.log(looking_for);
 
             var query = ``;
             if (looking_for != 2) {
@@ -379,24 +377,18 @@ var self = module.exports = {
             } else {
                 query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
             }
-                                console.log(query);
 
             const search_query = client.query(query)
             search_query.on('row', function(row) {
-                                                console.log("wtf");
-
                 big_found_array.push(row);
             })
-
-            console.log(big_found_array);
 
             search_query.on('end', () => {
                 done();
 
-                var i = 0;
+                var i = 0
                 var loop = function() {
                     console.log(i)
-                                        console.log(big_found_array.length)
 
                     if (i < big_found_array.length) {
                         console.log('wddd')
