@@ -387,32 +387,32 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    loop(i)
+                    loop(i);
                 }
 
             })
 
-            var loop = function(i) {
-                if (i < big_found_array.length) {
-                    const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
-                    blocked.on('row', function(row) {
-                        const blocked = row.blocked_users;
-                        if (blocked.indexOf(id) > -1) {
-                            big_found_array.splice(i, 1);
-                        }
-                    })
-                } else {
-                    for (var i = big_found_array.length - 1; i >= 0; i--) {
-                        if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
-                            small_found_array.push(big_found_array[i]);
-                        }
-                    }
-                    callback(small_found_array); 
-                }
-            }
-
         })
     },
+
+    loop: function(i) {
+         if (i < big_found_array.length) {
+            const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
+            blocked.on('row', function(row) {
+                const blocked = row.blocked_users;
+                if (blocked.indexOf(id) > -1) {
+                    big_found_array.splice(i, 1);
+                }
+            })
+        } else {
+            for (var i = big_found_array.length - 1; i >= 0; i--) {
+                if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
+                    small_found_array.push(big_found_array[i]);
+                }
+            }
+            callback(small_found_array); 
+        }
+    }
 
     sendGreetingMessages: function(recipient, name, first_time) {
         var titleOfMessage = "Welcome to this bot, " + name + "!";
