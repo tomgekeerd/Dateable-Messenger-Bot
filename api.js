@@ -378,9 +378,12 @@ var self = module.exports = {
             } else {
                 query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`
             }
+                                console.log(query);
 
             const search_query = client.query(query)
             search_query.on('row', function(row) {
+                                                console.log("wtf");
+
                 big_found_array.push(row);
             })
 
