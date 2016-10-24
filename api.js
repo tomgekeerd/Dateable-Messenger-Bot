@@ -537,7 +537,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id} GROUP BY users.first_name;`)
+            const countQuery = client.query(`SELECT users.first_name, COUNT(*) FROM users WHERE fb_id=${id} GROUP BY users.first_name;`)
             countQuery.on('row', function(row) {
                 console.log('wtf' + row.count + row.first_name)
                 if (row.count == 0) {
