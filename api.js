@@ -371,12 +371,13 @@ var self = module.exports = {
                 console.log(err);
             }
                     console.log("come feel");
+                                console.log(looking_for);
 
             const query = ``;
             if (looking_for != 2){
-                query = `SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`
+                query = `SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
             } else {
-                query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`
+                query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
             }
                                 console.log(query);
 
