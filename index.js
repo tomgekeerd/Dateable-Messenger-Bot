@@ -133,7 +133,7 @@ app.post('/webhook/', function (req, res) {
                                         const getDetails = client.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`)
                                         getDetails.on('row', function(row) {
 
-                                            const checkQuery = client.query(`INSERT INTO users (blocked_users) VALUES ({}) blocked_users=blocked_users + " ${row.init}" VALUES(${row.responder}, ${row.initiator}) ON CONFLICT DO NOTHING;`)
+                                            const checkQuery = client.query(`UPDATE users SET blocked_users = blocked_users || '{${row.initiator}}' WHERE fb_id=${row.responder};`)
                                             checkQuery.on('end', () => {
                                                 
                                                 const userDetails = client.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`)
@@ -215,7 +215,7 @@ app.post('/webhook/', function (req, res) {
 
                                             dataQuery.on('end', () => {
                                                 done();
-                                                api.sendTextMessage(postback.data, "Hey it seems you got some attention, would you like to chat with " + me.first_name + "?", "", "", "", "", "", "", "", function() {
+                                                api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function() {
                                                     api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
                                                         let methodAndData = JSON.parse(card.buttons[0].payload)
                                                         const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
@@ -238,7 +238,6 @@ app.post('/webhook/', function (req, res) {
                                 break;
 
                                 case "showPrivacySettings":
-                                    console.log("anusneukers")
                                     if (postback.data == true) {
                                         // TODO
                                     } else {
