@@ -391,12 +391,13 @@ var self = module.exports = {
                 var i = 0;
                 var loop = function() {
                     if (i < big_found_array.length) {
-                        const blocked = client.query(`SELECT COUNT(*) FROM blocked_users WHERE fb_id=${big_found_array[i].fb_id} AND blocked=${id};`)
+                        const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
                         blocked.on('row', function(row) {
-                            if (row.count > 0) {
+                            blocked = row.blocked_users;
+                            if (blocked.indexOf(id) > -1) {
                                 big_found_array.splice(i, 1);
-                                loop();
                             }
+                            loop();
                         })
                         i++;
                     } else {
