@@ -537,21 +537,23 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const countQuery = client.query(`SELECT first_name, COUNT(*) FROM users WHERE fb_id=${id} ORDER BY first_name`)
+            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`)
             countQuery.on('row', function(row) {
-                console.log('wtf' + row.count + row.first_name)
                 if (row.count == 0) {
 
                     client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
                     client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
 
-                    self.sendGreetingMessages(id, row.first_name, true);
+
+                    self.sendGreetingMessages(id, firstname, true);
 
                 } else {
 
                     // Send greeting
-
-                    self.sendGreetingMessages(id, row.first_name, false);
+                    const name = client.query(`SELECT first_name FROM users WHERE fb_id=${id};`)
+                    name.on('row', function(row) {
+                        self.sendGreetingMessages(id, row.first_name, false);
+                    })
                 }
             });
 
