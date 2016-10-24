@@ -370,11 +370,20 @@ var self = module.exports = {
                 done();
                 console.log(err);
             }
+ 
+            if (looking_for != 2){
+                const search_query = client.query(`SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`)
+                search_query.on('row', function(row) {
+                    big_found_array.push(row);
+                })
+            } else {
+                const search_query = client.query(`SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`)
+                search_query.on('row', function(row) {
+                    big_found_array.push(row);
+                })
+            }
 
-            const search_query = client.query(`SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`)
-            search_query.on('row', function(row) {
-                big_found_array.push(row);
-            })
+            
 
             search_query.on('end', () => {
                 done();
