@@ -383,11 +383,11 @@ var self = module.exports = {
                 big_found_array.push(row);
             })
 
-            var i = 0
-            search_query.on('end', function(i) {
+            search_query.on('end', () => {
                 done();
 
                 var loop = function() {
+                    var i = 0
                     console.log(i)
 
                     if (i < big_found_array.length) {
