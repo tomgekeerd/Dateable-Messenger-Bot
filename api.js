@@ -412,7 +412,7 @@ var self = module.exports = {
             }
             callback(small_found_array); 
         }
-    }
+    },
 
     sendGreetingMessages: function(recipient, name, first_time) {
         var titleOfMessage = "Welcome to this bot, " + name + "!";
