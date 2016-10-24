@@ -393,7 +393,7 @@ var self = module.exports = {
                     if (i < big_found_array.length) {
                         const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
                         blocked.on('row', function(row) {
-                            blocked = row.blocked_users;
+                            const blocked = row.blocked_users;
                             if (blocked.indexOf(id) > -1) {
                                 big_found_array.splice(i, 1);
                             }
