@@ -386,13 +386,12 @@ var self = module.exports = {
             search_query.on('end', () => {
                 done();
 
-
-                loop();
+                var i = 0;
+                loop(i);
 
             })
 
-            var i = 0;
-            var loop = function() {
+            var loop = function(i) {
                 console.log(i)
                 if (i < big_found_array.length) {
                     const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
