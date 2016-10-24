@@ -395,7 +395,11 @@ var self = module.exports = {
 
                 var i = 0;
                 var loop = function() {
+                    console.log(i)
+                                        console.log(big_found_array.length)
+
                     if (i < big_found_array.length) {
+                        console.log('wddd')
                         const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
                                                     console.log('hhuh')
                             console.log(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
