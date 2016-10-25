@@ -203,7 +203,7 @@ app.post('/webhook/', function (req, res) {
                                             const cards = [];
                                             var me = {};
                                             var other = {};
-                                            var blocked = false;
+                                            var blocked = {};
 
                                             const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
                                             dataQuery.on('row', function(row) {
@@ -211,9 +211,9 @@ app.post('/webhook/', function (req, res) {
                                                     me = row
                                                 } else if (row.fb_id == postback.data) {
                                                     other = row
-                                                    console.log(row.blocked_users)
-                                                    if (row.blocked_users.indexOf(me) > -1) {
-                                                        blocked = true;
+                                                    if (row.blocked_users.length > 0) {
+                                                        blocked.push(row.blocked_users)
+                                                        console.log('haha')
                                                     }
                                                 }
                                             })
@@ -221,7 +221,8 @@ app.post('/webhook/', function (req, res) {
                                             dataQuery.on('end', () => {
                                                 done();
                                                 console.log(blocked + "is it undefined")
-                                                if (!blocked) {
+
+                                                if (!blocked.indexOf(other) > -1) {
                                                     api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function() {
                                                         api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
                                                             let methodAndData = JSON.parse(card.buttons[0].payload)
