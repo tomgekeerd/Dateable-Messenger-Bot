@@ -391,15 +391,16 @@ var self = module.exports = {
                     console.log('dit is i' + i)
                     console.log(length + "dit is length")
                     if (i != length) {
-                        const blocked = big_found_array[i].blocked_users;
-                        console.log(blocked);
-                        if (blocked != null) {
-                            if (blocked.length > 0) {
-                                if (blocked.indexOf(id) > -1) {
-                                    big_found_array.splice(i, 1);
-                                }
-                            }
-                        }
+                        // const blocked = big_found_array[i].blocked_users;
+                        // console.log(blocked);
+                        // if (blocked != null) {
+                        //     if (blocked.length > 0) {
+                        //         if (blocked.indexOf(id) > -1) {
+                        //             big_found_array.splice(i, 1);
+                        //         }
+                        //     }
+                        // }
+                        console.log('wtf')
                     } else {
                         console.log('apart')
                         for (var i = big_found_array.length - 1; i >= 0; i--) {
