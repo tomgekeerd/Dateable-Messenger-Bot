@@ -387,7 +387,7 @@ var self = module.exports = {
                 done();
 
                 const length = big_found_array.length;
-                for (var i = 0; i <= length - 1; i++) {
+                for (var i = 0; i <= length; i++) {
                     console.log('dit is i' + i)
                     console.log(length + "dit is length")
                     if (i != length) {
