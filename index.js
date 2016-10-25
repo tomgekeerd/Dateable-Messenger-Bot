@@ -201,9 +201,9 @@ app.post('/webhook/', function (req, res) {
                                             }
 
                                             const cards = [];
+                                            const blocked = [];
                                             var me = {};
                                             var other = {};
-                                            var blocked = {};
 
                                             const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
                                             dataQuery.on('row', function(row) {
