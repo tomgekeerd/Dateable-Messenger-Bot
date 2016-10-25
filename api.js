@@ -387,7 +387,7 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    self.loop(i);
+                    self.loop(i, big_found_array, small_found_array);
                 }
 
             })
@@ -395,22 +395,22 @@ var self = module.exports = {
         })
     },
 
-    loop: function(i) {
-         if (i < big_found_array.length) {
-            const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
+    loop: function(i, big, small) {
+         if (i < big.length) {
+            const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`)
             blocked.on('row', function(row) {
                 const blocked = row.blocked_users;
                 if (blocked.indexOf(id) > -1) {
-                    big_found_array.splice(i, 1);
+                    big.splice(i, 1);
                 }
             })
         } else {
-            for (var i = big_found_array.length - 1; i >= 0; i--) {
-                if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
-                    small_found_array.push(big_found_array[i]);
+            for (var i = big.length - 1; i >= 0; i--) {
+                if (self.getDistanceFromLatLonInKm(big[i].loc_latitude, big[i].loc_longitude, lat, long) <= maxDistance) {
+                    small.push(big[i]);
                 }
             }
-            callback(small_found_array); 
+            callback(small); 
         }
     },
 
