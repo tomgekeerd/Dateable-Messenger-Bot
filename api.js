@@ -387,7 +387,8 @@ var self = module.exports = {
                 done();
 
                 const length = big_found_array.length;
-                for (var i = 0; i <= length; i++) {
+                var i = 0;
+                while (i <= length) {
                     console.log('dit is i' + i)
                     console.log(length + "dit is length")
                     if (i != length) {
@@ -410,7 +411,9 @@ var self = module.exports = {
                         }
                         callback(small_found_array); 
                     }
+                    i++
                 }
+            
 
             })
 
