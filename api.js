@@ -386,8 +386,9 @@ var self = module.exports = {
             search_query.on('end', () => {
                 done();
 
-                var length = big_found_array.length;
+                const length = big_found_array.length;
                 for (var i = 0; i <= length; i++) {
+                    console.log(length + "dit is length")
                     if (i != length) {
                         console.log(i)
                                                 console.log(big_found_array)
