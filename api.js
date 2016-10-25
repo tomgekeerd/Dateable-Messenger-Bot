@@ -387,7 +387,26 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length; i >= 0; i--) {
-                    self.loop(i, big_found_array, small_found_array, client, id, lat, long, callback);
+                    if (i < big_found_array.length) {
+                        const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
+                        blocked.on('row', function(row) {
+                            const blocked = row.blocked_users;
+                            if (blocked != null) {
+                                if (blocked.length > 0) {
+                                    if (blocked.indexOf(id) > -1) {
+                                        big_found_array.splice(i, 1);
+                                    }
+                                }
+                            }
+                        })
+                    } else {
+                        for (var i = big_found_array.length - 1; i >= 0; i--) {
+                            if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
+                                small_found_array.push(big_found_array[i]);
+                            }
+                        }
+                        callback(small_found_array); 
+                    }
                 }
 
             })
@@ -407,7 +426,7 @@ var self = module.exports = {
                                         console.log(blocked + "2");
                         if (blocked.indexOf(id) > -1) {
                                             console.log(blocked + "3");
-                            big.splice(i, 1);
+                            bigbig.splice(i, 1);
                         }
                     }
                 }
