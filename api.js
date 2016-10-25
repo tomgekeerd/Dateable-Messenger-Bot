@@ -385,30 +385,30 @@ var self = module.exports = {
 
             search_query.on('end', () => {
                 done();
-
-                const length = big_found_array.length;
-                for (var i = 0; i <= length; i++) {
-                    console.log(length + "dit is length")
-                    if (i != length) {
-                        const blocked = big_found_array[i].blocked_users;
-                        console.log(blocked);
-                        if (blocked != null) {
-                            if (blocked.length > 0) {
-                                if (blocked.indexOf(id) > -1) {
-                                    big_found_array.splice(i, 1);
-                                }
-                            }
-                        }
-                    } else {
-                        console.log('apart')
-                        for (var i = big_found_array.length - 1; i >= 0; i--) {
-                            if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
-                                small_found_array.push(big_found_array[i]);
-                            }
-                        }
-                        callback(small_found_array); 
-                    }
-                }
+                console.log('ended')
+                // const length = big_found_array.length;
+                // for (var i = 0; i <= length; i++) {
+                //     console.log(length + "dit is length")
+                //     if (i != length) {
+                //         const blocked = big_found_array[i].blocked_users;
+                //         console.log(blocked);
+                //         if (blocked != null) {
+                //             if (blocked.length > 0) {
+                //                 if (blocked.indexOf(id) > -1) {
+                //                     big_found_array.splice(i, 1);
+                //                 }
+                //             }
+                //         }
+                //     } else {
+                //         console.log('apart')
+                //         for (var i = big_found_array.length - 1; i >= 0; i--) {
+                //             if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
+                //                 small_found_array.push(big_found_array[i]);
+                //             }
+                //         }
+                //         callback(small_found_array); 
+                //     }
+                // }
 
             })
 
