@@ -386,7 +386,7 @@ var self = module.exports = {
             search_query.on('end', () => {
                 done();
 
-                for (var i = big_found_array.length - 1; i >= 0; i--) {
+                for (var i = big_found_array.length; i >= 0; i--) {
                     self.loop(i, big_found_array, small_found_array, client, id);
                 }
 
