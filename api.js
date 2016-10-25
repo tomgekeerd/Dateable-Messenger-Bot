@@ -387,15 +387,16 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    self.loop(i, big_found_array, small_found_array);
+                    self.loop(i, big_found_array, small_found_array, client);
                 }
 
             })
 
         })
+
     },
 
-    loop: function(i, big, small) {
+    loop: function(i, big, small, client) {
          if (i < big.length) {
             const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`)
             blocked.on('row', function(row) {
