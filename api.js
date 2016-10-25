@@ -386,11 +386,13 @@ var self = module.exports = {
             search_query.on('end', () => {
                 done();
 
-                for (var i = big_found_array.length; i >= 0; i--) {
-                    if (i < big_found_array.length) {
+                var length = big_found_array.length;
+                for (var i = length; i >= 0; i--) {
+                    if (i < length) {
                         const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big_found_array[i].fb_id};`)
                         blocked.on('row', function(row) {
                             const blocked = row.blocked_users;
+                            console.log(blocked);
                             if (blocked != null) {
                                 if (blocked.length > 0) {
                                     if (blocked.indexOf(id) > -1) {
