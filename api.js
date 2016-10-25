@@ -390,9 +390,6 @@ var self = module.exports = {
                 for (var i = 0; i <= length; i++) {
                     console.log(length + "dit is length")
                     if (i != length) {
-                        console.log(i)
-                                                console.log(big_found_array)
-
                         const blocked = big_found_array[i].blocked_users;
                         console.log(blocked);
                         if (blocked != null) {
@@ -403,6 +400,7 @@ var self = module.exports = {
                             }
                         }
                     } else {
+                        console.log('apart')
                         for (var i = big_found_array.length - 1; i >= 0; i--) {
                             if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
                                 small_found_array.push(big_found_array[i]);
