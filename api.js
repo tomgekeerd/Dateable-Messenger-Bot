@@ -388,33 +388,32 @@ var self = module.exports = {
 
                 const length = big_found_array.length;
                 var i = 0;
-                console.log()
+
                 while (i <= length) {
                     console.log('dit is i' + i)
                     console.log(length + "dit is length")
                     if (i != length) {
-                        // const blocked = big_found_array[i].blocked_users;
-                        // console.log(blocked);
-                        // if (blocked != null) {
-                        //     if (blocked.length > 0) {
-                        //         if (blocked.indexOf(id) > -1) {
-                        //             big_found_array.splice(i, 1);
-                        //         }
-                        //     }
-                        // }
+                        const blocked = big_found_array[i].blocked_users;
+                        console.log(blocked);
+                        if (blocked != null) {
+                            if (blocked.length > 0) {
+                                if (blocked.indexOf(id) > -1) {
+                                    big_found_array.splice(i, 1);
+                                }
+                            }
+                        }
                         console.log('wtf')
-                    } else {
-                        console.log('apart')
-                        // for (var i = big_found_array.length - 1; i >= 0; i--) {
-                        //     if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
-                        //         small_found_array.push(big_found_array[i]);
-                        //     }
-                        // }
-                        // callback(small_found_array); 
                     }
                     i++
                 }
-            
+
+                for (var i = big_found_array.length - 1; i >= 0; i--) {
+                    if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
+                        small_found_array.push(big_found_array[i]);
+                    }
+                }
+                
+                callback(small_found_array); 
 
             })
 
