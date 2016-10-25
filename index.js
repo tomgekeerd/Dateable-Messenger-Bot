@@ -219,7 +219,7 @@ app.post('/webhook/', function (req, res) {
 
                                             dataQuery.on('end', () => {
                                                 done();
-                                                if (!blocked.indexOf(me)) {
+                                                if (blocked.indexOf(me) == -1) {
                                                     api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function() {
                                                         api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
                                                             let methodAndData = JSON.parse(card.buttons[0].payload)
