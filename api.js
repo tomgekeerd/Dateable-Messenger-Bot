@@ -390,11 +390,8 @@ var self = module.exports = {
                 var i = 0;
 
                 while (i <= length) {
-                    console.log('dit is i' + i)
-                    console.log(length + "dit is length")
                     if (i != length) {
                         const blocked = big_found_array[i].blocked_users;
-                        console.log(blocked);
                         if (blocked != null) {
                             if (blocked.length > 0) {
                                 if (blocked.indexOf(id) > -1) {
@@ -402,7 +399,6 @@ var self = module.exports = {
                                 }
                             }
                         }
-                        console.log('wtf')
                     }
                     i++
                 }
@@ -412,7 +408,7 @@ var self = module.exports = {
                         small_found_array.push(big_found_array[i]);
                     }
                 }
-                
+
                 callback(small_found_array); 
 
             })

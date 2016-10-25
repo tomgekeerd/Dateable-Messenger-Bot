@@ -203,6 +203,7 @@ app.post('/webhook/', function (req, res) {
                                             const cards = [];
                                             var me = {};
                                             var other = {};
+                                            var blocked = false;
 
                                             const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
                                             dataQuery.on('row', function(row) {
@@ -210,22 +211,32 @@ app.post('/webhook/', function (req, res) {
                                                     me = row
                                                 } else if (row.fb_id == postback.data) {
                                                     other = row
+                                                    if (row.blocked_users.indexOf(me) > -1) {
+                                                        blocked = true;
+                                                    }
                                                 }
                                             })
 
                                             dataQuery.on('end', () => {
                                                 done();
-                                                api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function() {
-                                                    api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
-                                                        let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                        const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
-                                                        addQuery.on('end', () => {
-                                                            cards.push(card)
-                                                            api.sendGenericMessage(postback.data, cards)
-                                                            api.sendTextMessage(event.sender.id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                                console.log(blocked + "is it undefined")
+                                                if (!blocked) {
+                                                    api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function() {
+                                                        api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
+                                                            let methodAndData = JSON.parse(card.buttons[0].payload)
+                                                            const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                                            addQuery.on('end', () => {
+                                                                cards.push(card)
+                                                                api.sendGenericMessage(postback.data, cards)
+                                                                api.sendTextMessage(event.sender.id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                                            })
                                                         })
                                                     })
-                                                })
+                                                } else {
+                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+
+                                                    })
+                                                }
                                             })
                                         })
 
