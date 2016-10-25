@@ -387,7 +387,7 @@ var self = module.exports = {
                 done();
 
                 for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    loop(i);
+                    self.loop(i);
                 }
 
             })
