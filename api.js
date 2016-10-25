@@ -423,11 +423,8 @@ var self = module.exports = {
             blocked.on('row', function(row) {
                 const blocked = row.blocked_users;
                 if (blocked != null) {
-                                    console.log(blocked + "1");
                     if (blocked.length > 0) {
-                                        console.log(blocked + "2");
                         if (blocked.indexOf(id) > -1) {
-                                            console.log(blocked + "3");
                             bigbig.splice(i, 1);
                         }
                     }

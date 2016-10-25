@@ -211,6 +211,7 @@ app.post('/webhook/', function (req, res) {
                                                     me = row
                                                 } else if (row.fb_id == postback.data) {
                                                     other = row
+                                                    console.log(row.blocked_users)
                                                     if (row.blocked_users.indexOf(me) > -1) {
                                                         blocked = true;
                                                     }
