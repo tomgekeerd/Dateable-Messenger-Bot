@@ -212,7 +212,9 @@ app.post('/webhook/', function (req, res) {
                                                 } else if (row.fb_id == postback.data) {
                                                     other = row
                                                     if (row.blocked_users != null) {
-                                                        blocked.push(row.blocked_users)
+                                                        for (var i = row.blocked_users.length - 1; i >= 0; i--) {
+                                                            blocked.push(row.blocked_users[i])
+                                                        }
                                                     }
                                                 }
                                             })
