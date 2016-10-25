@@ -401,10 +401,12 @@ var self = module.exports = {
             const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`)
             blocked.on('row', function(row) {
                 const blocked = row.blocked_users;
-                console.log(blocked);
                 if (blocked != null) {
+                                    console.log(blocked + "1");
                     if (blocked.length > 0) {
+                                        console.log(blocked + "2");
                         if (blocked.indexOf(id) > -1) {
+                                            console.log(blocked + "3");
                             big.splice(i, 1);
                         }
                     }
