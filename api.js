@@ -402,7 +402,7 @@ var self = module.exports = {
             blocked.on('row', function(row) {
                 const blocked = row.blocked_users;
                 if (blocked != null) {
-                    if (blocked.length > 0) {}
+                    if (blocked.length > 0) {
                         if (blocked.indexOf(id) > -1) {
                             big.splice(i, 1);
                         }
