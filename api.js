@@ -388,7 +388,7 @@ var self = module.exports = {
 
                 var length = big_found_array.length;
                 for (var i = length; i >= 0; i--) {
-                    if (i < length) {
+                    if (i != 0) {
                         const blocked = row.blocked_users;
                         console.log(blocked);
                         if (blocked != null) {
