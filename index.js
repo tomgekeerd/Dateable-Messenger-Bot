@@ -163,24 +163,26 @@ app.post('/webhook/', function (req, res) {
                                             console.log(err);
                                         }
 
-                                        const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' RETURNING *;`);
-                                        chatQuery.on('row', function(row) {
-                                            const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
-                                            usersQuery.on('end', () => {
-                                                let call = data.acceptedAChat
-                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"${call.messages[0]}\", \"subtitle\": \"${call.sub_msg[0]}\"}`, function() {
-                                                    if (row.initiator == event.sender.id) {
-                                                        api.sendGenericMessage(row.responder, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
+                                        
+                                            const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' RETURNING *;`);
+                                            chatQuery.on('row', function(row) {
+                                                const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
+                                                usersQuery.on('end', () => {
+                                                    let call = data.acceptedAChat
+                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"${call.messages[0]}\", \"subtitle\": \"${call.sub_msg[0]}\"}`, function() {
+                                                        if (row.initiator == event.sender.id) {
+                                                            api.sendGenericMessage(row.responder, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
 
-                                                        })
-                                                    } else {
-                                                        api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
+                                                            })
+                                                        } else {
+                                                            api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
 
-                                                        })
-                                                    }
-                                                })                        
+                                                            })
+                                                        }
+                                                    })                        
+                                                })
                                             })
-                                        })
+                                    
                                     })
 
                                 break
