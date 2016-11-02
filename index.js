@@ -81,7 +81,7 @@ app.post('/webhook/', function (req, res) {
                                 humanToSendTo = row.initiator;
                             }
 
-                            if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0]) {
+                            if ('message' in event && 'attachments' in event.message && 'payload' in event.message.attachments[0] || 'postback' in event) {
                                 // interactive msg
                                 if (event.message.attachments[0].type == 'location') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", event.message.attachments[0].payload.url)
