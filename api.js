@@ -42,7 +42,7 @@ exports.geo_location = geo_location;
 var search_area = "";
 exports.search_area = search_area;
 
-const token = "EAAK1Sb4ieBIBAFCtI79pGWHzDfZCgBZAu6XOlcp6atKCKGVzFYoZBr0x1FACMpxK8BrZCdq2Dl6qbeUOgUTHqNyP73Am4HwVxLtPNS5SLxNw5ostvg1nyX7zAL9HHpDRzGoEyLtwjYZAjWSCPZAlsxhbPyhxiNYVgDlWPCyr6IuwZDZD"
+const token = "EAAK1Sb4ieBIBALA0Uwdcr1bS7qqOHNJcHX9CQ622P0Jmg4VCQR29Of83SNlQ80hhDfkIJI0BYPpt0k1NloR61yjiN8LZBXFWlvMz9SHyvS1M6KIVDhvdcEkcYOF8ngU1zmaTqHdmpgIrb8yphnZCZBBi9JTuZCyKXKSMZC0othQZDZD"
 
 var self = module.exports = {
 
