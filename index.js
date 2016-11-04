@@ -223,33 +223,41 @@ app.post('/webhook/', function (req, res) {
 
                                             dataQuery.on('end', () => {
                                                 done();
-                                
-                                                if (blocked.indexOf(me.fb_id) == -1) {
-                                                    api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
-                                                        if (error) {
+                                                
+                                                api.userEligableForChat(postback.data, function(eligable, cId) {
+                                                    if (eligable) {
+                                                        if (blocked.indexOf(me.fb_id) == -1) {
+                                                            api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
+                                                                if (error) {
+                                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+
+                                                                    })
+                                                                } else {
+                                                                    api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
+                                                                        let methodAndData = JSON.parse(card.buttons[0].payload)
+                                                                        const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                                                        addQuery.on('end', () => {
+                                                                            cards.push(card)
+                                                                            api.sendGenericMessage(postback.data, cards)
+                                                                            api.sendTextMessage(event.sender.id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                                                        })
+                                                                    })
+                                                                }
+                                                            })
+                                                        } else {
                                                             api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
                                                             })
-                                                        } else {
-                                                            api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
-                                                                let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                                const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
-                                                                addQuery.on('end', () => {
-                                                                    cards.push(card)
-                                                                    api.sendGenericMessage(postback.data, cards)
-                                                                    api.sendTextMessage(event.sender.id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
-                                                                })
-                                                            })
                                                         }
-                                                    })
-                                                } else {
-                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                                    } else {
+                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
-                                                    })
-                                                }
+                                                        })
+                                                    }
+                                                })
+                                                
                                             })
                                         })
-
                                     }
 
                                 break;

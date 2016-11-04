@@ -112,7 +112,6 @@ var self = module.exports = {
     sendClusterTextMessage: function(call, recipient, callback) {
 
         var i = 0
-        console.log('wauw')
         var sendMessages = function() {
             if (i < call.messages.length) {
                 switch (call.method) {
@@ -215,6 +214,26 @@ var self = module.exports = {
                 });
             });
         })
+    },
+
+    userEligableForChat: function(id, callback) {
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            if(err) {
+                done();
+                console.log(err);
+            }
+
+            const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator=${id} OR responder=${id} RETURNING *;`)
+            checkUser.on('row', function(row) {
+                if (row.count > 0) {
+                    callback(false, row.chat_id);
+                } else {
+                    callback(true, "");
+                }
+            }) 
+        })
+ 
     },
 
     stopChat: function(id, chat_id) {
