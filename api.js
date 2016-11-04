@@ -224,7 +224,7 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator=${id} OR responder=${id};`)
+            const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}'' OR responder='${id}';`)
             checkUser.on('row', function(row) {
                 if (row.count > 0) {
                     callback(false);
