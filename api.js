@@ -216,7 +216,7 @@ var self = module.exports = {
         })
     },
 
-    userEligableForChat: function(id, callback) {
+    userEligableForChat: function(res, id, callback) {
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             if(err) {
@@ -225,12 +225,19 @@ var self = module.exports = {
             }
 
             const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}' OR responder='${id}';`)
-            checkUser.on('row', function(row) {
-                if (row.count > 0) {
-                    callback(false);
-                } else {
-                    callback(true);
-                }
+            checkUser.on('row', function(row1) {
+                const secUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`)
+                secUser.on('row', function(row2) {
+                    if (row1.count > 0 && row2.count > 0) {
+                        callback(false, 2);
+                    } else if (row1.count > 0 && row2.count == 0){
+                        callback(false, 0);
+                    } else if (row1.count == 0 && row2.count > 0) {
+                        callback(false, 1);
+                    } else  {
+                        callback(true, 0);
+                    }
+                })
             }) 
         })
  

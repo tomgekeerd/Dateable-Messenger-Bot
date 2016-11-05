@@ -224,7 +224,7 @@ app.post('/webhook/', function (req, res) {
                                             dataQuery.on('end', () => {
                                                 done();
                                                 
-                                                api.userEligableForChat(postback.data, function(eligable) {
+                                                api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
                                                     if (eligable) {
                                                         if (blocked.indexOf(me.fb_id) == -1) {
                                                             api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
@@ -239,15 +239,23 @@ app.post('/webhook/', function (req, res) {
                                                                         addQuery.on('end', () => {
                                                                             cards.push(card)
                                                                             api.sendGenericMessage(postback.data, cards)
-                                                                            api.sendTextMessage(event.sender.id, "I just asked " + other.first_name + " for a chat with you. Hang on, you'll get a message when you guys are ready to talk.");
+                                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"I just asked ${other.first_name} for a chat with you. Hang on, you'll get a message when you guys are ready to talk\", \"subtitle\": \"Your chat partner has 15 min. to respond.\"}`, function() {
+
+                                                                            })
                                                                         })
                                                                     })
                                                                 }
                                                             })
                                                         } else {
-                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                                            if (id == 1) {
+                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
-                                                            })
+                                                                })
+                                                            } else {
+                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat first.\"}`, function() {
+
+                                                                })
+                                                            }
                                                         }
                                                     } else {
                                                         api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
