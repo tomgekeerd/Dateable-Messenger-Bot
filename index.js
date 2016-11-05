@@ -188,7 +188,7 @@ app.post('/webhook/', function (req, res) {
                                 break
 
                                 case "startChat":
-
+                                    console.log(postback.data)
                                     if (postback.data == true) {
                                         api.startChat(event.sender.id);
                                     } else if (postback.data == false) {
