@@ -194,78 +194,79 @@ app.post('/webhook/', function (req, res) {
                                     } else if (postback.data == false) {
                                         api.sendTextMessage(event.sender.id, "Alright! Just beep me up when you are ready!");
                                     } else {
-                                        pg.defaults.ssl = true;
-                                        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                        // pg.defaults.ssl = true;
+                                        // pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
-                                            if(err) {
-                                                done();
-                                                console.log(err);
-                                            }
+                                        //     if(err) {
+                                        //         done();
+                                        //         console.log(err);
+                                        //     }
 
-                                            const cards = [];
-                                            const blocked = [];
-                                            var me = {};
-                                            var other = {};
+                                        //     const cards = [];
+                                        //     const blocked = [];
+                                        //     var me = {};
+                                        //     var other = {};
 
-                                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
-                                            dataQuery.on('row', function(row) {
-                                                if (row.fb_id == event.sender.id) {
-                                                    me = row
-                                                } else if (row.fb_id == postback.data) {
-                                                    other = row
-                                                    if (row.blocked_users != null) {
-                                                        for (var i = row.blocked_users.length - 1; i >= 0; i--) {
-                                                            blocked.push(row.blocked_users[i])
-                                                        }
-                                                    }
-                                                }
-                                            })
+                                        //     const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
+                                        //     dataQuery.on('row', function(row) {
+                                        //         if (row.fb_id == event.sender.id) {
+                                        //             me = row
+                                        //         } else if (row.fb_id == postback.data) {
+                                        //             other = row
+                                        //             if (row.blocked_users != null) {
+                                        //                 for (var i = row.blocked_users.length - 1; i >= 0; i--) {
+                                        //                     blocked.push(row.blocked_users[i])
+                                        //                 }
+                                        //             }
+                                        //         }
+                                        //     })
 
-                                            dataQuery.on('end', () => {
-                                                done();
+                                        //     dataQuery.on('end', () => {
+                                        //         done();
                                                 
-                                                api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
-                                                    if (eligable) {
-                                                        if (blocked.indexOf(me.fb_id) == -1) {
-                                                            api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
-                                                                if (error) {
-                                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                        //         api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
+                                        //             if (eligable) {
+                                        //                 if (blocked.indexOf(me.fb_id) == -1) {
+                                        //                     api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
+                                        //                         if (error) {
+                                        //                             api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
-                                                                    })
-                                                                } else {
-                                                                    api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
-                                                                        let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                                        const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
-                                                                        addQuery.on('end', () => {
-                                                                            cards.push(card)
-                                                                            api.sendGenericMessage(postback.data, cards)
-                                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"I just asked ${other.first_name} for a chat with you. Hang on, you'll get a message when you guys are ready to talk\", \"subtitle\": \"Your chat partner has 15 min. to respond.\"}`, function() {
+                                        //                             })
+                                        //                         } else {
+                                        //                             api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
+                                        //                                 let methodAndData = JSON.parse(card.buttons[0].payload)
+                                        //                                 const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                        //                                 addQuery.on('end', () => {
+                                        //                                     cards.push(card)
+                                        //                                     api.sendGenericMessage(postback.data, cards)
+                                        //                                     api.sendGenericMessage(event.sender.id, `{ \"title\": \"I just asked ${other.first_name} for a chat with you. Hang on, you'll get a message when you guys are ready to talk\", \"subtitle\": \"Your chat partner has 15 min. to respond.\"}`, function() {
 
-                                                                            })
-                                                                        })
-                                                                    })
-                                                                }
-                                                            })
-                                                        } else {
-                                                            if (id == 1) {
-                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                        //                                     })
+                                        //                                 })
+                                        //                             })
+                                        //                         }
+                                        //                     })
+                                        //                 } else {
+                                        //                     if (id == 1) {
+                                        //                         api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
-                                                                })
-                                                            } else {
-                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat first.\"}`, function() {
+                                        //                         })
+                                        //                     } else {
+                                        //                         api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat first.\"}`, function() {
 
-                                                                })
-                                                            }
-                                                        }
-                                                    } else {
-                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                        //                         })
+                                        //                     }
+                                        //                 }
+                                        //             } else {
+                                        //                 api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
-                                                        })
-                                                    }
-                                                })
+                                        //                 })
+                                        //             }
+                                        //         })
 
-                                            })
-                                        })
+                                        //     })
+                                        // })
+                                        console.log('hey')
                                     }
 
                                 break;
