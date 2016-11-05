@@ -222,7 +222,6 @@ app.post('/webhook/', function (req, res) {
                                             })
 
                                             dataQuery.on('end', () => {
-                                                done();
                                                 
                                                 api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
                                                     if (eligable) {
