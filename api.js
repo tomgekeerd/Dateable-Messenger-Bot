@@ -224,7 +224,6 @@ var self = module.exports = {
                 console.log(err);
             }
 
-<<<<<<< HEAD
             const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}' OR responder='${id}';`)
             checkUser.on('row', function(row1) {
                 const secUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`)
@@ -243,15 +242,6 @@ var self = module.exports = {
                 secUser.on('end', () => {
                     done();
                 })
-=======
-            const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}'' OR responder='${id}';`)
-            checkUser.on('row', function(row) {
-                if (row.count > 0) {
-                    callback(false);
-                } else {
-                    callback(true);
-                }
->>>>>>> parent of ec6a2a4... alsof ik dit snap
             }) 
 
             checkUser.on('end', () => {
