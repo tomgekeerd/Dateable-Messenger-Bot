@@ -224,6 +224,7 @@ app.post('/webhook/', function (req, res) {
                                             dataQuery.on('end', () => {
                                                 
                                                 api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
+                                                    console.log(eligable, id);
                                                     if (eligable) {
                                                         if (blocked.indexOf(me.fb_id) == -1) {
                                                             api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
