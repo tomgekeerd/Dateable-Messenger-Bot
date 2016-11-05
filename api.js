@@ -239,12 +239,12 @@ var self = module.exports = {
                     }
                 })
 
-                secUser.on('end' () => {
+                secUser.on('end', () => {
                     done();
                 })
             }) 
 
-            checkUser.on('end' () => {
+            checkUser.on('end', () => {
                 done();
             })
         })
