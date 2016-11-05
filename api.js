@@ -238,7 +238,15 @@ var self = module.exports = {
                         callback(true, 0);
                     }
                 })
+
+                secUser.on('end' () => {
+                    done();
+                })
             }) 
+
+            checkUser.on('end' () => {
+                done();
+            })
         })
  
     },
