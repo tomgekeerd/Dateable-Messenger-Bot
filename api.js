@@ -186,7 +186,6 @@ var self = module.exports = {
 
                     self.findPeople(id, row.looking_for, row.gender, row.loc_latitude, row.loc_longitude, row.search_area, function(results) {
 
-                        console.log(results);
                         var send_array = [];
                         // First, inform the user about the hits
 
