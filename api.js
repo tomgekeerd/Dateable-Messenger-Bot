@@ -299,6 +299,7 @@ var self = module.exports = {
             } else {
                 const chat_details = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}';`)
                 chat_details.on('row', function(row) {
+                    console.log(row.count)
                     if (row.count > 0) {
                         let humanToSendTo = -1;
 

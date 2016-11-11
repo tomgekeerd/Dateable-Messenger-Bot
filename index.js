@@ -94,7 +94,7 @@ app.post('/webhook/', function (req, res) {
                                 } else if (event.message.attachments[0].type == 'video') {
                                     api.sendTextMessage(humanToSendTo, "", "", "", "", "", "", event.message.attachments[0].payload.url)
                                 } else if (event.message.attachments[0].type == 'image' && event.message.attachments[0].payload.sticker_id == 369239263222822) {
-                                    api.stopChat(event.sender.id, chat_row.is_in_chat)
+                                    api.stopChat(event.sender.id, chat_row.is_in_chat, true)
                                 }
                             } else {
                                 // text msg
@@ -368,6 +368,7 @@ app.post('/webhook/', function (req, res) {
 
                             } else if (event.message.attachments[0].type == 'image' && event.message.attachments[0].payload.sticker_id == 369239263222822) {
                                 api.stopChat(event.sender.id, "", false)
+                                console.log("hey")
                             }
                         } 
                     }
