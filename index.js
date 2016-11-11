@@ -363,12 +363,13 @@ app.post('/webhook/', function (req, res) {
                                     });
                                 });
                             } else if (event.message.attachments[0].type == 'image') {
+                                if (event.message.attachments[0].payload.sticker_id == 369239263222822)) {
+                                    api.stopChat(event.sender.id, "", false)
+                                    console.log("hey")
+                                }
 
                             } else if (event.message.attachments[0].type == 'audio') {
 
-                            } else if (event.message.attachments[0].type == 'image' && event.message.attachments[0].payload.sticker_id == 369239263222822) {
-                                api.stopChat(event.sender.id, "", false)
-                                console.log("hey")
                             }
                         } 
                     }
