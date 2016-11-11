@@ -252,13 +252,13 @@ app.post('/webhook/', function (req, res) {
 
                                                                 })
                                                             } else {
-                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat.\"}`, function() {
+                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like.\"}`, function() {
 
                                                                 })
                                                             }
                                                         }
                                                     } else {
-                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like button.\"}`, function() {
 
                                                         })
                                                     }
@@ -366,6 +366,8 @@ app.post('/webhook/', function (req, res) {
 
                             } else if (event.message.attachments[0].type == 'audio') {
 
+                            } else if (event.message.attachments[0].type == 'image' && event.message.attachments[0].payload.sticker_id == 369239263222822) {
+                                api.stopChat(event.sender.id, "", false)
                             }
                         } 
                     }

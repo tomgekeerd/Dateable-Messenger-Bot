@@ -250,7 +250,7 @@ var self = module.exports = {
  
     },
 
-    stopChat: function(id, chat_id) {
+    stopChat: function(id, chat_id, has_chat) {
 
         pg.defaults.ssl = true;
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
@@ -259,42 +259,87 @@ var self = module.exports = {
                 console.log(err);
             }
 
-            const chat_details = client.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`)
-            chat_details.on('row', function(row) {
+            if (has_chat) {
+                const chat_details = client.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`)
+                chat_details.on('row', function(row) {
 
-                let humanToSendTo = -1;
-                if (row.initiator == id) {
-                    humanToSendTo = row.initiator;
-                } else if (row.responder == id) {
-                    humanToSendTo = row.responder;
-                }     
+                    let humanToSendTo = -1;
+                    if (row.initiator == id) {
+                        humanToSendTo = row.initiator;
+                    } else if (row.responder == id) {
+                        humanToSendTo = row.responder;
+                    }     
 
-                let humanTwo = -1;
-                if (humanToSendTo == row.initiator) {
-                    humanTwo = row.responder
-                } else {
-                    humanTwo = row.initiator
-                }
+                    let humanTwo = -1;
+                    if (humanToSendTo == row.initiator) {
+                        humanTwo = row.responder
+                    } else {
+                        humanTwo = row.initiator
+                    }
 
-                const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
-                back_to_default.on('end', () => {
+                    const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
+                    back_to_default.on('end', () => {
 
-                    const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`)
-                    remove_query.on('end', function(row) {
+                        const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`)
+                        remove_query.on('end', function(row) {
 
-                        self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
-                            
-                        })
+                            self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                                
+                            })
 
-                        self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
-                    
+                            self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
+                        
+                            })
+
                         })
 
                     })
 
                 })
+            } else {
+                const chat_details = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}';`)
+                chat_details.on('row', function(row) {
+                    if (row.count > 0) {
+                        let humanToSendTo = -1;
 
-            })
+                        const chat_details = client.query(`SELECT * FROM chats WHERE initiator='${id}';`)
+                        chat_details.on('row', function(row) {
+                            if (row.initiator == id) {
+                                humanToSendTo = row.initiator;
+                            } else if (row.responder == id) {
+                                humanToSendTo = row.responder;
+                            }     
+
+                            let humanTwo = -1;
+                            if (humanToSendTo == row.initiator) {
+                                humanTwo = row.responder
+                            } else {
+                                humanTwo = row.initiator
+                            }
+
+                            const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
+                            back_to_default.on('end', () => {
+
+                                const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${row.chat_id}';`)
+                                remove_query.on('end', function(row) {
+
+                                    self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                                        
+                                    })
+
+                                    self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
+                                
+                                    })
+
+                                })
+
+                            })
+                        })
+                    } else {    
+                        // You like us huh?
+                    }
+                })
+            }
         })
     },
 
