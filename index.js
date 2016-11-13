@@ -125,22 +125,19 @@ app.post('/webhook/', function (req, res) {
                                             var row = result.rows[i]
 
                                             api.query(`UPDATE users SET blocked_users = blocked_users || '{${row.initiator}}' WHERE fb_id=${row.responder};`, function(err, result) {
-                                                for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                    var row = result.rows[i]
 
-                                                    api.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`, function(err, result) {
-                                                        for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                            var row = result.rows[i]
+                                                api.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`, function(err, result) {
+                                                    for (var i = result.rows.length - 1; i >= 0; i--) {
+                                                        var row = result.rows[i]
 
-                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
+                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
 
-                                                            })
+                                                        })
 
-                                                            api.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`)
-                                                        }
+                                                        api.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`)
+                                                    }
 
-                                                    })
-                                                }
+                                                })
 
                                             })  
                                         }
@@ -156,23 +153,20 @@ app.post('/webhook/', function (req, res) {
                                             var row = result.rows[i]
                                         
                                             api.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`, function(err, result) {
-                                                for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                    var row = result.rows[i]
-                                                
-                                                    let call = data.acceptedAChat
-                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"${call.messages[0]}\", \"subtitle\": \"${call.sub_msg[0]}\"}`, function() {
-                                                        if (row.initiator == event.sender.id) {
-                                                            api.sendGenericMessage(row.responder, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
+                                            
+                                                let call = data.acceptedAChat
+                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"${call.messages[0]}\", \"subtitle\": \"${call.sub_msg[0]}\"}`, function() {
+                                                    if (row.initiator == event.sender.id) {
+                                                        api.sendGenericMessage(row.responder, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
 
-                                                            })
-                                                        } else {
-                                                            api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
+                                                        })
+                                                    } else {
+                                                        api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
 
-                                                            })
-                                                        }
-                                                    })
+                                                        })
+                                                    }
+                                                })
 
-                                                }    
                                             });
                         
                                         }
