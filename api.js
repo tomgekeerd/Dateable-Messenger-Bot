@@ -51,7 +51,9 @@ var self = module.exports = {
         pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             client.query(sql, function(err, result) {
                 done();
-                cb(err, result);
+                if (typeof callback !== 'undefined' && callback !== null){
+                    cb(err, result);
+                }
             })
         });
     },
