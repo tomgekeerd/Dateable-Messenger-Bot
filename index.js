@@ -220,20 +220,20 @@ app.post('/webhook/', function (req, res) {
                                                             }
                                                         })
                                                     } else {
-                                                        if (id == 1) {
-                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
+                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
-                                                            })
-                                                        } else {
-                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like.\"}`, function() {
-
-                                                            })
-                                                        }
+                                                        })
                                                     }
                                                 } else {
-                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like button.\"}`, function() {
+                                                    if (id == 0) {
+                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like.\"}`, function() {
 
-                                                    })
+                                                        })
+                                                    } else {
+                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like button.\"}`, function() {
+
+                                                        })
+                                                    }
                                                 }
                                             })
 

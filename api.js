@@ -228,12 +228,16 @@ var self = module.exports = {
                 const secUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`)
                 secUser.on('row', function(row2) {
                     if (row1.count > 0 && row2.count > 0) {
+                        // Uneligable, allebei in chat
                         callback(false, 2);
-                    } else if (row1.count > 0 && row2.count == 0){
+                    } else if (row1.count > 0 && row2.count == 0) {
+                        // Uneligable, ik zit in chat
                         callback(false, 0);
                     } else if (row1.count == 0 && row2.count > 0) {
+                        // Zij zit in chat
                         callback(false, 1);
-                    } else  {
+                    } else {
+                        // niemand in chat, chatten
                         callback(true, 0);
                     }
                 })
