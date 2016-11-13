@@ -46,6 +46,17 @@ const token = "EAAK1Sb4ieBIBALA0Uwdcr1bS7qqOHNJcHX9CQ622P0Jmg4VCQR29Of83SNlQ80hh
 
 var self = module.exports = {
 
+    query: function(sql, cb) {
+        pg.defaults.ssl = true;
+        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+            client.query(sql, function(err, result) {
+                done();
+                cb(err, result);
+            })
+        });
+    }
+
+
     sendTextMessage: function(recipient, text, q_replies, buttons, image, location, audio, video, file, callback) {
 
         let messageData = {
