@@ -258,6 +258,8 @@ var self = module.exports = {
     stopChat: function(id, chat_id, has_chat) {
 
         if (has_chat) {
+
+            console.log(chat_id)
             self.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
                 console.log(result)
                 for (var i = result.rows.length - 1; i >= 0; i--) {
