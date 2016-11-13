@@ -166,7 +166,7 @@ var self = module.exports = {
 
         
 
-        api.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
+        self.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
             for (var i = result.rows.length - 1; i >= 0; i--) {
                 var row = result.rows[i]
 
@@ -227,11 +227,11 @@ var self = module.exports = {
     userEligableForChat: function(res, id, callback) {
         
 
-        api.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}' OR responder='${id}';`, function(err, result) {
+        self.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}' OR responder='${id}';`, function(err, result) {
             for (var i = result.rows.length - 1; i >= 0; i--) {
                 var row1 = result.rows[i]
 
-                api.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`, function(err, result) {
+                self.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`, function(err, result) {
                     for (var i = result.rows.length - 1; i >= 0; i--) {
                         var row2 = result.rows[i]
 
@@ -258,7 +258,7 @@ var self = module.exports = {
     stopChat: function(id, chat_id, has_chat) {
 
         if (has_chat) {
-            api.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
+            self.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
                 for (var i = result.rows.length - 1; i >= 0; i--) {
                     var row = result.rows[i]
 
@@ -276,8 +276,8 @@ var self = module.exports = {
                         humanTwo = row.initiator
                     }
 
-                    api.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
-                        api.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
+                    self.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
+                        self.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
                             self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                                 
                             })
@@ -290,14 +290,14 @@ var self = module.exports = {
                 }
             })
         } else {
-            api.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}';`, function(err, result) {
+            self.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}';`, function(err, result) {
                 for (var i = result.rows.length - 1; i >= 0; i--) {
                     var row = result.rows[i]
 
                     if (row.count > 0) {
                         let humanToSendTo = -1;
 
-                        api.query(`SELECT * FROM chats WHERE initiator='${id}';`, function(err, result) {
+                        self.query(`SELECT * FROM chats WHERE initiator='${id}';`, function(err, result) {
                             for (var i = result.rows.length - 1; i >= 0; i--) {
                                 var row = result.rows[i]
 
@@ -314,8 +314,8 @@ var self = module.exports = {
                                     humanTwo = row.initiator
                                 }
 
-                                api.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
-                                    api.query(`DELETE FROM chats WHERE chat_id='${row.chat_id}';`, function(err, result) {
+                                self.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
+                                    self.query(`DELETE FROM chats WHERE chat_id='${row.chat_id}';`, function(err, result) {
                                         self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                                             
                                         })
@@ -340,11 +340,11 @@ var self = module.exports = {
 
         
 
-        api.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
+        self.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
             for (var i = result.rows.length - 1; i >= 0; i--) {
                 var row = result.rows[i]
 
-                api.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`, function(err, result) {
+                self.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`, function(err, result) {
                     for (var i = result.rows.length - 1; i >= 0; i--) {
                         var privacy_row = result.rows[i]
 
@@ -440,7 +440,7 @@ var self = module.exports = {
             query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
         }
 
-        api.query(query, function(err, result) {
+        self.query(query, function(err, result) {
             for (var i = result.rows.length - 1; i >= 0; i--) {
                 var row = result.rows[i]
                 big_found_array.push(row);
@@ -476,7 +476,7 @@ var self = module.exports = {
 
     loop: function(i, big, small, client, id, lat, long, callback) {
          if (i < big.length) {
-            api.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`, function(err, result) {
+            self.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`, function(err, result) {
                 for (var i = result.rows.length - 1; i >= 0; i--) {
                     var row = result.rows[i]
                     const blocked = row.blocked_users;
@@ -624,14 +624,14 @@ var self = module.exports = {
 
         
 
-        api.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`, function(err, result) {
+        self.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`, function(err, result) {
             for (var i = result.rows.length - 1; i >= 0; i--) {
                 var row = result.rows[i]
 
                 if (row.count == 0) {
 
-                    api.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
-                    api.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
+                    self.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
+                    self.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
 
 
                     self.sendGreetingMessages(id, firstname, true);
@@ -639,7 +639,7 @@ var self = module.exports = {
                 } else {
 
                     // Send greeting
-                    api.query(`SELECT first_name FROM users WHERE fb_id=${id};`, function(err, result) {
+                    self.query(`SELECT first_name FROM users WHERE fb_id=${id};`, function(err, result) {
                         for (var i = result.rows.length - 1; i >= 0; i--) {
                             var row = result.rows[i]
 
