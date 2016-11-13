@@ -57,21 +57,14 @@ app.post('/webhook/', function (req, res) {
                 api.getUserInsights(event.sender.id, api.receivedUserInsights);
             }
         } else {
-            pg.defaults.ssl = true;
-            pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-
-                if(err) {
-                    done();
-                    console.log(err);
-                }
-
+            
                 api.query(`SELECT is_in_chat FROM users WHERE fb_id=${event.sender.id};`, function(err, result) {
 
                     if (result.rows.is_in_chat != 0) {
 
                         // Alright, this msg has to be sent to the other we are in a chat with
 
-                        api.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${chat_row.is_in_chat}';`, function(err, result) {
+                        api.query(`SELECT * FROM chats WHERE status='live' AND chat_id='${result.rows.is_in_chat}';`, function(err, result) {
 
                             let humanToSendTo = -1;
                             if (result.rows.initiator == event.sender.id) {
@@ -358,7 +351,6 @@ app.post('/webhook/', function (req, res) {
                     }
                 });
                     
-            })
         }
     }
     res.sendStatus(200)
