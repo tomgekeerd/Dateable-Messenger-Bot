@@ -49,12 +49,13 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]        
 
+        console.log(event.postback)
 
         if ('postback' in event && 'payload' in event.postback && JSON.stringify(event.postback).indexOf("getStarted") > -1) {
             let postback = JSON.parse(event.postback.payload)
             if (postback.method == 'getStarted') {
                 api.getUserInsights(event.sender.id, api.receivedUserInsights);
-            }
+            } 
         } else {
             pg.defaults.ssl = true;
             pg.connect(process.env.DATABASE_URL, (err, client, done) => {
