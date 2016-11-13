@@ -57,6 +57,7 @@ app.post('/webhook/', function (req, res) {
                 api.getUserInsights(event.sender.id, api.receivedUserInsights);
             } 
         } else {
+            console.log("connects?")
             pg.defaults.ssl = true;
             pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
