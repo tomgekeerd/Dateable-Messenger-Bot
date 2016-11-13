@@ -64,7 +64,6 @@ app.post('/webhook/', function (req, res) {
                     done();
                     console.log(err);
                 }
-                console.log(event.sender.id)
 
                 const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${event.sender.id};`);
                 chatQuery.on('row', function(chat_row) {
@@ -122,29 +121,20 @@ app.post('/webhook/', function (req, res) {
 
                                 case "blockChat":
 
-                                    pg.defaults.ssl = true;
-                                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                    const getDetails = client.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`)
+                                    getDetails.on('row', function(row) {
 
-                                        if(err) {
-                                            done();
-                                            console.log(err);
-                                        }
-                                        const getDetails = client.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`)
-                                        getDetails.on('row', function(row) {
+                                        const checkQuery = client.query(`UPDATE users SET blocked_users = blocked_users || '{${row.initiator}}' WHERE fb_id=${row.responder};`)
+                                        checkQuery.on('end', () => {
 
-                                            const checkQuery = client.query(`UPDATE users SET blocked_users = blocked_users || '{${row.initiator}}' WHERE fb_id=${row.responder};`)
-                                            checkQuery.on('end', () => {
+                                            const userDetails = client.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`)
+                                            userDetails.on('row', function(row) {
 
-                                                const userDetails = client.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`)
-                                                userDetails.on('row', function(row) {
-
-                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
-
-                                                    })
-
-                                                    client.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`)
+                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
 
                                                 })
+
+                                                client.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`)
 
                                             })
 
@@ -156,35 +146,25 @@ app.post('/webhook/', function (req, res) {
 
                                 case "acceptChat":
 
-                                    pg.defaults.ssl = true;
-                                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+                                    const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' RETURNING *;`);
+                                    chatQuery.on('row', function(row) {
+                                        const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
+                                        usersQuery.on('end', () => {
+                                            let call = data.acceptedAChat
+                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"${call.messages[0]}\", \"subtitle\": \"${call.sub_msg[0]}\"}`, function() {
+                                                if (row.initiator == event.sender.id) {
+                                                    api.sendGenericMessage(row.responder, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
 
-                                        if(err) {
-                                            done();
-                                            console.log(err);
-                                        }
+                                                    })
+                                                } else {
+                                                    api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
 
-                                        
-                                            const chatQuery = client.query(`UPDATE chats SET status='live' WHERE chat_id='${postback.data}' RETURNING *;`);
-                                            chatQuery.on('row', function(row) {
-                                                const usersQuery = client.query(`UPDATE users SET is_in_chat=${postback.data} WHERE fb_id=${row.initiator} OR fb_id=${row.responder};`);
-                                                usersQuery.on('end', () => {
-                                                    let call = data.acceptedAChat
-                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"${call.messages[0]}\", \"subtitle\": \"${call.sub_msg[0]}\"}`, function() {
-                                                        if (row.initiator == event.sender.id) {
-                                                            api.sendGenericMessage(row.responder, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
-
-                                                            })
-                                                        } else {
-                                                            api.sendGenericMessage(row.initiator, `{ \"title\": \"${data.chatIsAccepted.messages[0]}\", \"subtitle\": \"${data.chatIsAccepted.sub_msg[0]}\"}`, function() {
-
-                                                            })
-                                                        }
-                                                    })                        
-                                                })
-                                            })
-                                    
+                                                    })
+                                                }
+                                            })                        
+                                        })
                                     })
+                                    
 
                                 break
 
@@ -195,76 +175,68 @@ app.post('/webhook/', function (req, res) {
                                     } else if (postback.data == false) {
                                         api.sendTextMessage(event.sender.id, "Alright! Just beep me up when you are ready!");
                                     } else {
-                                        pg.defaults.ssl = true;
-                                        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
-                                            if(err) {
-                                                done();
-                                                console.log(err);
-                                            }
+                                        const cards = [];
+                                        const blocked = [];
+                                        var me = {};
+                                        var other = {};
 
-                                            const cards = [];
-                                            const blocked = [];
-                                            var me = {};
-                                            var other = {};
-
-                                            const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
-                                            dataQuery.on('row', function(row) {
-                                                if (row.fb_id == event.sender.id) {
-                                                    me = row
-                                                } else if (row.fb_id == postback.data) {
-                                                    other = row
-                                                    if (row.blocked_users != null) {
-                                                        for (var i = row.blocked_users.length - 1; i >= 0; i--) {
-                                                            blocked.push(row.blocked_users[i])
-                                                        }
+                                        const dataQuery = client.query(`SELECT * FROM users WHERE fb_id=${postback.data} OR fb_id=${event.sender.id};`);
+                                        dataQuery.on('row', function(row) {
+                                            if (row.fb_id == event.sender.id) {
+                                                me = row
+                                            } else if (row.fb_id == postback.data) {
+                                                other = row
+                                                if (row.blocked_users != null) {
+                                                    for (var i = row.blocked_users.length - 1; i >= 0; i--) {
+                                                        blocked.push(row.blocked_users[i])
                                                     }
                                                 }
-                                            })
+                                            }
+                                        })
 
-                                            dataQuery.on('end', () => {
-                                                
-                                                api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
-                                                    if (eligable) {
-                                                        if (blocked.indexOf(me.fb_id) == -1) {
-                                                            api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
-                                                                if (error) {
-                                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
-
-                                                                    })
-                                                                } else {
-                                                                    api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
-                                                                        let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                                        const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
-                                                                        addQuery.on('end', () => {
-                                                                            cards.push(card)
-                                                                            api.sendGenericMessage(postback.data, cards)
-                                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"I just asked ${other.first_name} for a chat with you. Hang on, you'll get a message when you guys are ready to talk\", \"subtitle\": \"Your chat partner has 15 min. to respond.\"}`, function() {
-
-                                                                            })
-                                                                        })
-                                                                    })
-                                                                }
-                                                            })
-                                                        } else {
-                                                            if (id == 1) {
+                                        dataQuery.on('end', () => {
+                                            
+                                            api.userEligableForChat(postback.data, event.sender.id, function(eligable, id) {
+                                                if (eligable) {
+                                                    if (blocked.indexOf(me.fb_id) == -1) {
+                                                        api.sendGenericMessage(postback.data, `{ \"title\": \"Hey it seems you got some attention, would you like to chat with ${me.first_name}?\", \"subtitle\": \"Tap chat to accept, reject to reject this person and block if he/she is harassing you.\"}`, function(error) {
+                                                            if (error) {
                                                                 api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
                                                                 })
                                                             } else {
-                                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like.\"}`, function() {
+                                                                api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
+                                                                    let methodAndData = JSON.parse(card.buttons[0].payload)
+                                                                    const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
+                                                                    addQuery.on('end', () => {
+                                                                        cards.push(card)
+                                                                        api.sendGenericMessage(postback.data, cards)
+                                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"I just asked ${other.first_name} for a chat with you. Hang on, you'll get a message when you guys are ready to talk\", \"subtitle\": \"Your chat partner has 15 min. to respond.\"}`, function() {
 
+                                                                        })
+                                                                    })
                                                                 })
                                                             }
-                                                        }
-                                                    } else {
-                                                        api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like button.\"}`, function() {
-
                                                         })
-                                                    }
-                                                })
+                                                    } else {
+                                                        if (id == 1) {
+                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"It seems I got some trouble connecting you two.\", \"subtitle\": \"Please try again later.\"}`, function() {
 
+                                                            })
+                                                        } else {
+                                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like.\"}`, function() {
+
+                                                            })
+                                                        }
+                                                    }
+                                                } else {
+                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"You still have one chat continuing/pending.\", \"subtitle\": \"Please cancel your other chat by pressing the like button.\"}`, function() {
+
+                                                    })
+                                                }
                                             })
+
                                         })
                                     }
 
@@ -302,17 +274,10 @@ app.post('/webhook/', function (req, res) {
                                     api.looking_for = payload.data;
                                     let call = data.confirmGender
 
-                                    pg.defaults.ssl = true;
-                                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                                        if(err) {
-                                            done();
-                                            console.log(err);
-                                        }
-
-                                        const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${event.sender.id};`);
-                                        query.on('end', () => {
-                                            done();
-                                        });
+                                    
+                                    const query = client.query(`UPDATE users SET looking_for=${api.looking_for} WHERE fb_id=${event.sender.id};`);
+                                    query.on('end', () => {
+                                        done();
                                     });
                                     
                                     api.sendClusterTextMessage(call, event.sender.id, function() {
@@ -347,20 +312,14 @@ app.post('/webhook/', function (req, res) {
 
                                     // UPDATE in db
 
-                                    pg.defaults.ssl = true;
-                                    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-                                        if(err) {
-                                            console.log(err);
-                                            done();
-                                        }
+                                    
 
-                                        client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${event.sender.id};`);
+                                    client.query(`UPDATE users SET loc_latitude=${api.loc_latitude}, loc_longitude=${api.loc_longitude}, geo_location='${api.geo_location}', search_area='${json[0].administrativeLevels.level1short}' WHERE fb_id=${event.sender.id};`);
 
-                                        let call = data.confirmLocation
-                                        api.sendClusterTextMessage(call, event.sender.id, function() {
-                                            console.log('done');
-                                        })
-                                    });
+                                    let call = data.confirmLocation
+                                    api.sendClusterTextMessage(call, event.sender.id, function() {
+                                        console.log('done');
+                                    })
                                 });
                             } else if (event.message.attachments[0].type == 'image') {
                                 if (event.message.attachments[0].payload.sticker_id == 369239263222822) {
