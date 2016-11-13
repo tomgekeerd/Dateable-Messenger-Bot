@@ -135,7 +135,8 @@ app.post('/webhook/', function (req, res) {
                                                             api.sendGenericMessage(event.sender.id, `{ \"title\": \"You blocked ${row.first_name}\", \"subtitle\": \"To unblock, please head over to the settings tab.\"}`, function() {
 
                                                             })
-                                                            client.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`)
+
+                                                            api.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`)
                                                         }
 
                                                     })
@@ -223,14 +224,13 @@ app.post('/webhook/', function (req, res) {
                                                             } else {
                                                                 api.getPrivacyCardOfUser(event.sender.id, me.fb_id, true, me, function(card) {
                                                                     let methodAndData = JSON.parse(card.buttons[0].payload)
-                                                                    const addQuery = client.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`);
-                                                                    addQuery.on('end', () => {
+                                                                    api.query(`INSERT INTO chats (chat_id, status, initiator, responder, last_response) VALUES ('${methodAndData.data}', 'pending', '${event.sender.id}', '${postback.data}', '${Math.floor(Date.now() / 1000)}')`, function(err, result) {
                                                                         cards.push(card)
                                                                         api.sendGenericMessage(postback.data, cards)
                                                                         api.sendGenericMessage(event.sender.id, `{ \"title\": \"I just asked ${other.first_name} for a chat with you. Hang on, you'll get a message when you guys are ready to talk\", \"subtitle\": \"Your chat partner has 15 min. to respond.\"}`, function() {
 
                                                                         })
-                                                                    })
+                                                                    });
                                                                 })
                                                             }
                                                         })
