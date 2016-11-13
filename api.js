@@ -54,7 +54,7 @@ var self = module.exports = {
                 cb(err, result);
             })
         });
-    }
+    },
 
 
     sendTextMessage: function(recipient, text, q_replies, buttons, image, location, audio, video, file, callback) {
