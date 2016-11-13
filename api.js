@@ -164,15 +164,12 @@ var self = module.exports = {
 
     startChat: function(id) {
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-            if(err) {
-                done();
-                console.log(err);
-            }
+        
 
-            const preferences_query = client.query(`SELECT * FROM users WHERE fb_id=${id};`)
-            preferences_query.on('row', function(row) {
+        api.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
+            for (var i = result.rows.length - 1; i >= 0; i--) {
+                var row = result.rows[i]
+
                 var looking_for_gender = ""
                 var looking_for_gender_one = ""
                 switch (row.looking_for) {
@@ -222,61 +219,48 @@ var self = module.exports = {
                         }
                     });
                 });
-            });
+            }
         })
+            
     },
 
     userEligableForChat: function(res, id, callback) {
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-            if(err) {
-                done();
-                console.log(err);
-            }
+        
 
-            const checkUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}' OR responder='${id}';`)
-            checkUser.on('row', function(row1) {
-                const secUser = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`)
-                secUser.on('row', function(row2) {
-                    if (row1.count > 0 && row2.count > 0) {
-                        // Uneligable, allebei in chat
-                        callback(false, 2);
-                    } else if (row1.count > 0 && row2.count == 0) {
-                        // Uneligable, ik zit in chat
-                        callback(false, 0);
-                    } else if (row1.count == 0 && row2.count > 0) {
-                        // Zij zit in chat
-                        callback(false, 1);
-                    } else {
-                        // niemand in chat, chatten
-                        callback(true, 0);
+        api.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}' OR responder='${id}';`, function(err, result) {
+            for (var i = result.rows.length - 1; i >= 0; i--) {
+                var row1 = result.rows[i]
+
+                api.query(`SELECT COUNT(*) FROM chats WHERE initiator='${res}' OR responder='${res}';`, function(err, result) {
+                    for (var i = result.rows.length - 1; i >= 0; i--) {
+                        var row2 = result.rows[i]
+
+                        if (row1.count > 0 && row2.count > 0) {
+                            // Uneligable, allebei in chat
+                            callback(false, 2);
+                        } else if (row1.count > 0 && row2.count == 0) {
+                            // Uneligable, ik zit in chat
+                            callback(false, 0);
+                        } else if (row1.count == 0 && row2.count > 0) {
+                            // Zij zit in chat
+                            callback(false, 1);
+                        } else {
+                            // niemand in chat, chatten
+                            callback(true, 0);
+                        }
                     }
                 })
-
-                secUser.on('end', () => {
-                    done();
-                })
-            }) 
-
-            checkUser.on('end', () => {
-                done();
-            })
-        })
+            }
+        })            
  
     },
 
     stopChat: function(id, chat_id, has_chat) {
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-            if(err) {
-                done();
-                console.log(err);
-            }
-
-            if (has_chat) {
-                const chat_details = client.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`)
-                chat_details.on('row', function(row) {
+        if (has_chat) {
+            api.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
+                for (var i = result.rows.length - 1; i >= 0; i--) {
+                    var row = result.rows[i]
 
                     let humanToSendTo = -1;
                     if (row.initiator == id) {
@@ -292,12 +276,8 @@ var self = module.exports = {
                         humanTwo = row.initiator
                     }
 
-                    const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
-                    back_to_default.on('end', () => {
-
-                        const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`)
-                        remove_query.on('end', function(row) {
-
+                    api.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
+                        api.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
                             self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                                 
                             })
@@ -305,151 +285,146 @@ var self = module.exports = {
                             self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
                         
                             })
-
                         })
-
                     })
+                }
+            })
+        } else {
+            api.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}';`, function(err, result) {
+                for (var i = result.rows.length - 1; i >= 0; i--) {
+                    var row = result.rows[i]
 
-                })
-            } else {
-                const chat_details = client.query(`SELECT COUNT(*) FROM chats WHERE initiator='${id}';`)
-                chat_details.on('row', function(row) {
-                    console.log(row.count)
                     if (row.count > 0) {
                         let humanToSendTo = -1;
 
-                        const chat_details = client.query(`SELECT * FROM chats WHERE initiator='${id}';`)
-                        chat_details.on('row', function(row) {
-                            if (row.initiator == id) {
-                                humanToSendTo = row.initiator;
-                            } else if (row.responder == id) {
-                                humanToSendTo = row.responder;
-                            }     
+                        api.query(`SELECT * FROM chats WHERE initiator='${id}';`, function(err, result) {
+                            for (var i = result.rows.length - 1; i >= 0; i--) {
+                                var row = result.rows[i]
 
-                            let humanTwo = -1;
-                            if (humanToSendTo == row.initiator) {
-                                humanTwo = row.responder
-                            } else {
-                                humanTwo = row.initiator
-                            }
+                                if (row.initiator == id) {
+                                    humanToSendTo = row.initiator;
+                                } else if (row.responder == id) {
+                                    humanToSendTo = row.responder;
+                                }     
 
-                            const back_to_default = client.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`)
-                            back_to_default.on('end', () => {
+                                let humanTwo = -1;
+                                if (humanToSendTo == row.initiator) {
+                                    humanTwo = row.responder
+                                } else {
+                                    humanTwo = row.initiator
+                                }
 
-                                const remove_query = client.query(`DELETE FROM chats WHERE chat_id='${row.chat_id}';`)
-                                remove_query.on('end', function(row) {
+                                api.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
+                                    api.query(`DELETE FROM chats WHERE chat_id='${row.chat_id}';`, function(err, result) {
+                                        self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
+                                            
+                                        })
 
-                                    self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
-                                        
+                                        self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
+                                    
+                                        })
                                     })
-
-                                    self.sendGenericMessage(humanTwo, `{ \"title\": \"${data.chatEnded.messages[0]}\", \"subtitle\": \"${data.chatEnded.sub_msg[0]}\"}`, function() {
-                                
-                                    })
-
                                 })
-
-                            })
+                            }
                         })
+                            
                     } else {    
                         // You like us huh?
                     }
-                })
-            }
-        })
+                }
+            })
+        }
     },
 
     getPrivacyCardOfUser: function(id, user_id, accept, results, callback)  {
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-            if(err) {
-                done();
-                console.log(err);
-            }
+        
 
-            const user_info = client.query(`SELECT * FROM users WHERE fb_id=${id};`)
-            user_info.on('row', function(row) {
+        api.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
+            for (var i = result.rows.length - 1; i >= 0; i--) {
+                var row = result.rows[i]
 
-                const privacy_settings = client.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`)
-                privacy_settings.on('row', function(privacy_row) {
+                api.query(`SELECT * FROM privacy_settings WHERE fb_id=${user_id};`, function(err, result) {
+                    for (var i = result.rows.length - 1; i >= 0; i--) {
+                        var privacy_row = result.rows[i]
 
-                    var name = ""
-                    var location = ""
-                    var image = ""
+                        var name = ""
+                        var location = ""
+                        var image = ""
 
-                    if (privacy_row.full_name == 0) {
-                        name = results.first_name
-                    } else if (privacy_row.full_name == 1) {
-                        name = results.first_name + " " + results.last_name
-                    }
-
-                    if (privacy_row.location == 0) {
-                        // Close, Med, Far
-                        var distance = self.getDistanceFromLatLonInKm(results.loc_latitude, results.loc_longitude, row.loc_latitude, row.loc_longitude)
-                        if (distance <= maxDistance / 3) {
-                            location = "Distance: Near you"
-                        } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
-                            location = "Distance: Close to you"
-                        } else if (distance > (maxDistance / 3) * 2) {
-                            location = "Distance: Far from you"
+                        if (privacy_row.full_name == 0) {
+                            name = results.first_name
+                        } else if (privacy_row.full_name == 1) {
+                            name = results.first_name + " " + results.last_name
                         }
-                    } else if (privacy_row.full_name == 1) {
-                        location = results.geo_location
-                    }
 
-                    if (privacy_row.profile_pic == 0) {
-                        // Woman, Man
-                        if (results.gender == 0) {
-                            image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
-                        } else if (results.gender == 1) {
-                            image = "http://aucet.in/it/staffs/female.jpg"
+                        if (privacy_row.location == 0) {
+                            // Close, Med, Far
+                            var distance = self.getDistanceFromLatLonInKm(results.loc_latitude, results.loc_longitude, row.loc_latitude, row.loc_longitude)
+                            if (distance <= maxDistance / 3) {
+                                location = "Distance: Near you"
+                            } else if (distance >= maxDistance / 3 && distance <= (maxDistance / 3) * 2) {
+                                location = "Distance: Close to you"
+                            } else if (distance > (maxDistance / 3) * 2) {
+                                location = "Distance: Far from you"
+                            }
+                        } else if (privacy_row.full_name == 1) {
+                            location = results.geo_location
                         }
-                    } else if (privacy_row.profile_pic == 1) {
-                        image = results.profile_pic
-                    }
 
-                    let card = {};
-                    if (accept) {
-                        let chat_id = self.randomInt(0, 2093891025);
-                        card = {
-                            "title": name,
-                            "subtitle": location,
-                            "image_url": image,
-                            "buttons": [{
-                                    "type": "postback",
-                                    "title": "Chat",
-                                    "payload": `{ \"method\": \"acceptChat\", \"data\": ${chat_id} }`
-                                },
-                                {   
-                                    "type": "postback",
-                                    "title": "Reject",
-                                    "payload": `{ \"method\": \"rejectChat\", \"data\": ${chat_id} }`
-                                },
-                                {   
-                                    "type": "postback",
-                                    "title": "Block",
-                                    "payload": `{ \"method\": \"blockChat\", \"data\": ${chat_id} }`
-                                }
-                            ]
+                        if (privacy_row.profile_pic == 0) {
+                            // Woman, Man
+                            if (results.gender == 0) {
+                                image = "http://www.marketingmasala.com/wp-content/uploads/2016/05/Join-Marketing-Masala.jpg"
+                            } else if (results.gender == 1) {
+                                image = "http://aucet.in/it/staffs/female.jpg"
+                            }
+                        } else if (privacy_row.profile_pic == 1) {
+                            image = results.profile_pic
                         }
-                    } else {
-                        card = {
-                            "title": name,
-                            "subtitle": location,
-                            "image_url": image,
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Chat",
-                                    "payload": `{ \"method\": \"startChat\", \"data\": ${results.fb_id} }`
-                                }
-                            ]
+
+                        let card = {};
+                        if (accept) {
+                            let chat_id = self.randomInt(0, 2093891025);
+                            card = {
+                                "title": name,
+                                "subtitle": location,
+                                "image_url": image,
+                                "buttons": [{
+                                        "type": "postback",
+                                        "title": "Chat",
+                                        "payload": `{ \"method\": \"acceptChat\", \"data\": ${chat_id} }`
+                                    },
+                                    {   
+                                        "type": "postback",
+                                        "title": "Reject",
+                                        "payload": `{ \"method\": \"rejectChat\", \"data\": ${chat_id} }`
+                                    },
+                                    {   
+                                        "type": "postback",
+                                        "title": "Block",
+                                        "payload": `{ \"method\": \"blockChat\", \"data\": ${chat_id} }`
+                                    }
+                                ]
+                            }
+                        } else {
+                            card = {
+                                "title": name,
+                                "subtitle": location,
+                                "image_url": image,
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Chat",
+                                        "payload": `{ \"method\": \"startChat\", \"data\": ${results.fb_id} }`
+                                    }
+                                ]
+                            }
                         }
+                        callback(card);
                     }
-                    callback(card);
                 })
-            })
+            }
         })
     },
 
@@ -458,68 +433,58 @@ var self = module.exports = {
         var big_found_array = [];
         var small_found_array = [];
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-            if(err) {
-                done();
-                console.log(err);
-            }
+        var query = ``;
+        if (looking_for != 2) {
+            query = `SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
+        } else {
+            query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
+        }
 
-            var query = ``;
-            if (looking_for != 2) {
-                query = `SELECT * FROM users WHERE gender=${looking_for} AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
-            } else {
-                query = `SELECT * FROM users WHERE (gender=0 OR gender=1) AND looking_for=${gender} AND search_area='${search_area}' AND fb_id <> ${id};`;
-            }
-
-            const search_query = client.query(query)
-            search_query.on('row', function(row) {
+        api.query(query, function(err, result) {
+            for (var i = result.rows.length - 1; i >= 0; i--) {
+                var row = result.rows[i]
                 big_found_array.push(row);
-            })
+            }
 
-            search_query.on('end', () => {
-                done();
+            const length = big_found_array.length;
+            var i = 0;
 
-                const length = big_found_array.length;
-                var i = 0;
-
-                while (i <= length) {
-                    if (i != length) {
-                        const blocked = big_found_array[i].blocked_users;
-                        if (blocked != null) {
-                            if (blocked.length > 0) {
-                                if (blocked.indexOf(id) > -1) {
-                                    big_found_array.splice(i, 1);
-                                }
+            while (i <= length) {
+                if (i != length) {
+                    const blocked = big_found_array[i].blocked_users;
+                    if (blocked != null) {
+                        if (blocked.length > 0) {
+                            if (blocked.indexOf(id) > -1) {
+                                big_found_array.splice(i, 1);
                             }
                         }
                     }
-                    i++
                 }
+                i++
+            }
 
-                for (var i = big_found_array.length - 1; i >= 0; i--) {
-                    if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
-                        small_found_array.push(big_found_array[i]);
-                    }
+            for (var i = big_found_array.length - 1; i >= 0; i--) {
+                if (self.getDistanceFromLatLonInKm(big_found_array[i].loc_latitude, big_found_array[i].loc_longitude, lat, long) <= maxDistance) {
+                    small_found_array.push(big_found_array[i]);
                 }
+            }
 
-                callback(small_found_array); 
-
-            })
-
+            callback(small_found_array); 
         })
 
     },
 
     loop: function(i, big, small, client, id, lat, long, callback) {
          if (i < big.length) {
-            const blocked = client.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`)
-            blocked.on('row', function(row) {
-                const blocked = row.blocked_users;
-                if (blocked != null) {
-                    if (blocked.length > 0) {
-                        if (blocked.indexOf(id) > -1) {
-                            bigbig.splice(i, 1);
+            api.query(`SELECT blocked_users FROM users WHERE fb_id=${big[i].fb_id};`, function(err, result) {
+                for (var i = result.rows.length - 1; i >= 0; i--) {
+                    var row = result.rows[i]
+                    const blocked = row.blocked_users;
+                    if (blocked != null) {
+                        if (blocked.length > 0) {
+                            if (blocked.indexOf(id) > -1) {
+                                bigbig.splice(i, 1);
+                            }
                         }
                     }
                 }
@@ -657,19 +622,16 @@ var self = module.exports = {
 
         // Add details into db
 
-        pg.defaults.ssl = true;
-        pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-            if(err) {
-                done();
-                console.log(err);
-            }
+        
 
-            const countQuery = client.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`)
-            countQuery.on('row', function(row) {
+        api.query(`SELECT COUNT(*) FROM users WHERE fb_id=${id};`, function(err, result) {
+            for (var i = result.rows.length - 1; i >= 0; i--) {
+                var row = result.rows[i]
+
                 if (row.count == 0) {
 
-                    client.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
-                    client.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
+                    api.query(`INSERT INTO users (last_name, first_name, gender, looking_for, profile_pic, fb_id, loc_latitude, loc_longitude, is_in_chat) VALUES ('${lastname}', '${firstname}', ${gender}, -1, '${profile_pic}', ${id}, -1, -1, 0) RETURNING *;`);
+                    api.query(`INSERT INTO privacy_settings (fb_id, full_name, age, location, profile_pic) VALUES (${id}, 1, 1, 1, 1);`);
 
 
                     self.sendGreetingMessages(id, firstname, true);
@@ -677,18 +639,16 @@ var self = module.exports = {
                 } else {
 
                     // Send greeting
-                    const name = client.query(`SELECT first_name FROM users WHERE fb_id=${id};`)
-                    name.on('row', function(row) {
-                        self.sendGreetingMessages(id, row.first_name, false);
+                    api.query(`SELECT first_name FROM users WHERE fb_id=${id};`, function(err, result) {
+                        for (var i = result.rows.length - 1; i >= 0; i--) {
+                            var row = result.rows[i]
+
+                            self.sendGreetingMessages(id, row.first_name, false);
+                        }
                     })
                 }
-            });
-
-            countQuery.on('end', () => {
-                done();
-            })
-
-        });
+            }
+        })            
 
     },
 
