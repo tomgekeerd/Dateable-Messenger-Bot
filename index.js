@@ -59,7 +59,7 @@ app.post('/webhook/', function (req, res) {
         } else {
             
                 api.query(`SELECT is_in_chat FROM users WHERE fb_id=${event.sender.id};`, function(err, result) {
-
+                    console.log(result)
                     if (result.rows.is_in_chat != 0) {
 
                         // Alright, this msg has to be sent to the other we are in a chat with
