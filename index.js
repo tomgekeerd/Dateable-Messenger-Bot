@@ -49,7 +49,6 @@ app.post('/webhook/', function (req, res) {
 
         let event = req.body.entry[0].messaging[i]        
 
-        console.log(event.postback)
 
         if ('postback' in event && 'payload' in event.postback && JSON.stringify(event.postback).indexOf("getStarted") > -1) {
             let postback = JSON.parse(event.postback.payload)
@@ -64,6 +63,9 @@ app.post('/webhook/', function (req, res) {
                     done();
                     console.log(err);
                 }
+
+                console.log(event.postback)
+
 
                 const chatQuery = client.query(`SELECT is_in_chat FROM users WHERE fb_id=${event.sender.id};`);
                 chatQuery.on('row', function(chat_row) {
