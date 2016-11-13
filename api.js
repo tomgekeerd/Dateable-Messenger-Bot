@@ -259,9 +259,8 @@ var self = module.exports = {
 
         if (has_chat) {
 
-            console.log(chat_id)
             self.query(`SELECT * FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
-                console.log(result)
+
                 for (var i = result.rows.length - 1; i >= 0; i--) {
                     var row = result.rows[i]
 
@@ -280,10 +279,8 @@ var self = module.exports = {
                     }
 
                     self.query(`UPDATE users SET is_in_chat=0 WHERE fb_id=${row.initiator} OR fb_id=${row.responder} RETURNING *;`, function(err, result) {
-                                        console.log(result)
 
                         self.query(`DELETE FROM chats WHERE chat_id='${chat_id}';`, function(err, result) {
-                                            console.log(result)
 
                             self.sendGenericMessage(humanToSendTo, `{ \"title\": \"${data.endedChat.messages[0]}\", \"subtitle\": \"${data.endedChat.sub_msg[0]}\"}`, function() {
                                 
