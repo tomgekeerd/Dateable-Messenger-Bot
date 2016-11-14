@@ -119,16 +119,16 @@ app.post('/webhook/', function (req, res) {
                                         var row = result.rows[i]
                                         api.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`, function(err, result) {
                                             for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                var row = result.rows[i]
+                                                var initiator = result.rows[i]
 
-                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You rejected a chat with ${row.first_name}\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
+                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You rejected a chat with ${initiator.first_name}\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
                                                     
                                                 })
 
                                                 api.query(`SELECT * FROM users WHERE fb_id=${event.sender.id};`, function(err, result) {
                                                     for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                        var row = result.rows[i]
-                                                        api.sendGenericMessage(row.fb_id, `{ \"title\": \"Unfortunately, ${row.first_name} is currently unavailable for a chat with you\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
+                                                        var responder = result.rows[i]
+                                                        api.sendGenericMessage(initiator.fb_id, `{ \"title\": \"Unfortunately, ${responder.first_name} is currently unavailable for a chat with you\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
 
                                                         })
                                                     }
