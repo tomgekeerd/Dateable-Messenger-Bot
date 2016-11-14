@@ -298,26 +298,25 @@ app.post('/webhook/', function (req, res) {
 
                                                 var card_array = [];
                                                 for (var i = pri_array.length - 1; i >= 0; i--) {
-                                                    console.log(pri_array[i])
-                                                    console.log(pri_array)
+
                                                     var card = {
-                                                        "title": pri_array[i].name,
+                                                        "title": pri_array[0][i].name,
                                                         "subtitle": "",
                                                         "buttons": []
                                                     }
 
                                                     if (pri_array[i].name == "Profile picture") {
-                                                        card.subtitle = pri_array[i][row.profile_picture]
-                                                        card.buttons = pri_array_buttons[i][row.profile_picture]
+                                                        card.subtitle = pri_array[0][i][row.profile_picture]
+                                                        card.buttons = pri_array_buttons[0][i][row.profile_picture]
                                                     } else if (pri_array[i].name == "Fullname") {
-                                                        card.subtitle = pri_array[i][row.full_name]
-                                                        card.buttons = pri_array_buttons[i][row.full_name]
+                                                        card.subtitle = pri_array[0][i][row.full_name]
+                                                        card.buttons = pri_array_buttons[0][i][row.full_name]
                                                     } else if (pri_array[i].name == "Age") {
-                                                        card.subtitle = pri_array[i][row.age]
-                                                        card.buttons = pri_array_buttons[i][row.age]
+                                                        card.subtitle = pri_array[0][i][row.age]
+                                                        card.buttons = pri_array_buttons[0][i][row.age]
                                                     } else if (pri_array[i].name == "Location") {
-                                                        card.subtitle = pri_array[i][row.location]
-                                                        card.buttons = pri_array_buttons[i][row.location]
+                                                        card.subtitle = pri_array[0][i][row.location]
+                                                        card.buttons = pri_array_buttons[0][i][row.location]
                                                     }
 
                                                     card_array.push(card)
