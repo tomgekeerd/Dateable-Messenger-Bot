@@ -296,9 +296,10 @@ app.post('/webhook/', function (req, res) {
                                                 var pri_array = data.privacySettingsMessages
                                                 var pri_array_buttons = data.privacySettingsButtons
 
-                                                console.log(pri_array.count)
                                                 var card_array = [];
                                                 for (var i = pri_array.length - 1; i >= 0; i--) {
+                                                    console.log(pri_array[i])
+                                                    console.log(pri_array)
                                                     var card = {
                                                         "title": pri_array[i].name,
                                                         "subtitle": "",
