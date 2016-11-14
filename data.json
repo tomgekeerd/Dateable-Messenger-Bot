@@ -137,8 +137,8 @@
 		}]
 	},
 
-	"privacySettingsMessages": {
-
+	"privacySettingsMessages": [{
+		
 		"0": {
 
 			"name": "Profile picture",
@@ -174,7 +174,8 @@
 
 			"1": "Turn off to prevent others from seeing your accurate position, otherwise relative information is given."
 		}
-	},
+	
+	}],
 
 	"chatIsAccepted": {
 		"messages": [
