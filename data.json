@@ -130,11 +130,11 @@
             "payload": "{ \"method\": \"changePrivacySetting\", \"data\": true}"               
 		}],
 
-		"1": {
+		"1": [{
 			"type": "postback",
             "title": "Turn off",
             "payload": "{ \"method\": \"changePrivacySetting\", \"data\": false}"               
-		}
+		}]
 	},
 
 	"privacySettingsMessages": {
