@@ -310,7 +310,7 @@ app.post('/webhook/', function (req, res) {
 
                                                         var button = pri_array_buttons[row.profile_pic]
                                                         JSON.parse(button.payload).data = "profile_pic"
-                                                        
+
                                                         card.buttons = button
                                                     } else if (pri_array[i].name == "Fullname") {
                                                         card.subtitle = pri_array[i][row.full_name]
@@ -330,7 +330,7 @@ app.post('/webhook/', function (req, res) {
                                                         card.subtitle = pri_array[i][row.location]
                                                         
                                                         var button = pri_array_buttons[row.location]
-                                                        JSON.parse(button.payload).data = "location"
+                                                        button.payload.data = "location"
                                                         console.log(button)
 
                                                         card.buttons = button
