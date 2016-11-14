@@ -114,33 +114,36 @@ app.post('/webhook/', function (req, res) {
 
                                 case "rejectChat": 
 
-                                api.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`, function(err, result) {
-                                    for (var i = result.rows.length - 1; i >= 0; i--) {
-                                        var row = result.rows[i]
-                                        api.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`, function(err, result) {
-                                            for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                var initiator = result.rows[i]
+                                    api.query(`SELECT * FROM chats WHERE chat_id='${postback.data}';`, function(err, result) {
+                                        for (var i = result.rows.length - 1; i >= 0; i--) {
+                                            var row = result.rows[i]
+                                            api.query(`SELECT * FROM users WHERE fb_id=${row.initiator}`, function(err, result) {
+                                                for (var i = result.rows.length - 1; i >= 0; i--) {
+                                                    var initiator = result.rows[i]
 
-                                                api.sendGenericMessage(event.sender.id, `{ \"title\": \"You rejected a chat with ${initiator.first_name}\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
-                                                    
-                                                })
+                                                    api.sendGenericMessage(event.sender.id, `{ \"title\": \"You rejected a chat with ${initiator.first_name}\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
+                                                        
+                                                    })
 
-                                                api.query(`SELECT * FROM users WHERE fb_id=${event.sender.id};`, function(err, result) {
-                                                    for (var i = result.rows.length - 1; i >= 0; i--) {
-                                                        var responder = result.rows[i]
-                                                        api.sendGenericMessage(initiator.fb_id, `{ \"title\": \"Unfortunately, ${responder.first_name} is currently unavailable for a chat with you\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
+                                                    api.query(`SELECT * FROM users WHERE fb_id=${event.sender.id};`, function(err, result) {
+                                                        for (var i = result.rows.length - 1; i >= 0; i--) {
+                                                            var responder = result.rows[i]
+                                                            api.sendGenericMessage(initiator.fb_id, `{ \"title\": \"Unfortunately, ${responder.first_name} is currently unavailable for a chat with you\", \"subtitle\": \"Tap 'Start a chat' to start a new chat\"}`, function() {
+                                                                let call = data.suggestStartChat
+                                                                api.sendClusterTextMessage(call, event.sender.id, function() {
+                                                                    console.log("Done")
+                                                                })
+                                                            })
+                                                        }
+                                                    })
 
-                                                        })
-                                                    }
-                                                })
+                                                    api.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`, function(err, result) {
 
-                                                api.query(`DELETE FROM chats WHERE chat_id='${postback.data}';`, function(err, result) {
-
-                                                })
-                                            }
-                                        })
-                                    }
-                                })
+                                                    })
+                                                }
+                                            })
+                                        }
+                                    })
 
                                 break;
 
@@ -285,7 +288,44 @@ app.post('/webhook/', function (req, res) {
 
                                 case "showPrivacySettings":
                                     if (postback.data == true) {
-                                        // TODO
+                                      
+                                        api.query(`SELECT * FROM privacy_settings WHERE fb_id=${event.sender.id};`, function(err, result) {
+                                            for (var i = result.rows.length - 1; i >= 0; i--) {
+                                                var row = result.rows[i]
+
+                                                var pri_array = data.privacySettingsMessages
+                                                var pri_array_buttons = data.privacySettingsMessages
+                                                var card_array = [];
+                                                for (var i = pri_array.length - 1; i >= 0; i--) {
+                                                    var card = {
+                                                        "title": pri_array[i].name,
+                                                        "subtitle": "",
+                                                        "buttons": []
+                                                    }
+
+                                                    if (pri_array[i].name == "Profile picture") {
+                                                        card.subtitle = pri_array[i][row.profile_picture]
+                                                        card.buttons = pri_array_buttons[i][row.profile_picture]
+                                                    } else if (pri_array[i].name == "Fullname") {
+                                                        card.subtitle = pri_array[i][row.full_name]
+                                                        card.buttons = pri_array_buttons[i][row.full_name]
+                                                    } else if (pri_array[i].name == "Age") {
+                                                        card.subtitle = pri_array[i][row.age]
+                                                        card.buttons = pri_array_buttons[i][row.age]
+                                                    } else if (pri_array[i].name == "Location") {
+                                                        card.subtitle = pri_array[i][row.location]
+                                                        card.buttons = pri_array_buttons[i][row.location]
+                                                    }
+
+                                                    card_array[] = card
+                                                }
+
+                                                sendGenericMessage(event.sender.id, card_array, function() {
+                                                    console.log("done")
+                                                })
+
+                                            }
+                                        })
                                     } else {
 
                                         let call = data.suggestStartChat

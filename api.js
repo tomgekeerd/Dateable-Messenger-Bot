@@ -344,8 +344,6 @@ var self = module.exports = {
 
     getPrivacyCardOfUser: function(id, user_id, accept, results, callback)  {
 
-        
-
         self.query(`SELECT * FROM users WHERE fb_id=${id};`, function(err, result) {
             for (var i = result.rows.length - 1; i >= 0; i--) {
                 var row = result.rows[i]

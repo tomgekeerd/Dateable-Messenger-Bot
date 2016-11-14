@@ -123,6 +123,58 @@
 		"method": "send"
 	},
 
+	"privacySettingsButtons" : {
+		"0": [{	
+            "type": "postback",
+            "title": "Turn on",
+            "payload": "{ \"method\": \"changePrivacySetting\", \"data\": true}"               
+		}],
+
+		"1": {
+			"type": "postback",
+            "title": "Turn off",
+            "payload": "{ \"method\": \"changePrivacySetting\", \"data\": false}"               
+		}
+	},
+
+	"privacySettingsMessages": {
+		{
+
+			"name": "Profile picture",
+
+			"0": "Turn on so others can see your profile picture",
+
+			"1": "Turn off to prevent others from seeing your profile picture"
+		},
+
+		{
+
+			"name": "Fullname",
+
+			"0": "Turn on so others can see your full name, otherwise only first name is displayed",
+
+			"1": "Turn off to prevent others from seeing your full name"
+		},
+
+		{
+
+			"name": "Age",
+
+			"0": "Turn on so others can see your age",
+
+			"1": "Turn off to prevent others from seeing your age"
+		},
+
+		{
+
+			"name": "Location",
+
+			"0": "Turn so others can see your location.",
+
+			"1": "Turn off to prevent others from seeing your accurate position, otherwise relative information is given."
+		},
+	},
+
 	"chatIsAccepted": {
 		"messages": [
 			"Ring, ring! Awesome, you two guys are now chatting with each other! Have fun ;)"
