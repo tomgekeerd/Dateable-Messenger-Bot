@@ -330,7 +330,7 @@ app.post('/webhook/', function (req, res) {
                                                         card.subtitle = pri_array[i][row.location]
                                                         
                                                         var button = pri_array_buttons[row.location]
-                                                        button.payload.data = "location"
+                                                        button[0].payload.data = "location"
                                                         console.log(button)
 
                                                         card.buttons = button
