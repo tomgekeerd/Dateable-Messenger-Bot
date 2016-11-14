@@ -296,7 +296,7 @@ app.post('/webhook/', function (req, res) {
                                                 var pri_array = data.privacySettingsMessages
                                                 var pri_array_buttons = data.privacySettingsButtons
 
-                                                console.log(pri_array)
+                                                console.log(pri_array.length)
                                                 var card_array = [];
                                                 for (var i = pri_array.length - 1; i >= 0; i--) {
                                                     var card = {
