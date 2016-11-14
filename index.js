@@ -317,7 +317,7 @@ app.post('/webhook/', function (req, res) {
                                                         card.buttons = pri_array_buttons[i][row.location]
                                                     }
 
-                                                    card_array[] = card
+                                                    card_array.push(card)
                                                 }
 
                                                 sendGenericMessage(event.sender.id, card_array, function() {
