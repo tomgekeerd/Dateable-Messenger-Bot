@@ -1,0 +1,815 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"omschr",
+				"omschrijving"
+			],
+			[
+				"oms",
+				"omschrijvingHTML"
+			],
+			[
+				"omschrij",
+				"omschrijvingTag"
+			],
+			[
+				"echo",
+				"echo\techo \"…\""
+			],
+			[
+				"enc",
+				"encrypt_decrypt"
+			],
+			[
+				"encrypt",
+				"encrypt_decrypt"
+			],
+			[
+				"inde",
+				"indexOf"
+			],
+			[
+				"big",
+				"big_found_array"
+			],
+			[
+				"block",
+				"blocked"
+			],
+			[
+				"sma",
+				"small_found_array"
+			],
+			[
+				"blocked",
+				"blocked_users"
+			],
+			[
+				"in",
+				"in"
+			],
+			[
+				"jso",
+				"JSON_PRETTY_PRINT"
+			],
+			[
+				"curl",
+				"curl_getinfo"
+			],
+			[
+				"login",
+				"login_url"
+			],
+			[
+				"return",
+				"returnArray"
+			],
+			[
+				"conn",
+				"connect_error"
+			],
+			[
+				"FIRST",
+				"first_name"
+			],
+			[
+				"encry",
+				"encryptedPass"
+			],
+			[
+				"chat",
+				"chat_id"
+			],
+			[
+				"audio",
+				"audioTemplate"
+			],
+			[
+				"method",
+				"methodAndData"
+			],
+			[
+				"looking_for",
+				"looking_for_gender"
+			],
+			[
+				"looking",
+				"looking_for_gender_one"
+			],
+			[
+				"random",
+				"randomInt"
+			],
+			[
+				"count",
+				"countQuery"
+			],
+			[
+				"loc",
+				"loc_longitude"
+			],
+			[
+				"first",
+				"first_name"
+			],
+			[
+				"privacy",
+				"privacy_row"
+			],
+			[
+				"foundA",
+				"found_array"
+			],
+			[
+				"found",
+				"found_array"
+			],
+			[
+				"last",
+				"last_name"
+			],
+			[
+				"lookingfor",
+				"looking_for_gender"
+			],
+			[
+				"lon2",
+				"lon2"
+			],
+			[
+				"lo",
+				"loc_longitude"
+			],
+			[
+				"lookin",
+				"looking_for"
+			],
+			[
+				"geo",
+				"geo_location"
+			],
+			[
+				"privac",
+				"privacy_dict"
+			],
+			[
+				"age",
+				"age_range"
+			],
+			[
+				"pro",
+				"profile_pic"
+			],
+			[
+				"payload",
+				"payloadData"
+			],
+			[
+				"recipe",
+				"recipient_id"
+			],
+			[
+				"getstart",
+				"getStartedMessages"
+			],
+			[
+				"q",
+				"q_replies"
+			],
+			[
+				"acce",
+				"access_token"
+			],
+			[
+				"input",
+				"inputCollatzCijfer"
+			],
+			[
+				"klinker",
+				"klinkerLoosWoord"
+			],
+			[
+				"rg",
+				"rgb()"
+			],
+			[
+				"background",
+				"background-color"
+			],
+			[
+				"backgrou",
+				"background-color"
+			],
+			[
+				"fu",
+				"fURL"
+			],
+			[
+				"valu",
+				"valueTwo"
+			],
+			[
+				"hashedu",
+				"hashedURL"
+			],
+			[
+				"schedue",
+				"scheduleURL"
+			],
+			[
+				"logi",
+				"login_url"
+			],
+			[
+				"false",
+				"falseKeyArray"
+			],
+			[
+				"S",
+				"sqlGET"
+			],
+			[
+				"succes",
+				"successArray"
+			],
+			[
+				"backg",
+				"background-color"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"border",
+				"border-color"
+			],
+			[
+				"ur",
+				"url"
+			],
+			[
+				"url",
+				"url2"
+			],
+			[
+				"back",
+				"background"
+			],
+			[
+				"margin",
+				"margin-bottom"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"marg",
+				"margin"
+			],
+			[
+				"Bar",
+				"Bariol_Regular"
+			],
+			[
+				"margi",
+				"margin-top"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"text",
+				"text-decoration"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"getal",
+				"getal3"
+			],
+			[
+				"Delete",
+				"Delete"
+			],
+			[
+				"dele",
+				"Delete"
+			],
+			[
+				"delet",
+				"deleteDir"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "api.js",
+			"settings":
+			{
+				"buffer_size": 26071,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.js",
+			"settings":
+			{
+				"buffer_size": 18862,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 27.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"finder",
+				"Finder: Open here"
+			]
+		],
+		"width": 467.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"finder",
+			"Open Finder",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/7b87e8f6-c9ba-4119-9446-60c641a64bd5/tomderuiter.com/public_html/trinitas/index.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/7b87e8f6-c9ba-4119-9446-60c641a64bd5/tomderuiter.com/public_html/trinitas/helpers/login.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/286d6a2a-2601-42ba-aaef-789717345696/tomderuiter.com/public_html/trinitas/index.php",
+		"/Users/Tom/Desktop/Apps/Other/PWS/TriniAPI-PHP/helpers/login.php",
+		"/Users/Tom/Desktop/Apps/Other/PWS/TriniAPI-PHP/index.php",
+		"/Users/Tom/Desktop/Apps/Other/FBBot/index.js",
+		"/Users/Tom/Desktop/Apps/Other/FBBot/api.js",
+		"/Users/Tom/Desktop/test.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/b18d6c00-8ac9-4772-8cca-12d841dace38/tomderuiter.com/public_html/trinitas/index.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/b18d6c00-8ac9-4772-8cca-12d841dace38/tomderuiter.com/public_html/trinitas/helpers/login.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/1c030dca-58f8-4874-b60f-33de2bc05730/tomderuiter.com/public_html/trinitas/index.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/cb0b955d-7550-4149-b6d7-402cd137e577/tomderuiter.com/public_html/trinitas/helpers/encryption.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/1c030dca-58f8-4874-b60f-33de2bc05730/tomderuiter.com/public_html/trinitas/helpers/login.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/cb0b955d-7550-4149-b6d7-402cd137e577/tomderuiter.com/public_html/trinitas/index.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/ddff0954-b32e-4aea-b64f-386ac79dac93/tomderuiter.com/public_html/trinitas/helpers/login.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/ed8c6d59-c0c5-46d0-b7f6-f71e7469d338/tomderuiter.com/public_html/trinitas/helpers/login.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/ed8c6d59-c0c5-46d0-b7f6-f71e7469d338/tomderuiter.com/public_html/trinitas/helpers/test.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/cb0b955d-7550-4149-b6d7-402cd137e577/tomderuiter.com/public_html/trinitas/helpers/login.php",
+		"/Users/Tom/Desktop/Apps/Other/FBBot/data.json",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/9da0cd8a-9f38-4704-bcc4-301afdc93ecf/tomderuiter.com/public_html/trinitas/index.php",
+		"/Users/Tom/Desktop/Apps/Other/Messenger bot/config.php",
+		"/Users/Tom/Desktop/Apps/Other/Messenger bot/index.php",
+		"/Users/Tom/Desktop/Apps/Other/Messenger bot/composer.json",
+		"/Users/Tom/Downloads/FriendBot-master/index.js",
+		"/Users/Tom/Downloads/fb-local-chat-bot-example-master/index.js",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/fd889d9a-e393-4cdb-8261-f0c2903abdd3/tomderuiter.com/public_html/trinitas/index.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/fd889d9a-e393-4cdb-8261-f0c2903abdd3/rydee.nl/public_html/api/trinitas/index.php",
+		"/Users/Tom/Desktop/Apps/Other/PWS/TriniAPI-PHP/[TriniAPI]/index.php",
+		"/Applications/XAMPP/xamppfiles/htdocs/pws/TriniAPI-PHP/index.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/8c317dcd-e7c9-4eae-b357-ed22d26053d3/rydee.nl/public_html/api/trinitas/functions/addUser.php",
+		"/Users/Tom/Desktop/Apps/Other/PWS/TriniAPI-PHP/composer.json",
+		"/Applications/XAMPP/xamppfiles/htdocs/sc/examples/example.loginAndDownloadMyStories.php",
+		"/Users/Tom/Downloads/dex2jar-2.0/d2j-dex2jar.bat",
+		"/Users/Tom/Desktop/sc.py",
+		"/Applications/XAMPP/xamppfiles/htdocs/sc/examples/example.loginAndAddFriend.php",
+		"/Applications/XAMPP/xamppfiles/htdocs/sc/src/Snapchat.php",
+		"/Applications/XAMPP/xamppfiles/htdocs/sc/src/API/Constants.php",
+		"/Users/Tom/Downloads/snapchat-master/index.js",
+		"/Users/Tom/Desktop/Apps/Other/NIO/00-Som.py",
+		"/Users/Tom/Desktop/Apps/Other/NIO/A2-Klinkers.py",
+		"/Applications/XAMPP/xamppfiles/htdocs/sc/phpsnap/src/snapchat.php",
+		"/Users/Tom/Desktop/Apps/Other/NIO/A3-Collatz.py",
+		"/Users/Tom/Desktop/Apps/Other/NIO/A1-Vierkant.py",
+		"/Users/Tom/Downloads/Yotobooth-master/snap/index.php",
+		"/Users/Tom/Desktop/Apps/Other/nio.py",
+		"/Users/Tom/Downloads/snapchat-master/test/account.js",
+		"/Users/Tom/Downloads/snapchat-master/snapchat.min.js",
+		"/Users/Tom/Downloads/snapchat-master/gulpfile.js",
+		"/Users/Tom/Downloads/mySnapchatApi-master/server.js",
+		"/Users/Tom/Downloads/mySnapchatApi-master/apiSnapchat.sql",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/5316667f-3f1a-4442-bc39-48ab00163b35/tomderuiter.com/public_html/ingapi/index.php",
+		"/Users/Tom/Documents/buurbloempje.framer/modules/framerKit.coffee",
+		"/Users/Tom/Downloads/index (3 August 2016 at 21:25:51 GMT+2).html",
+		"/Users/Tom/Downloads/index.html",
+		"/Users/Tom/Downloads/IOStickyHeader-master/Example/Podfile",
+		"/Users/Tom/Downloads/Pokemon-Go-Controller-master/readAndChangeXML.py",
+		"/Users/Tom/Downloads/Pokemon-Go-Controller-master/runAutoClicker.py",
+		"/Users/Tom/Downloads/Pokemon-Go-Controller-master/autoClicker.m",
+		"/Users/Tom/Desktop/Apps/CaptureCamera/Podfile",
+		"/Users/Tom/Pictures/Trini/index.php",
+		"/Users/Tom/Pictures/Trini/sub/index.php",
+		"/Users/Tom/Pictures/Trini/sub/back.php",
+		"/Users/Tom/Desktop/triniTest.php",
+		"/Users/Tom/Downloads/ING/logining.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/cad616ef-0e0b-46eb-b221-2c40dae59cea/rydee.nl/public_html/ING/api.php",
+		"/Users/Tom/Desktop/WeDropABox/index.html",
+		"/Users/Tom/Desktop/WeDropABox/functions.php",
+		"/Users/Tom/Desktop/WeDropABox/app-info.json",
+		"/Users/Tom/Desktop/WeDropABox/index.php",
+		"/Users/Tom/Desktop/WeDropABox/app.php",
+		"/Users/Tom/Desktop/WeDropABox/composer.json",
+		"/Users/Tom/node/test.html",
+		"/Users/Tom/node/index.html",
+		"/Users/Tom/Desktop/NODEJS/app.js",
+		"/Users/Tom/node/server.js",
+		"/Users/Tom/Desktop/ING/api.php",
+		"/Users/Tom/Desktop/logining.php",
+		"/Volumes/BackUp/DesktopPC/Apps (Titanium)/Trinitassseeer/cijfers_API.js",
+		"/Volumes/Yosemite/Users/Tom/Desktop/This whaa/login.html",
+		"/Users/Tom/Downloads/TCGoogleMaps-master/Podfile",
+		"/Users/Tom/Downloads/intellect-t9-master-2/IntellectT9/Podfile",
+		"/Users/Tom/Downloads/intellect-t9-master/Podfile",
+		"/Users/Tom/Downloads/PXGoogleDirections-master-4/Podfile",
+		"/Users/Tom/Downloads/PXGoogleDirections-master/Sample/Podfile",
+		"/Users/Tom/Downloads/kimonoData.json",
+		"/Users/Tom/Downloads/Uno_Personal/Image Only Background Version/HTML Files/css/animate.css",
+		"/Users/Tom/Downloads/Uno_Personal/Image Only Background Version/HTML Files/css/main.css",
+		"/Users/Tom/Downloads/Uno_Personal/Image Only Background Version/HTML Files/index.html",
+		"/Users/Tom/Downloads/wordpress/newmail.html",
+		"/Users/Tom/Downloads/wordpress/mail.html",
+		"/Users/Tom/Downloads/wordpress/email.html",
+		"/Users/Tom/Downloads/wordpress/wp-config.php",
+		"/Users/Tom/Downloads/wordpress/wp-config-sample.php",
+		"/Users/Tom/Desktop/Tom de Ruiter/style.css",
+		"/Users/Tom/Desktop/Tom de Ruiter/index.html",
+		"/Users/Tom/Downloads/ZeeslagApplet - kopie/ZeeslagApplet.java",
+		"/Users/Tom/Desktop/Tom de Ruiter/css/structuur.css",
+		"/Users/Tom/Downloads/WalletCompanionFiles/SamplePasses/Generic.pass/pass.json",
+		"/Users/Tom/Downloads/32195.svg",
+		"/Users/Tom/Downloads/ZeeslagApplet/ZeeslagApplet.java",
+		"/private/etc/hosts",
+		"/Users/Tom/Library/Application Support/com.bohemiancoding.sketch3/Plugins/Generate GIF/plugin.js",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/c23b4bf6-bbf5-48e8-a548-046222d31c8a/zapapp.nl/public_html/cronjob.php",
+		"/Users/Tom/Desktop/remove_url.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/c23b4bf6-bbf5-48e8-a548-046222d31c8a/zapapp.nl/public_html/iets.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/c23b4bf6-bbf5-48e8-a548-046222d31c8a/zapapp.nl/public_html/code/get_digitalcode.php",
+		"/Users/Tom/Desktop/iets.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/b7663ad6-7aa2-46f3-a342-82749af946b7/zapapp.nl/public_html/cronjob.php",
+		"/Users/Tom/Desktop/cronjob.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/8e989927-e420-45b4-adbe-4a78e3a66bcd/zapapp.nl/public_html/index.php",
+		"/Users/Tom/Desktop/zapBE/FileWriter.js",
+		"/Users/Tom/Desktop/zapBE/index.php",
+		"/Users/Tom/Desktop/zapBE/submit_digitalcode.php",
+		"/Users/Tom/Desktop/zapBE/get_digitalcode.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/8e989927-e420-45b4-adbe-4a78e3a66bcd/zapapp.nl/public_html/style.css",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/23ce0c1c-1b95-4207-9eec-f4e93d7506e5/rydee.nl/public_html/api/library/index.php",
+		"/Users/Tom/Downloads/callbacks.js",
+		"/Users/Tom/Downloads/AuthenticationService.Authenticate-2.js",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/7462d4b2-4bd0-4342-9b1a-0eed0efc382a/rydee.nl/public_html/api/trinitas/functions/addUser.php",
+		"/System/Library/CoreServices/SystemVersion.plist",
+		"/Users/Tom/Downloads/SamplePluginUsingOAuth-2/SignatureValidator.cs",
+		"/Users/Tom/Downloads/SamplePluginUsingOAuth-2/Default.aspx.cs",
+		"/Users/Tom/Downloads/SamplePluginUsingOAuth-2/AppSettings.cs",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/01b67bc8-44cf-484c-949b-7cefb981a6fe/rydee.nl/public_html/api/trinitas/functions/addUser.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/01b67bc8-44cf-484c-949b-7cefb981a6fe/rydee.nl/public_html/api/trinitas/functions/getSchedule.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/01b67bc8-44cf-484c-949b-7cefb981a6fe/rydee.nl/public_html/api/trinitas/helpers/login.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/5af47605-d106-4059-85c2-45aef4d4ac25/rydee.nl/public_html/api/trinitas/functions/getSchedule.php",
+		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/5af47605-d106-4059-85c2-45aef4d4ac25/rydee.nl/public_html/api/trinitas/helpers/login.php"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"stopchat",
+			"api.query(`UPDATE",
+			"client.query",
+			"api.query",
+			"done",
+			"select coun",
+			"is_in_chat",
+			"it seems i got",
+			"JSON_PRE",
+			"getData",
+			"startchat",
+			".on('end'",
+			"done();",
+			"startchat",
+			"responder",
+			"initiator",
+			"count",
+			"SENDGENERIC",
+			"sendTextMessage",
+			"acceptchat",
+			"insert into chat",
+			"indexof",
+			"startchat",
+			"getPrivacyCardOfUser",
+			"startchat",
+			"getDistanceFromLatLonInKm",
+			"console.log",
+			"= function",
+			"indexof",
+			"findpeopl",
+			"getuserinsights",
+			"getstarte",
+			"getUserInsights",
+			"getstarte",
+			"echo",
+			"getpriva",
+			"getprif",
+			"sendTextMessage",
+			"getPrivacyCardOfUser",
+			"sendgeneric",
+			"sendgenericme",
+			"sendGenericMessage",
+			"acceptedachat",
+			"awesome",
+			"getPrivacyCardOfUser",
+			"chat",
+			"findpeople",
+			"getprivacy",
+			"webhook.recipient",
+			"id",
+			"webhook.recipient",
+			"webhook.recip",
+			"sendClusterTextMessage",
+			"'done'",
+			"webhook.recipi",
+			"sendTextMessage",
+			"sendClusterTextMessage",
+			"sendGreetingMessages",
+			"webhook.recipient",
+			"recipient_id",
+			"initiator",
+			"responder",
+			"row.initi",
+			"and",
+			"update",
+			"wauw",
+			"sendclu",
+			"sendgree",
+			"console.log(",
+			"sendtextmessage",
+			"sendtextme",
+			"sendtextmess",
+			"sendtextmessage",
+			"chat_id",
+			"acceptchat",
+			"data.",
+			"UPDATE",
+			"findpeop",
+			"findPeo",
+			"RANDOMIN",
+			"startchat",
+			"=>",
+			"console.log",
+			"and",
+			"dele",
+			"messaging",
+			"\n    ",
+			"query",
+			"const query",
+			"looking",
+			"done",
+			"\"done\"",
+			"res.",
+			"res",
+			"sendgeneri",
+			"sendtext",
+			"sendtextmes",
+			"JSON",
+			"sender",
+			"gender",
+			"index.",
+			"sender",
+			"getUserInsights",
+			"greeting",
+			"sendtextmessage",
+			"sendGreetingMessage",
+			"sendGreetingMessages",
+			"greeting",
+			"api.",
+			"request",
+			"getuser",
+			"sendgreeti",
+			"sendGeneric",
+			"sendTextMessage",
+			"send",
+			"bodyparser",
+			"bodyParser",
+			"sender",
+			"token",
+			"user",
+			"cannot",
+			"cannot get",
+			"{",
+			"html",
+			"dx",
+			"dxh",
+			"hover",
+			"fancybox"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"self.query",
+			"event.sender.id",
+			"recipient",
+			"",
+			"username"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "api.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 26071,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1536,
+								1536
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 672.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18862,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4469,
+								4469
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 810.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "dately.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 107.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
