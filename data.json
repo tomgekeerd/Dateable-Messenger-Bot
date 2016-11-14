@@ -123,19 +123,19 @@
 		"method": "send"
 	},
 
-	"privacySettingsButtons" : {
-		"0": [{	
+	"privacySettingsButtons" : [
+		{	
             "type": "postback",
             "title": "Turn on",
             "payload": "{ \"method\": \"changePrivacySetting\", \"data\": true}"               
-		}],
+		},
 
-		"1": [{
+		{
 			"type": "postback",
             "title": "Turn off",
             "payload": "{ \"method\": \"changePrivacySetting\", \"data\": false}"               
-		}]
-	},
+		}
+	],
 
 	"privacySettingsMessages": [
 		
