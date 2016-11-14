@@ -124,17 +124,17 @@
 	},
 
 	"privacySettingsButtons" : [
-		{	
+		[{	
             "type": "postback",
             "title": "Turn on",
             "payload": "{ \"method\": \"changePrivacySetting\", \"data\": true}"               
-		},
+		}],
 
-		{
+		[{
 			"type": "postback",
             "title": "Turn off",
             "payload": "{ \"method\": \"changePrivacySetting\", \"data\": false}"               
-		}
+		}]
 	],
 
 	"privacySettingsMessages": [
