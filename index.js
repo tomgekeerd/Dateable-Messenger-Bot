@@ -320,7 +320,7 @@ app.post('/webhook/', function (req, res) {
                                                     card_array.push(card)
                                                 }
 
-                                                sendGenericMessage(event.sender.id, card_array, function() {
+                                                api.sendGenericMessage(event.sender.id, card_array, function() {
                                                     console.log("done")
                                                 })
 
