@@ -138,7 +138,8 @@
 	},
 
 	"privacySettingsMessages": {
-		{
+
+		"0": {
 
 			"name": "Profile picture",
 
@@ -147,7 +148,7 @@
 			"1": "Turn off to prevent others from seeing your profile picture"
 		},
 
-		{
+		"1": {
 
 			"name": "Fullname",
 
@@ -156,7 +157,7 @@
 			"1": "Turn off to prevent others from seeing your full name"
 		},
 
-		{
+		"2": {
 
 			"name": "Age",
 
@@ -165,7 +166,7 @@
 			"1": "Turn off to prevent others from seeing your age"
 		},
 
-		{
+		"3": {
 
 			"name": "Location",
 
