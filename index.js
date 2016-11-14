@@ -306,8 +306,8 @@ app.post('/webhook/', function (req, res) {
                                                     }
 
                                                     if (pri_array[i].name == "Profile picture") {
-                                                        card.subtitle = pri_array[i][row.profile_picture]
-                                                        card.buttons = pri_array_buttons[row.profile_picture]
+                                                        card.subtitle = pri_array[i][row.profile_pic]
+                                                        card.buttons = pri_array_buttons[row.profile_pic]
                                                     } else if (pri_array[i].name == "Fullname") {
                                                         card.subtitle = pri_array[i][row.full_name]
                                                         card.buttons = pri_array_buttons[row.full_name]
