@@ -319,6 +319,8 @@ app.post('/webhook/', function (req, res) {
                                                         card.buttons = pri_array_buttons[row.location]
                                                     }
 
+                                                    console.log(card.buttons)
+
                                                     card_array.push(card)
                                                 }
 

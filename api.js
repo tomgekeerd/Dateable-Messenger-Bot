@@ -549,7 +549,6 @@ var self = module.exports = {
     },
 
     sendGenericMessage: function(recipient, cards, callback) {
-        console.log(cards)
         let messageData = {}
         let generic = data.genericTemplate
         if (typeof cards == "string") {
