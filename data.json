@@ -127,13 +127,13 @@
 		[{	
             "type": "postback",
             "title": "Turn on",
-            "payload": "{ \"method\": \"changePrivacySetting\", \"data\": true}"               
+            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"\"}"               
 		}],
 
 		[{
 			"type": "postback",
             "title": "Turn off",
-            "payload": "{ \"method\": \"changePrivacySetting\", \"data\": false}"               
+            "payload": "{ \"method\": \"turnOffPrivacySetting\", \"data\": \"\"}"               
 		}]
 	],
 
