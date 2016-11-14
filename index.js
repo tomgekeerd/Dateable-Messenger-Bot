@@ -310,16 +310,16 @@ app.post('/webhook/', function (req, res) {
 
                                                     if (pri_array[i].name == "Profile picture") {
                                                         card.subtitle = pri_array[i][row.profile_picture]
-                                                        card.buttons = pri_array_buttons[i][row.profile_picture]
+                                                        card.buttons = pri_array_buttons[row.profile_picture]
                                                     } else if (pri_array[i].name == "Fullname") {
                                                         card.subtitle = pri_array[i][row.full_name]
-                                                        card.buttons = pri_array_buttons[i][row.full_name]
+                                                        card.buttons = pri_array_buttons[row.full_name]
                                                     } else if (pri_array[i].name == "Age") {
                                                         card.subtitle = pri_array[i][row.age]
-                                                        card.buttons = pri_array_buttons[i][row.age]
+                                                        card.buttons = pri_array_buttons[row.age]
                                                     } else if (pri_array[i].name == "Location") {
                                                         card.subtitle = pri_array[i][row.location]
-                                                        card.buttons = pri_array_buttons[i][row.location]
+                                                        card.buttons = pri_array_buttons[row.location]
                                                     }
 
                                                     card_array.push(card)
