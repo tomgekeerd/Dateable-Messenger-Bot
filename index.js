@@ -298,9 +298,6 @@ app.post('/webhook/', function (req, res) {
 
                                                 var card_array = [];
                                                 for (var i = pri_array.length - 1; i >= 0; i--) {
-                                                    console.log(i)
-                                                    console.log(pri_array)
-                                                    console.log(pri_array[i])
 
                                                     var card = {
                                                         "title": pri_array[i].name,
