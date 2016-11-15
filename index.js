@@ -351,7 +351,7 @@ app.post('/webhook/', function (req, res) {
                                                         
                                             })
                                         } else {
-                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"Your privacy setting is updated\",  \"subtitle\": \"Good job\"}`, function() {
+                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"Your privacy setting is updated\", \"subtitle\": \"Good job\"}`, function() {
                                                         
                                             })                                        
                                         }
