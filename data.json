@@ -136,7 +136,7 @@
 			"button": [{	
 	            "type": "postback",
 	            "title": "Turn on",
-	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"profile_picture\"}"               
+	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"profile_pic\"}"               
 			}]
 		},
 

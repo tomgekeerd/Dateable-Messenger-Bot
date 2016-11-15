@@ -336,8 +336,25 @@ app.post('/webhook/', function (req, res) {
 
                                 break;
 
-                                case "changePrivacySetting":
+                                case "turnOnPrivacySetting":
 
+
+                                break;
+
+                                case "turnOffPrivacySetting":
+
+                                    const settingToTurnOff = postback.data
+                                    api.query(`UPDATE privacy_settings SET ${settingToTurnOff}=0 WHERE fb_id=${event.sender.id}`, function(err, result) {
+                                        if (err) {
+                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"Something went wrong with your request\", \"subtitle\": \"Try again later\"}`, function() {
+                                                        
+                                            })
+                                        } else {
+                                            api.sendGenericMessage(event.sender.id, `{ \"title\": \"Your privacy setting is updated\"}`, function() {
+                                                        
+                                            })                                        
+                                        }
+                                    })
 
                                 break;
 
