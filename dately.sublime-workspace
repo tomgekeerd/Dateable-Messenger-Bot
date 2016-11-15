@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"priva",
+				"privacy_settings_array"
+			],
+			[
 				"omschr",
 				"omschrijving"
 			],
@@ -315,7 +319,7 @@
 			"file": "api.js",
 			"settings":
 			{
-				"buffer_size": 26071,
+				"buffer_size": 26190,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -324,7 +328,25 @@
 			"file": "index.js",
 			"settings":
 			{
-				"buffer_size": 18862,
+				"buffer_size": 25063,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Users/Tom/Downloads/ASL-Translator-master/model.xml",
+			"settings":
+			{
+				"buffer_size": 0,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "data.json",
+			"settings":
+			{
+				"buffer_size": 5434,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -367,6 +389,9 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+	],
 	"file_history":
 	[
 		"/private/var/folders/xr/433_tx3151b_m0c0376s7p2m0000gn/T/7b87e8f6-c9ba-4119-9446-60c641a64bd5/tomderuiter.com/public_html/trinitas/index.php",
@@ -514,6 +539,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"json.parse",
+			"for",
+			"sendgeneric",
+			"[]",
+			"sendgeneric",
+			"[0",
+			"[\"",
+			"data",
+			"getPrivacyCardOfUser",
+			"sendGenericMessage",
+			"sendgenericmessage",
+			"sendgeneric",
 			"stopchat",
 			"api.query(`UPDATE",
 			"client.query",
@@ -629,19 +666,7 @@
 			"sendGeneric",
 			"sendTextMessage",
 			"send",
-			"bodyparser",
-			"bodyParser",
-			"sender",
-			"token",
-			"user",
-			"cannot",
-			"cannot get",
-			"{",
-			"html",
-			"dx",
-			"dxh",
-			"hover",
-			"fancybox"
+			"bodyparser"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -664,7 +689,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -673,15 +698,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 26071,
+						"buffer_size": 26190,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1536,
-								1536
+								22559,
+								22559
 							]
 						],
 						"settings":
@@ -691,10 +716,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 672.0,
+						"translation.y": 876.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -703,15 +728,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 18862,
+						"buffer_size": 25063,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4469,
-								4469
+								18931,
+								18931
 							]
 						],
 						"settings":
@@ -721,10 +746,66 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 810.0,
+						"translation.y": 4326.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/Users/Tom/Downloads/ASL-Translator-master/model.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/XML/XML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "data.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5434,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3191,
+								3191
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1800.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

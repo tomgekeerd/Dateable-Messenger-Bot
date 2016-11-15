@@ -123,21 +123,7 @@
 		"method": "send"
 	},
 
-	"privacySettingsButtons" : [
-		[{	
-            "type": "postback",
-            "title": "Turn on",
-            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"\"}"               
-		}],
-
-		[{
-			"type": "postback",
-            "title": "Turn off",
-            "payload": "{ \"method\": \"turnOffPrivacySetting\", \"data\": \"\"}"               
-		}]
-	],
-
-	"privacySettingsMessages": [
+	"privacySettingsShit": [
 		
 		{
 
@@ -145,7 +131,13 @@
 
 			"0": "Turn on so others can see your profile picture",
 
-			"1": "Turn off to prevent others from seeing your profile picture"
+			"1": "Turn off to prevent others from seeing your profile picture",
+
+			"button": [{	
+	            "type": "postback",
+	            "title": "Turn on",
+	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"profile_picture\"}"               
+			}]
 		},
 
 		{
@@ -154,7 +146,13 @@
 
 			"0": "Turn on so others can see your full name, otherwise only first name is displayed",
 
-			"1": "Turn off to prevent others from seeing your full name"
+			"1": "Turn off to prevent others from seeing your full name",
+
+			"button": [{	
+	            "type": "postback",
+	            "title": "Turn on",
+	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"full_name\"}"               
+			}]
 		},
 
 		{
@@ -163,7 +161,13 @@
 
 			"0": "Turn on so others can see your age",
 
-			"1": "Turn off to prevent others from seeing your age"
+			"1": "Turn off to prevent others from seeing your age",
+
+			"button": [{	
+	            "type": "postback",
+	            "title": "Turn on",
+	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"age\"}"               
+			}]
 		},
 
 		{
@@ -172,7 +176,13 @@
 
 			"0": "Turn so others can see your location.",
 
-			"1": "Turn off to prevent others from seeing your accurate position, otherwise relative information is given."
+			"1": "Turn off to prevent others from seeing your accurate position, otherwise relative information is given.",
+
+			"button": [{	
+	            "type": "postback",
+	            "title": "Turn on",
+	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"location\"}"               
+			}]
 		}
 	
 	],

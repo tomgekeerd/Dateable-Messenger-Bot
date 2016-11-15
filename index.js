@@ -293,8 +293,7 @@ app.post('/webhook/', function (req, res) {
                                             for (var i = result.rows.length - 1; i >= 0; i--) {
                                                 var row = result.rows[i]
 
-                                                var pri_array = data.privacySettingsMessages
-                                                var pri_array_buttons = data.privacySettingsButtons
+                                                var pri_array = data.privacySettingsShit
 
                                                 var card_array = [];
                                                 for (var i = pri_array.length - 1; i >= 0; i--) {
@@ -307,34 +306,16 @@ app.post('/webhook/', function (req, res) {
 
                                                     if (pri_array[i].name == "Profile picture") {
                                                         card.subtitle = pri_array[i][row.profile_pic]
-
-                                                        var button = pri_array_buttons[row.profile_pic]
-                                                        JSON.parse(button.payload).data = "profile_pic"
-
-                                                        card.buttons = button
                                                     } else if (pri_array[i].name == "Fullname") {
                                                         card.subtitle = pri_array[i][row.full_name]
-
-                                                        var button = pri_array_buttons[row.full_name]
-                                                        JSON.parse(button.payload).data = "full_name"
-
-                                                        card.buttons = button
                                                     } else if (pri_array[i].name == "Age") {
                                                         card.subtitle = pri_array[i][row.age]
-                                                        
-                                                        var button = pri_array_buttons[row.age]
-                                                        JSON.parse(button.payload).data = "age"
-
-                                                        card.buttons = button
                                                     } else if (pri_array[i].name == "Location") {
                                                         card.subtitle = pri_array[i][row.location]
-                                                        
-                                                        var button = pri_array_buttons[row.location]
-                                                        button[0].payload.data = "location"
-                                                        console.log(button)
-
-                                                        card.buttons = button
                                                     }
+
+                                                    card.buttons = pri_array[i]["button"]
+
 
                                                     card_array.push(card)
                                                 }
