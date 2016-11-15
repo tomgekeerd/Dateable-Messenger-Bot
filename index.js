@@ -305,17 +305,18 @@ app.post('/webhook/', function (req, res) {
                                                     }
 
                                                     if (pri_array[i].name == "Profile picture") {
-                                                        card.subtitle = pri_array[i][row.profile_pic]
+                                                        card.subtitle = pri_array[i][row.profile_pic]["sub"]
+                                                        card.buttons = pri_array[i][row.profile_pic]["button"]
                                                     } else if (pri_array[i].name == "Fullname") {
                                                         card.subtitle = pri_array[i][row.full_name]
+                                                        card.buttons = pri_array[i][row.profile_pic]["button"]
                                                     } else if (pri_array[i].name == "Age") {
                                                         card.subtitle = pri_array[i][row.age]
+                                                        card.buttons = pri_array[i][row.profile_pic]["button"]
                                                     } else if (pri_array[i].name == "Location") {
                                                         card.subtitle = pri_array[i][row.location]
+                                                        card.buttons = pri_array[i][row.profile_pic]["button"]
                                                     }
-
-                                                    card.buttons = pri_array[i]["button"]
-
 
                                                     card_array.push(card)
                                                 }

@@ -129,60 +129,93 @@
 
 			"name": "Profile picture",
 
-			"0": "Turn on so others can see your profile picture",
+			"0": {
+				"sub":"Turn on so others can see your profile picture",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn on",
+		            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"profile_pic\"}"               
+				}]
+			},
 
-			"1": "Turn off to prevent others from seeing your profile picture",
-
-			"button": [{	
-	            "type": "postback",
-	            "title": "Turn on",
-	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"profile_pic\"}"               
-			}]
+			"1": {
+				"sub":"Turn off to prevent others from seeing your profile picture when looking for others",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn off",
+		            "payload": "{ \"method\": \"turnOffPrivacySetting\", \"data\": \"profile_pic\"}"               
+				}]
+			}
 		},
 
 		{
 
 			"name": "Fullname",
 
-			"0": "Turn on so others can see your full name, otherwise only first name is displayed",
+			"0": {
+				"sub":"Turn on so others can see your fullname",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn on",
+		            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"full_name\"}"               
+				}]
+			},
 
-			"1": "Turn off to prevent others from seeing your full name",
-
-			"button": [{	
-	            "type": "postback",
-	            "title": "Turn on",
-	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"full_name\"}"               
-			}]
+			"1": {
+				"sub":"Turn off to prevent others from seeing your fullname when looking for others",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn off",
+		            "payload": "{ \"method\": \"turnOffPrivacySetting\", \"data\": \"full_name\"}"               
+				}]
+			}
 		},
 
 		{
 
 			"name": "Age",
 
-			"0": "Turn on so others can see your age",
+			"0": {
+				"sub":"Turn on so others can see your age",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn on",
+		            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"age\"}"               
+				}]
+			},
 
-			"1": "Turn off to prevent others from seeing your age",
+			"1": {
+				"sub":"Turn off to prevent others from seeing your age",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn off",
+		            "payload": "{ \"method\": \"turnOffPrivacySetting\", \"data\": \"age\"}"               
+				}]
+			}
 
-			"button": [{	
-	            "type": "postback",
-	            "title": "Turn on",
-	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"age\"}"               
-			}]
 		},
 
 		{
 
 			"name": "Location",
 
-			"0": "Turn so others can see your location.",
+			"0": {
+				"sub":"Turn on so others can see your accurate location",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn on",
+		            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"location\"}"               
+				}]
+			},
 
-			"1": "Turn off to prevent others from seeing your accurate position, otherwise relative information is given.",
-
-			"button": [{	
-	            "type": "postback",
-	            "title": "Turn on",
-	            "payload": "{ \"method\": \"turnOnPrivacySetting\", \"data\": \"location\"}"               
-			}]
+			"1": {
+				"sub":"Turn off to prevent others from seeing your accurate location data",
+				"button":[{	
+		            "type": "postback",
+		            "title": "Turn off",
+		            "payload": "{ \"method\": \"turnOffPrivacySetting\", \"data\": \"location\"}"               
+				}]
+			}
 		}
 	
 	],
