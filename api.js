@@ -42,7 +42,7 @@ exports.geo_location = geo_location;
 var search_area = "";
 exports.search_area = search_area;
 
-const token = "EAAK1Sb4ieBIBALA0Uwdcr1bS7qqOHNJcHX9CQ622P0Jmg4VCQR29Of83SNlQ80hhDfkIJI0BYPpt0k1NloR61yjiN8LZBXFWlvMz9SHyvS1M6KIVDhvdcEkcYOF8ngU1zmaTqHdmpgIrb8yphnZCZBBi9JTuZCyKXKSMZC0othQZDZD"
+const token = "TOKEN"
 
 var self = module.exports = {
 

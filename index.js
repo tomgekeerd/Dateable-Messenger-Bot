@@ -15,7 +15,7 @@ var options = {
  
   // Optional depending on the providers 
   httpAdapter: 'https', // Default 
-  apiKey: 'AIzaSyBkUEl7Sxsl4z5TKbMsjnEgUDKzUSESwk0', // for Mapquest, OpenCage, Google Premier 
+  apiKey: 'API_KEY_HERE', // for Mapquest, OpenCage, Google Premier 
   formatter: null         // 'gpx', 'string', ... 
 };
 
@@ -36,7 +36,7 @@ app.get('/', function (req, res) {
 
 // for facebook verification
 app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'toeken133') {
+    if (req.query['hub.verify_token'] === 'VERIFY_TOKEN_HERE') {
         res.send(req.query['hub.challenge'])
     }
     res.send('Error, wrong token')
